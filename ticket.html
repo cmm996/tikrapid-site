@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>提交工单 - tikrapid</title>
+
+<style>
+body{
+    background:#060816;
+    color:#fff;
+    font-family:Inter,sans-serif;
+    margin:0;
+    padding:40px 20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+}
+
+.card{
+    background:rgba(15,23,42,.85);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    padding:40px;
+}
+
+h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.desc{
+    color:#94a3b8;
+    margin-bottom:30px;
+}
+
+input,select,textarea{
+    width:100%;
+    background:#0f172a;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:14px;
+    padding:14px;
+    color:#fff;
+    margin-bottom:18px;
+    font-size:15px;
+}
+
+textarea{
+    min-height:140px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    border:none;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    padding:16px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:.92;
+}
+
+.success{
+    display:none;
+    margin-top:20px;
+    background:rgba(34,197,94,.12);
+    border:1px solid rgba(34,197,94,.3);
+    padding:16px;
+    border-radius:14px;
+    color:#86efac;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>提交工单</h1>
+
+<p class="desc">
+线路异常、换 IP、配置协助、续费问题均可提交。
+</p>
+
+<form id="ticketForm">
+
+<input
+name="wechat"
+placeholder="微信号"
+required
+>
+
+<select name="type" required>
+<option value="">选择问题类型</option>
+<option value="线路不稳定">线路不稳定</option>
+<option value="更换IP">更换 IP</option>
+<option value="配置协助">配置协助</option>
+<option value="续费咨询">续费咨询</option>
+</select>
+
+<input
+name="region"
+placeholder="当前使用地区（例如：美国）"
+>
+
+<textarea
+name="message"
+placeholder="请详细描述你的问题"
+required
+></textarea>
+
+<button type="submit">
+提交工单
+</button>
+
+</form>
+
+<div class="success" id="successBox">
+✅ 工单提交成功，我们会尽快联系你。
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+document
+.getElementById("ticketForm")
+.addEventListener("submit", async (e)=>{
+
+e.preventDefault();
+
+const form = new FormData(e.target);
+
+const data = Object.fromEntries(form.entries());
+
+const res = await fetch("/api/tickets",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+});
+
+if(res.ok){
+
+document.getElementById("successBox").style.display="block";
+
+e.target.reset();
+
+}else{
+
+alert("提交失败");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
