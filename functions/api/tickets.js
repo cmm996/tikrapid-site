@@ -6,6 +6,7 @@ export async function onRequestPost(context) {
 
     const data = await request.json();
 
+    // 参数校验
     if (
       !data.wechat ||
       !data.type ||
@@ -20,6 +21,7 @@ export async function onRequestPost(context) {
 
     }
 
+    // 写入数据库
     await env.DB
       .prepare(`
         INSERT INTO tickets
@@ -38,18 +40,24 @@ export async function onRequestPost(context) {
         data.message
       )
       .run();
-// Telegram 通知
-await fetch(
-  `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      chat_id: env.TG_CHAT_ID,
 
-      text:
+    // Telegram 通知
+    try {
+
+      await fetch(
+        `https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+
+            chat_id: env.TG_CHAT_ID,
+
+            text:
 `📩 新工单通知
 
 👤 微信：
@@ -62,10 +70,26 @@ ${data.type}
 ${data.region || "-"}
 
 📝 内容：
-${data.message}`
-    })
-  }
-);
+${data.message}
+
+⏰ 时间：
+${new Date().toLocaleString("zh-CN")}`
+
+          })
+
+        }
+      );
+
+    } catch (tgErr) {
+
+      console.log(
+        "Telegram notify failed:",
+        tgErr.message
+      );
+
+    }
+
+    // 返回成功
     return Response.json({
       success: true
     });
