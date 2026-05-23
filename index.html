@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>tikrapid · 跨境网络基础设施</title>
+  <meta name="description" content="tikrapid 提供原生住宅 IP、IX 内网专线、全球跨境业务网络，适用于 TK 直播、社媒矩阵、跨境电商、AI 工具和企业级工作室。" />
+  <meta name="keywords" content="跨境专线, 原生住宅IP, TK直播专线, 指纹浏览器IP, 软路由方案, TikTok直播网络" />
+  <meta name="theme-color" content="#07111f" />
+
+  <style>
+    :root {
+      --bg: #07111f;
+      --card: rgba(15, 23, 42, .78);
+      --border: rgba(148, 163, 184, .16);
+      --border-strong: rgba(96, 165, 250, .36);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --soft: #cbd5e1;
+      --blue: #60a5fa;
+      --blue2: #2563eb;
+      --purple: #8b5cf6;
+      --green: #22c55e;
+      --red: #ef4444;
+      --shadow: 0 24px 80px rgba(0,0,0,.36);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, .24), transparent 34%),
+        radial-gradient(circle at top right, rgba(139, 92, 246, .2), transparent 32%),
+        linear-gradient(180deg, #050816 0%, var(--bg) 42%, #060b16 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5, 8, 22, .78);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+
+    .navbar {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: -.03em;
+      font-size: 1.35rem;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 25%, #fff, transparent 18%),
+        linear-gradient(135deg, var(--blue), var(--purple));
+      position: relative;
+      box-shadow: 0 0 32px rgba(96,165,250,.42);
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 1px solid rgba(255,255,255,.58);
+      border-radius: 50%;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: .94rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 850;
+      font-size: .94rem;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue2), var(--purple));
+      color: white;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, .28);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      background: rgba(15, 23, 42, .58);
+      color: var(--soft);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      color: white;
+      background: rgba(30, 41, 59, .78);
+    }
+
+    .hero { position: relative; padding: 86px 0 56px; overflow: hidden; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(96,165,250,.25);
+      background: rgba(59,130,246,.1);
+      color: #bfdbfe;
+      font-weight: 850;
+      font-size: .9rem;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      line-height: .98;
+      letter-spacing: -.075em;
+      margin-bottom: 24px;
+    }
+
+    .grad {
+      background: linear-gradient(90deg, #ffffff, #bfdbfe 42%, #c4b5fd);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-desc {
+      max-width: 680px;
+      color: var(--soft);
+      font-size: clamp(1.03rem, 2vw, 1.22rem);
+      margin-bottom: 28px;
+    }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .trust-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .trust-pill {
+      color: var(--soft);
+      font-size: .88rem;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .52);
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .network-card {
+      position: relative;
+      min-height: 500px;
+      border-radius: 32px;
+      overflow: hidden;
+      padding: 24px;
+      isolation: isolate;
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.56));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .network-card::before {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(96, 165, 250, .26), transparent 30%),
+        radial-gradient(circle at 62% 58%, rgba(139, 92, 246, .2), transparent 26%);
+      z-index: -1;
+      animation: pulseGlow 5s ease-in-out infinite;
+    }
+
+    .world-map {
+      position: absolute;
+      inset: 0;
+      opacity: .58;
+      background-image:
+        linear-gradient(rgba(148,163,184,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+    }
+
+    .node {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 8px rgba(34,197,94,.12), 0 0 26px rgba(34,197,94,.8);
+      animation: blink 1.9s ease-in-out infinite;
+    }
+
+    .node.us { left: 20%; top: 36%; }
+    .node.uk { left: 48%; top: 31%; animation-delay: .2s; }
+    .node.jp { left: 78%; top: 42%; animation-delay: .4s; }
+    .node.sg { left: 70%; top: 62%; animation-delay: .6s; }
+    .node.my { left: 66%; top: 68%; animation-delay: .8s; }
+
+    .line {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(96,165,250,.76), transparent);
+      transform-origin: left center;
+      opacity: .7;
+    }
+
+    .line.l1 { width: 260px; left: 24%; top: 39%; transform: rotate(-5deg); }
+    .line.l2 { width: 230px; left: 49%; top: 35%; transform: rotate(18deg); }
+    .line.l3 { width: 180px; left: 68%; top: 60%; transform: rotate(-38deg); }
+
+    .status-panel {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .status-mini {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(2, 6, 23, .66);
+      border: 1px solid rgba(148,163,184,.16);
+      border-radius: 18px;
+      padding: 14px 16px;
+      color: var(--soft);
+    }
+
+    .status-mini b { color: white; }
+    .online { color: #86efac; font-weight: 850; }
+
+    .stats-bar {
+      margin: 24px auto 74px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .58);
+    }
+
+    .stat { padding: 24px; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: 0; }
+    .stat strong { display: block; font-size: 2rem; line-height: 1; letter-spacing: -.04em; }
+    .stat span { color: var(--muted); font-size: .92rem; }
+
+    section { margin: 86px 0; }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 34px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -.055em;
+      line-height: 1.06;
+      margin-bottom: 14px;
+    }
+
+    .section-desc { color: var(--muted); font-size: 1.05rem; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+    .feature-card, .pricing-card, .coverage-card, .compare-card, .ticket-card {
+      border-radius: var(--radius);
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(15,23,42,.74), rgba(15,23,42,.48));
+      border: 1px solid var(--border);
+      transition: transform .22s ease, border-color .22s ease, background .22s ease;
+    }
+
+    .feature-card:hover, .coverage-card:hover, .compare-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      background: rgba(30,41,59,.62);
+    }
+
+    .feature-card h3, .coverage-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .feature-card p, .coverage-card p, .compare-card p { color: var(--muted); font-size: .95rem; }
+
+    .pricing-card { position: relative; display: flex; flex-direction: column; min-height: 520px; }
+
+    .pricing-card.popular {
+      border-color: rgba(96,165,250,.55);
+      box-shadow: 0 0 0 1px rgba(96,165,250,.12), 0 26px 70px rgba(37,99,235,.18);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.12);
+      color: #bfdbfe;
+      font-size: .78rem;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .pricing-card h3 { font-size: 1.55rem; margin-bottom: 8px; }
+
+    .price {
+      font-size: 2.35rem;
+      letter-spacing: -.05em;
+      font-weight: 900;
+      margin: 14px 0 16px;
+    }
+
+    .price span { font-size: .92rem; color: var(--muted); font-weight: 700; }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      color: var(--soft);
+      margin: 14px 0 24px;
+      flex: 1;
+    }
+
+    .list li { display: flex; gap: 9px; align-items: flex-start; }
+    .list li::before { content: "✓"; color: var(--green); font-weight: 900; flex: 0 0 auto; }
+
+    .coverage-note, .enterprise-box, .case-card, .policy-box, .contact-box {
+      border-radius: 30px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(37,99,235,.14), rgba(139,92,246,.12) 45%, rgba(15,23,42,.72));
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .coverage-note { margin-top: 18px; text-align: center; color: #bfdbfe; font-weight: 850; }
+
+    .status-table {
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,.66);
+    }
+
+    .status-row {
+      display: grid;
+      grid-template-columns: 1.2fr .7fr .7fr .8fr;
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      color: var(--soft);
+    }
+
+    .status-row:last-child { border-bottom: 0; }
+    .status-row.head { color: #bfdbfe; background: rgba(59,130,246,.1); font-weight: 900; }
+
+    .load { height: 8px; background: rgba(148,163,184,.16); border-radius: 999px; overflow: hidden; }
+    .load i { display: block; height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); border-radius: inherit; }
+
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .compare-card.bad { border-color: rgba(239,68,68,.25); }
+    .compare-card.good { border-color: rgba(34,197,94,.35); }
+
+    .compare-list { list-style: none; display: grid; gap: 12px; margin-top: 16px; color: var(--soft); }
+    .compare-card.bad .compare-list li::before { content: "× "; color: var(--red); font-weight: 900; }
+    .compare-card.good .compare-list li::before { content: "✓ "; color: var(--green); font-weight: 900; }
+
+    .enterprise-box { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; }
+
+    .enterprise-tag {
+      display: inline-block;
+      color: #bfdbfe;
+      font-weight: 900;
+      letter-spacing: .16em;
+      font-size: .78rem;
+      margin-bottom: 12px;
+    }
+
+    .enterprise-box h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: -.055em;
+      line-height: 1.08;
+      margin-bottom: 12px;
+    }
+
+    .enterprise-box p { max-width: 760px; color: var(--soft); }
+
+    .case-card { background: linear-gradient(180deg, rgba(15,23,42,.8), rgba(15,23,42,.56)); }
+
+    .case-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 24px; }
+    .case-header h3 { font-size: 1.55rem; margin-bottom: 6px; }
+    .case-header span { color: var(--muted); }
+
+    .case-result {
+      min-width: 148px;
+      text-align: center;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(34,197,94,.12);
+      border: 1px solid rgba(34,197,94,.28);
+      color: #86efac;
+      font-weight: 900;
+    }
+
+    .case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .case-grid div { background: rgba(2,6,23,.36); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
+    .case-grid h4 { color: #bfdbfe; margin-bottom: 8px; }
+    .case-grid p { color: var(--soft); }
+
+    .ticket-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .ticket-card { text-align: center; }
+    .ticket-card b { display: block; margin-bottom: 6px; }
+    .ticket-card span { color: var(--muted); font-size: .92rem; }
+
+    .faq { display: grid; gap: 12px; max-width: 900px; margin: 0 auto; }
+
+    details {
+      border: 1px solid var(--border);
+      background: rgba(15,23,42,.62);
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+
+    summary { cursor: pointer; font-weight: 900; color: white; }
+    details p { color: var(--muted); margin-top: 10px; }
+
+    .contact-box {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      border-color: var(--border-strong);
+      background:
+        radial-gradient(circle at top, rgba(96,165,250,.18), transparent 42%),
+        rgba(15,23,42,.72);
+    }
+
+    .qr {
+      width: 168px;
+      height: 168px;
+      object-fit: cover;
+      margin: 22px auto 12px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.05);
+    }
+
+    .contact-mini { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 24px; text-align: left; }
+    .contact-mini div { border: 1px solid var(--border); background: rgba(2,6,23,.28); border-radius: 18px; padding: 15px; }
+    .contact-mini b { display: block; margin-bottom: 4px; }
+    .contact-mini span { color: var(--muted); font-size: .9rem; }
+
+    footer {
+      margin-top: 90px;
+      padding: 34px 0 96px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .footer-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; align-items: start; }
+
+    .disclaimer {
+      background: rgba(15,23,42,.58);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .footer-qrcode {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      background: rgba(15,23,42,.45);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .footer-qrcode img { width: 120px; height: 120px; object-fit: cover; border-radius: 18px; border: 1px solid var(--border); }
+    .footer-qrcode h3 { color: white; margin-bottom: 6px; }
+
+    .floating-contact { position: fixed; right: 24px; bottom: 24px; z-index: 999; }
+
+    .floating-btn {
+      width: 64px;
+      height: 64px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue2), var(--purple));
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 20px 50px rgba(37,99,235,.35);
+      transition: .25s;
+    }
+
+    .floating-btn:hover { transform: translateY(-4px) scale(1.05); }
+
+    .floating-panel {
+      position: absolute;
+      right: 0;
+      bottom: 80px;
+      width: 230px;
+      background: rgba(15,23,42,.96);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      padding: 18px;
+      display: none;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    }
+
+    .floating-panel img { width: 100%; border-radius: 16px; margin-bottom: 12px; }
+    .floating-panel p { color: var(--soft); font-size: .92rem; text-align: center; }
+    .floating-panel.active { display: block; }
+
+    .mobile-fixed-bar {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 80;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 22px;
+      background: rgba(2,6,23,.84);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-fixed-bar a {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(30,41,59,.7);
+      color: var(--soft);
+      font-weight: 900;
+    }
+
+    .mobile-fixed-bar a.active { background: linear-gradient(135deg, var(--blue2), var(--purple)); color: white; }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes blink { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: .72; } }
+    @keyframes pulseGlow { 0%, 100% { transform: scale(1); opacity: .84; } 50% { transform: scale(1.04); opacity: 1; } }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hero-grid, .enterprise-box, .footer-grid { grid-template-columns: 1fr; }
+      .network-card { min-height: 420px; }
+      .grid-4, .grid-3, .ticket-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-bar, .case-grid, .contact-mini { grid-template-columns: repeat(2, 1fr); }
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .container { width: min(100% - 28px, 1180px); }
+      .navbar { height: 68px; }
+      .nav-cta .btn-secondary { display: none; }
+      .hero { padding: 52px 0 36px; }
+      .hero h1 { letter-spacing: -.055em; }
+      .network-card { min-height: 390px; padding: 16px; }
+      .status-panel { left: 16px; right: 16px; bottom: 16px; }
+      .status-mini { font-size: .86rem; padding: 12px; }
+      .grid-4, .grid-3, .stats-bar, .case-grid, .ticket-grid, .contact-mini { grid-template-columns: 1fr; }
+      .stat { border-right: 0; border-bottom: 1px solid var(--border); }
+      .stat:last-child { border-bottom: 0; }
+      .status-row { grid-template-columns: 1fr; gap: 6px; }
+      .case-header { flex-direction: column; }
+      .floating-contact { display: none; }
+      .mobile-fixed-bar { display: grid; }
+      footer { padding-bottom: 110px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav-wrap">
+    <div class="container navbar">
+      <a class="brand" href="#">
+        <span class="brand-mark"></span>
+        <span>tikrapid</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#scenarios">场景</a>
+        <a href="#pricing">套餐</a>
+        <a href="#coverage">全球覆盖</a>
+        <a href="#status">状态</a>
+        <a href="#enterprise">企业方案</a>
+        <a href="#contact">联系</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+        <a class="btn btn-primary" href="#contact">微信咨询</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">🌍 覆盖全球大部分地区 · 部分地区支持运营商 IP 定制</div>
+          <h1><span class="grad">让 TK / 跨境业务</span><br>真正稳定跑起来</h1>
+          <p class="hero-desc">
+            tikrapid 提供原生住宅 IP、IX 内网专线与软路由企业方案，专为 TK 直播、社媒矩阵、跨境电商、AI 工具和工作室长期业务部署设计。
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#pricing">查看方案</a>
+            <a class="btn btn-secondary" href="#coverage">查看地区覆盖</a>
+            <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+          </div>
+
+          <div class="trust-row">
+            <span class="trust-pill">🛡️ 72 小时无理由退款</span>
+            <span class="trust-pill">⚡ 晚高峰优化</span>
+            <span class="trust-pill">🧩 支持软路由 / 指纹浏览器</span>
+            <span class="trust-pill">💬 7×24 技术响应</span>
+          </div>
+        </div>
+
+        <div class="network-card" aria-label="全球网络节点示意图">
+          <div class="world-map"></div>
+          <span class="node us"></span>
+          <span class="node uk"></span>
+          <span class="node jp"></span>
+          <span class="node sg"></span>
+          <span class="node my"></span>
+          <span class="line l1"></span>
+          <span class="line l2"></span>
+          <span class="line l3"></span>
+
+          <div class="status-panel">
+            <div class="status-mini"><b>🇺🇸 美国住宅 IP</b><span class="online">在线 · 32ms</span></div>
+            <div class="status-mini"><b>🇯🇵 日本低延迟专线</b><span class="online">在线 · 18ms</span></div>
+            <div class="status-mini"><b>🇲🇾 马来西亚直播线路</b><span class="online">在线 · 45ms</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container stats-bar reveal">
+      <div class="stat"><strong>80+</strong><span>国家与地区覆盖</span></div>
+      <div class="stat"><strong>99.9%</strong><span>目标服务在线率</span></div>
+      <div class="stat"><strong>3000+</strong><span>跨境用户与工作室</span></div>
+      <div class="stat"><strong>7×24</strong><span>技术支持响应</span></div>
+    </div>
+
+    <section id="scenarios" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">按业务场景选择方案</h2>
+        <p class="section-desc">不同业务对 IP、带宽、延迟和设备管理要求不同。先选场景，再选方案。</p>
+      </div>
+
+      <div class="grid-4">
+        <a class="feature-card" href="#pricing"><h3>🎥 TK 直播</h3><p>低延迟、高码率、减少掉帧卡顿，适合直播带货与达人号长期运营。</p></a>
+        <a class="feature-card" href="#pricing"><h3>📱 社媒矩阵</h3><p>原生住宅 IP、多账号环境隔离，适合养号、发帖、私域建联。</p></a>
+        <a class="feature-card" href="#pricing"><h3>🛒 跨境电商</h3><p>适合店铺管理、广告投放、ERP、海外平台访问和团队协作。</p></a>
+        <a class="feature-card" href="#enterprise"><h3>🏢 工作室部署</h3><p>软路由统一出口，多设备即插即用，支持企业级专线与定制 IP。</p></a>
+      </div>
+    </section>
+
+    <section id="pricing" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">选择适合你的业务方案</h2>
+        <p class="section-desc">所有方案均基于原生住宅 IP 与 IX 内网专线能力，可按地区与运营商资源定制。</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="pricing-card">
+          <span class="tag">STARTER</span>
+          <h3>社媒运营</h3>
+          <p class="section-desc">适合个人运营、AI 工具、账号浏览与轻量业务。</p>
+          <div class="price">¥99 <span>/月起</span></div>
+          <ul class="list">
+            <li>原生住宅 IP</li>
+            <li>支持亚洲、欧美主流地区</li>
+            <li>适合 TK 养号、社媒浏览、AI 工具</li>
+            <li>支持手机 / 电脑客户端</li>
+            <li>基础售后支持</li>
+          </ul>
+          <a class="btn btn-secondary" href="#contact">咨询详情</a>
+        </div>
+
+        <div class="pricing-card popular">
+          <span class="tag">POPULAR</span>
+          <h3>短视频矩阵</h3>
+          <p class="section-desc">适合短视频团队、批量上传、达人建联和矩阵账号。</p>
+          <div class="price">¥199 <span>/月起</span></div>
+          <ul class="list">
+            <li>高纯净度原生住宅 IP</li>
+            <li>IX 内网专线，晚高峰优化</li>
+            <li>支持美国、英国、日本、韩国等地区</li>
+            <li>支持指纹浏览器本地端口转发</li>
+            <li>优先售后响应</li>
+          </ul>
+          <a class="btn btn-primary" href="#contact">立即咨询</a>
+        </div>
+
+        <div class="pricing-card">
+          <span class="tag">PRO LIVE</span>
+          <h3>直播专线</h3>
+          <p class="section-desc">适合 TK 直播、跨境直播带货、高画质推流。</p>
+          <div class="price">¥399 <span>/月起</span></div>
+          <ul class="list">
+            <li>独享原生住宅 IP</li>
+            <li>直播推流专线优化</li>
+            <li>支持软路由预配置</li>
+            <li>部分地区可定制运营商 IP</li>
+            <li>1 对 1 技术协助</li>
+          </ul>
+          <a class="btn btn-secondary" href="#contact">联系定制</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="coverage" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">全球地区覆盖与运营商定制</h2>
+        <p class="section-desc">支持全球大部分跨境业务地区，部分国家可按业务需求定制运营商、独享 IP 与工作室出口方案。</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="coverage-card"><h3>🇺🇸 北美地区</h3><p>美国 / 加拿大等主流业务地区。部分区域可根据需求匹配当地 ISP 资源。</p></div>
+        <div class="coverage-card"><h3>🇯🇵 亚洲地区</h3><p>日本 / 韩国 / 新加坡 / 马来西亚 / 泰国等。适合直播、社媒与电商场景。</p></div>
+        <div class="coverage-card"><h3>🇪🇺 欧洲地区</h3><p>英国 / 德国 / 法国 / 荷兰等。支持跨境账号、广告与团队办公环境。</p></div>
+      </div>
+
+      <div class="coverage-note">💡 可定制方向：指定国家 / 指定运营商 / 独享 IP / 软路由整机 / 多设备团队方案</div>
+    </section>
+
+    <section id="status" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">网络状态中心</h2>
+        <p class="section-desc">节点状态持续监控，帮助用户快速了解当前线路运行情况。</p>
+      </div>
+
+      <div class="status-table">
+        <div class="status-row head"><div>地区节点</div><div>状态</div><div>延迟</div><div>当前负载</div></div>
+        <div class="status-row"><div>🇺🇸 美国 · Residential</div><div class="online">正常</div><div>32ms</div><div class="load"><i style="width:42%"></i></div></div>
+        <div class="status-row"><div>🇯🇵 日本 · Low Latency</div><div class="online">正常</div><div>18ms</div><div class="load"><i style="width:36%"></i></div></div>
+        <div class="status-row"><div>🇬🇧 英国 · Business</div><div class="online">正常</div><div>87ms</div><div class="load"><i style="width:58%"></i></div></div>
+        <div class="status-row"><div>🇲🇾 马来西亚 · Live</div><div class="online">正常</div><div>45ms</div><div class="load"><i style="width:49%"></i></div></div>
+      </div>
+    </section>
+
+    <section id="compare" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">为什么不是普通机场？</h2>
+        <p class="section-desc">普通节点解决“能不能连上”，tikrapid 解决的是“业务能不能稳定跑”。</p>
+      </div>
+
+      <div class="compare">
+        <div class="compare-card bad">
+          <h3>普通机场 / 机房 IP</h3>
+          <ul class="compare-list">
+            <li>数据中心 IP，容易被平台识别</li>
+            <li>多人共用，一人污染全员受影响</li>
+            <li>晚高峰拥堵，直播容易卡顿</li>
+            <li>售后弱，故障靠群里喊</li>
+            <li>不适合长期业务沉淀</li>
+          </ul>
+        </div>
+
+        <div class="compare-card good">
+          <h3>tikrapid 跨境专线</h3>
+          <ul class="compare-list">
+            <li>原生住宅 / ISP 网络身份</li>
+            <li>支持独享 IP 与运营商定制</li>
+            <li>IX 内网专线，适合直播推流</li>
+            <li>7×24 技术响应与备用方案</li>
+            <li>适合工作室与企业长期部署</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="enterprise" class="container reveal">
+      <div class="enterprise-box">
+        <div>
+          <span class="enterprise-tag">ENTERPRISE SOLUTION</span>
+          <h2>工作室 / 企业级跨境网络方案</h2>
+          <p>支持多账号矩阵、软路由统一管理、多国家出口、独享 IP、运营商定制、团队设备接入和长期业务稳定部署。适合直播工作室、跨境电商团队、MCN、广告投放团队。</p>
+        </div>
+        <a class="btn btn-primary" href="#contact">联系商务</a>
+      </div>
+    </section>
+
+    <section id="case" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">真实案例：TK 直播客户反馈</h2>
+        <p class="section-desc">真实业务场景反馈，展示专线在直播稳定性、账号运营和团队部署中的实际价值。</p>
+      </div>
+
+      <div class="case-card">
+        <div class="case-header">
+          <div>
+            <h3>张先生 · 马来西亚 TK 直播卖家</h3>
+            <span>软路由方案 · 马来西亚直播专线</span>
+          </div>
+          <div class="case-result">观看提升 40%</div>
+        </div>
+
+        <div class="case-grid">
+          <div><h4>痛点</h4><p>之前使用其他线路，晚高峰推流经常卡顿掉帧，导致直播间被限流。</p></div>
+          <div><h4>解决方案</h4><p>切换马来西亚原生住宅 IP + IX 专线，采用软路由插电即用方案。</p></div>
+          <div><h4>结果</h4><p>连续 3 个月直播零卡顿，场均观看提升约 40%，无需自己折腾配置。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="support-system" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">透明可控的服务支持</h2>
+        <p class="section-desc">统一查看服务状态、节点信息与工单进度，让跨境网络服务更加透明可控。</p>
+      </div>
+
+      <div class="ticket-grid">
+        <div class="ticket-card"><b>📊 服务状态</b><span>节点状态、延迟情况、线路负载清晰展示</span></div>
+        <div class="ticket-card"><b>🌍 地区方案</b><span>按业务选择国家、线路与运营商资源</span></div>
+        <div class="ticket-card"><b>🎫 工单支持</b><span>线路异常、换 IP、配置协助均可提交</span></div>
+        <div class="ticket-card"><b>🤝 商务定制</b><span>支持工作室、团队与企业级部署需求</span></div>
+      </div>
+    </section>
+
+    <section id="policy" class="container reveal">
+      <div class="policy-box">
+        <div class="section-head" style="margin-bottom:22px">
+          <h2 class="section-title">品质承诺 · 购买须知</h2>
+          <p class="section-desc">我们重视长期客户，更重视线路质量与服务稳定性。</p>
+        </div>
+
+        <ul class="list" style="max-width:860px;margin:0 auto">
+          <li><strong>72 小时无理由退款：</strong>购买后 72 小时内，如线路质量未达预期，可申请全额退款。</li>
+          <li><strong>服务数据可查：</strong>支持查看线路状态、节点情况与工单处理进度。</li>
+          <li><strong>客户案例说话：</strong>直播、矩阵、工作室客户均可按场景提供方案建议。</li>
+          <li><strong>合规使用边界：</strong>服务仅限合法跨境业务、学术研究、企业办公和海外社媒运营。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="faq" class="container reveal">
+      <div class="section-head">
+        <h2 class="section-title">常见问题</h2>
+        <p class="section-desc">新用户常见问题，减少沟通成本。</p>
+      </div>
+
+      <div class="faq">
+        <details open><summary>是否支持全球地区？</summary><p>支持全球大部分主流跨境业务地区，部分国家和地区可根据需求定制运营商 IP、独享 IP 或软路由方案。</p></details>
+        <details><summary>适合指纹浏览器吗？</summary><p>适合。可通过桌面工具生成本地 SOCKS5 端口，再在 ADS 等指纹浏览器内填写 127.0.0.1 与对应端口。</p></details>
+        <details><summary>为什么取消免费测试？</summary><p>高质量原生住宅 IP 与专线资源有真实成本。我们用 72 小时无理由退款代替低质量测试，保障真实购买用户的资源体验。</p></details>
+        <details><summary>可以部署在软路由上吗？</summary><p>可以。适合工作室、直播间、办公室统一出口，员工设备无需单独配置，插网即可进入专线环境。</p></details>
+      </div>
+    </section>
+
+    <section id="contact" class="container reveal">
+      <div class="contact-box">
+        <h2 class="section-title">立即咨询 / 获取方案</h2>
+        <p class="section-desc">扫码添加客服，备注“专线咨询”。如需定制地区、运营商 IP 或工作室方案，请说明业务场景。</p>
+        <img class="qr" src="wechat_qr.png" alt="微信二维码" />
+        <p style="color:var(--muted);font-size:.92rem">客服在线时间：7×24 小时</p>
+
+        <div class="contact-mini">
+          <div><b>直播专线</b><span>适合 TK 直播、OBS 推流、直播带货</span></div>
+          <div><b>矩阵运营</b><span>适合多账号、指纹浏览器、团队运营</span></div>
+          <div><b>企业定制</b><span>适合工作室、跨境团队、软路由部署</span></div>
+        </div>
+
+        <div style="margin-top:22px">
+          <a class="btn btn-primary" href="#pricing">返回查看套餐</a>
+          <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <span class="brand-mark"></span>
+          <span>tikrapid</span>
+        </div>
+        <p>© 2026 tikrapid.top · 跨境网络基础设施服务</p>
+
+        <div class="footer-qrcode">
+          <img src="wechat_qr.png" alt="微信二维码">
+          <div>
+            <h3>商务合作 / 技术咨询</h3>
+            <p>扫码添加微信，获取线路方案与部署支持。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="disclaimer">
+        <strong style="color:white">合规与免责声明</strong><br>
+        本服务仅限合法跨境电商、外贸企业、学术研究机构及海外社媒运营团队用于正当跨国网络通信需求。严禁用于任何违反中国及业务所在地法律法规的活动。用户需自行承担因违规操作产生的一切责任，tikrapid 保留对违规服务终止的权利。
+      </div>
+    </div>
+  </footer>
+
+  <div class="floating-contact">
+    <div class="floating-panel" id="wechatPanel">
+      <img src="wechat_qr.png" alt="微信二维码">
+      <p>扫码添加微信咨询</p>
+    </div>
+
+    <button class="floating-btn" onclick="toggleWechat()" aria-label="微信咨询">💬</button>
+  </div>
+
+  <div class="mobile-fixed-bar">
+    <a href="/ticket.html">提交工单</a>
+    <a class="active" href="#contact">微信咨询</a>
+  </div>
+
+  <script>
+    function toggleWechat() {
+      document.getElementById("wechatPanel").classList.toggle("active");
+    }
+
+    document.addEventListener("click", function(event) {
+      const contact = document.querySelector(".floating-contact");
+      const panel = document.getElementById("wechatPanel");
+
+      if (contact && panel && !contact.contains(event.target)) {
+        panel.classList.remove("active");
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
