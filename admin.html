@@ -5,25 +5,65 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>工单后台 - tikrapid</title>
 <style>
-body{margin:0;background:#060816;color:#fff;font-family:Inter,Arial,sans-serif;padding:30px}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-h1{margin:0;font-size:32px}
-button,input,select{border:1px solid rgba(255,255,255,.12);background:#0f172a;color:#fff;border-radius:10px;padding:10px 12px}
-button{cursor:pointer;background:linear-gradient(135deg,#2563eb,#7c3aed);font-weight:700}
-.card{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#102044,#060816 45%);color:#fff;font-family:Inter,Arial,sans-serif;padding:28px}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px}
+h1{margin:0;font-size:34px}
+.sub{color:#94a3b8;margin-top:6px}
+button,input,select{border:1px solid rgba(255,255,255,.12);background:#0f172a;color:#fff;border-radius:12px;padding:10px 12px}
+button{cursor:pointer;font-weight:700}
+.primary{background:linear-gradient(135deg,#2563eb,#7c3aed)}
+.danger{background:rgba(239,68,68,.16);color:#fca5a5}
+.success{background:rgba(34,197,94,.16);color:#86efac}
+.gray{background:rgba(148,163,184,.14);color:#cbd5e1}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.stat{background:rgba(15,23,42,.82);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px}
+.stat span{color:#94a3b8;font-size:13px}
+.stat strong{display:block;font-size:28px;margin-top:6px}
+.card{background:rgba(15,23,42,.86);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:20px;overflow:auto}
 .toolbar{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-table{width:100%;border-collapse:collapse}
-th,td{padding:13px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:14px}
-th{color:#93c5fd}
-.status{padding:4px 8px;border-radius:999px;background:rgba(34,197,94,.15);color:#86efac;font-weight:700}
+table{width:100%;border-collapse:collapse;min-width:980px}
+th,td{padding:13px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:14px;vertical-align:top}
+th{color:#93c5fd;font-weight:800}
+.status{padding:5px 10px;border-radius:999px;font-weight:800;font-size:12px}
+.status.open{background:rgba(245,158,11,.14);color:#fcd34d}
+.status.closed{background:rgba(34,197,94,.14);color:#86efac}
 .empty{color:#94a3b8;text-align:center;padding:30px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions button{font-size:12px;padding:7px 9px}
+.message-preview{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#cbd5e1}
+.modal{display:none;position:fixed;inset:0;background:rgba(2,6,23,.75);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px;z-index:99}
+.modal.active{display:flex}
+.modal-card{width:min(620px,100%);background:#0f172a;border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.modal-head{display:flex;justify-content:space-between;gap:16px;margin-bottom:16px}
+.modal-head h2{margin:0}
+.close{font-size:26px;cursor:pointer;color:#94a3b8}
+.detail{display:grid;gap:12px}
+.detail div{background:rgba(2,6,23,.35);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px}
+.detail small{display:block;color:#94a3b8;margin-bottom:5px}
+.detail p{margin:0;white-space:pre-wrap;color:#e5e7eb}
+@media(max-width:760px){
+body{padding:18px}
+.header{flex-direction:column;align-items:flex-start}
+.stats{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>工单后台</h1>
-  <button onclick="loadTickets()">刷新工单</button>
+  <div>
+    <h1>工单后台</h1>
+    <div class="sub">tikrapid support dashboard</div>
+  </div>
+  <button class="primary" onclick="loadTickets()">刷新工单</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><span>总工单</span><strong id="totalCount">0</strong></div>
+  <div class="stat"><span>待处理</span><strong id="openCount">0</strong></div>
+  <div class="stat"><span>已处理</span><strong id="closedCount">0</strong></div>
+  <div class="stat"><span>今日新增</span><strong id="todayCount">0</strong></div>
 </div>
 
 <div class="card">
@@ -31,10 +71,10 @@ th{color:#93c5fd}
     <input id="search" placeholder="搜索微信号 / 地区 / 内容">
     <select id="status">
       <option value="">全部状态</option>
-      <option value="open">open</option>
-      <option value="closed">closed</option>
+      <option value="open">待处理</option>
+      <option value="closed">已处理</option>
     </select>
-    <button onclick="loadTickets()">搜索</button>
+    <button class="primary" onclick="loadTickets()">搜索</button>
   </div>
 
   <table>
@@ -56,7 +96,19 @@ th{color:#93c5fd}
   </table>
 </div>
 
+<div class="modal" id="detailModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2>工单详情</h2>
+      <span class="close" onclick="closeModal()">×</span>
+    </div>
+    <div class="detail" id="detailContent"></div>
+  </div>
+</div>
+
 <script>
+let currentTickets = [];
+
 async function loadTickets(){
   const q = document.getElementById("search").value.trim();
   const status = document.getElementById("status").value;
@@ -68,45 +120,80 @@ async function loadTickets(){
   const res = await fetch(url);
   const data = await res.json();
 
+  currentTickets = data.tickets || [];
+  renderStats(currentTickets);
+  renderTable(currentTickets);
+}
+
+function renderStats(tickets){
+  const today = new Date().toISOString().slice(0,10);
+
+  document.getElementById("totalCount").textContent = tickets.length;
+  document.getElementById("openCount").textContent = tickets.filter(t=>t.status==="open").length;
+  document.getElementById("closedCount").textContent = tickets.filter(t=>t.status==="closed").length;
+  document.getElementById("todayCount").textContent = tickets.filter(t=>String(t.created_at).startsWith(today)).length;
+}
+
+function renderTable(tickets){
   const body = document.getElementById("ticketBody");
   body.innerHTML = "";
 
-  if(!data.tickets || data.tickets.length === 0){
+  if(!tickets.length){
     body.innerHTML = '<tr><td colspan="8" class="empty">暂无工单</td></tr>';
     return;
   }
 
-  data.tickets.forEach(t=>{
+  tickets.forEach(t=>{
+    const statusText = t.status === "closed" ? "已处理" : "待处理";
+
     body.innerHTML += `
       <tr>
         <td>${t.id}</td>
         <td>${escapeHtml(t.wechat)}</td>
         <td>${escapeHtml(t.type)}</td>
         <td>${escapeHtml(t.region || "-")}</td>
-        <td>${escapeHtml(t.message)}</td>
-        <td><span class="status">${escapeHtml(t.status)}</span></td>
+        <td><div class="message-preview">${escapeHtml(t.message)}</div></td>
+        <td><span class="status ${escapeHtml(t.status)}">${statusText}</span></td>
         <td>${escapeHtml(t.created_at)}</td>
         <td>
-  <button onclick="updateTicket(${t.id}, 'close')">已处理</button>
-  <button onclick="updateTicket(${t.id}, 'open')">重新打开</button>
-  <button onclick="updateTicket(${t.id}, 'delete')">删除</button>
-</td>
+          <div class="actions">
+            <button class="gray" onclick="showDetail(${t.id})">查看</button>
+            <button class="success" onclick="updateTicket(${t.id}, 'close')">已处理</button>
+            <button class="gray" onclick="updateTicket(${t.id}, 'open')">重新打开</button>
+            <button class="danger" onclick="updateTicket(${t.id}, 'delete')">删除</button>
+          </div>
+        </td>
       </tr>
     `;
   });
 }
 
-function escapeHtml(str){
-  return String(str ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+function showDetail(id){
+  const t = currentTickets.find(item=>item.id===id);
+  if(!t) return;
+
+  document.getElementById("detailContent").innerHTML = `
+    <div><small>ID</small><p>${t.id}</p></div>
+    <div><small>微信</small><p>${escapeHtml(t.wechat)}</p></div>
+    <div><small>类型</small><p>${escapeHtml(t.type)}</p></div>
+    <div><small>地区</small><p>${escapeHtml(t.region || "-")}</p></div>
+    <div><small>状态</small><p>${t.status === "closed" ? "已处理" : "待处理"}</p></div>
+    <div><small>时间</small><p>${escapeHtml(t.created_at)}</p></div>
+    <div><small>完整内容</small><p>${escapeHtml(t.message)}</p></div>
+  `;
+
+  document.getElementById("detailModal").classList.add("active");
 }
 
-loadTickets();
-  async function updateTicket(id, action) {
+function closeModal(){
+  document.getElementById("detailModal").classList.remove("active");
+}
+
+document.getElementById("detailModal").addEventListener("click", e=>{
+  if(e.target.id === "detailModal") closeModal();
+});
+
+async function updateTicket(id, action) {
   if (action === "delete" && !confirm("确定删除这个工单吗？")) return;
 
   const res = await fetch("/api/admin/ticket", {
@@ -123,6 +210,17 @@ loadTickets();
     alert("操作失败");
   }
 }
+
+function escapeHtml(str){
+  return String(str ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+loadTickets();
 </script>
 
 </body>
