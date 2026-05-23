@@ -566,7 +566,12 @@
       box-shadow: 0 30px 80px rgba(0,0,0,.45);
     }
 
-    .floating-panel img { width: 100%; border-radius: 16px; margin-bottom: 12px; }
+    .floating-panel img { width:140px;
+  height:140px;
+  object-fit:contain;
+  border-radius:12px;
+  background:#fff;
+  padding:6px; }
     .floating-panel p { color: var(--soft); font-size: .92rem; text-align: center; }
     .floating-panel.active { display: block; }
 
