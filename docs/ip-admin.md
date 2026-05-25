@@ -3,8 +3,10 @@
 页面地址：
 
 ```text
-/ip-admin.html
+/ip-admin
 ```
+
+旧地址 `/ip-admin.html` 只做跳转，不再包含后台页面内容。真正后台页面由 Cloudflare Pages Function 返回，并使用 `ADMIN_TOKEN` 做 Basic Auth 保护。
 
 接口会自动创建 `ip_rules` 表，前提是 Cloudflare Pages 已经绑定 D1 数据库为 `DB`。
 
@@ -14,7 +16,7 @@
 ADMIN_TOKEN=换成一串强随机字符
 ```
 
-设置后，`ip-admin.html` 右上角填入同一个 token 才能管理 IP。
+设置后，打开 `/ip-admin` 时浏览器会弹出登录框。用户名可随便填，密码填写 `ADMIN_TOKEN`。进入页面后，右上角也可以保存同一个 token，用于显式调用管理 API。
 
 ## API
 

@@ -12,17 +12,41 @@ export function json(data, status = 200) {
   });
 }
 
-export function requireAdmin(request, env) {
+export function requireAdmin(request, env, options = {}) {
   if (!env.ADMIN_TOKEN) return null;
 
+  const authorization = request.headers.get("authorization") || "";
   const headerToken =
     request.headers.get("x-admin-token") ||
-    request.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ||
+    authorization.replace(/^Bearer\s+/i, "") ||
     "";
 
   if (headerToken === env.ADMIN_TOKEN) return null;
+  if (basicPassword(authorization) === env.ADMIN_TOKEN) return null;
+
+  if (options.basic) {
+    return new Response("Authentication required", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="tikrapid IP Admin"',
+        "Cache-Control": "no-store",
+      },
+    });
+  }
 
   return json({ error: "unauthorized" }, 401);
+}
+
+function basicPassword(authorization) {
+  if (!authorization.toLowerCase().startsWith("basic ")) return "";
+
+  try {
+    const decoded = atob(authorization.slice(6).trim());
+    const index = decoded.indexOf(":");
+    return index >= 0 ? decoded.slice(index + 1) : decoded;
+  } catch {
+    return "";
+  }
 }
 
 export async function ensureIpTable(env) {
