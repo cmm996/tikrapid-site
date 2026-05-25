@@ -37,6 +37,20 @@ export async function onRequestPost(context) {
       const note = String(data.note || "").trim();
       const enabled = data.enabled ? 1 : 0;
 
+      const existing = await env.DB.prepare(`
+        SELECT id
+        FROM ip_rules
+        WHERE address = ? AND id != ?
+        LIMIT 1
+      `).bind(address, id).first();
+
+      if (existing) {
+        return json({
+          error: "这条 IP / CIDR 已经存在",
+          code: "duplicate_ip_rule",
+        }, 409);
+      }
+
       await env.DB.prepare(`
         UPDATE ip_rules
         SET address = ?, label = ?, note = ?, enabled = ?, updated_at = datetime('now')
@@ -48,7 +62,12 @@ export async function onRequestPost(context) {
     return json({ error: "unknown action" }, 400);
   } catch (err) {
     const message = err.message || "failed to update ip rule";
-    const status = /UNIQUE/i.test(message) ? 409 : 400;
-    return json({ error: message }, status);
+    if (/UNIQUE|SQLITE_CONSTRAINT/i.test(message)) {
+      return json({
+        error: "这条 IP / CIDR 已经存在",
+        code: "duplicate_ip_rule",
+      }, 409);
+    }
+    return json({ error: message }, 400);
   }
 }

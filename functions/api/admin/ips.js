@@ -46,6 +46,20 @@ export async function onRequestPost(context) {
     const label = String(data.label || "").trim();
     const note = String(data.note || "").trim();
 
+    const existing = await env.DB.prepare(`
+      SELECT id
+      FROM ip_rules
+      WHERE address = ?
+      LIMIT 1
+    `).bind(address).first();
+
+    if (existing) {
+      return json({
+        error: "这条 IP / CIDR 已经存在",
+        code: "duplicate_ip_rule",
+      }, 409);
+    }
+
     await env.DB.prepare(`
       INSERT INTO ip_rules (address, label, note, enabled, created_at, updated_at)
       VALUES (?, ?, ?, 1, datetime('now'), datetime('now'))
@@ -54,7 +68,12 @@ export async function onRequestPost(context) {
     return json({ success: true });
   } catch (err) {
     const message = err.message || "failed to create ip rule";
-    const status = /UNIQUE/i.test(message) ? 409 : 400;
-    return json({ error: message }, status);
+    if (/UNIQUE|SQLITE_CONSTRAINT/i.test(message)) {
+      return json({
+        error: "这条 IP / CIDR 已经存在",
+        code: "duplicate_ip_rule",
+      }, 409);
+    }
+    return json({ error: message }, 400);
   }
 }
