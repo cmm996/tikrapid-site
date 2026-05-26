@@ -33,6 +33,7 @@ label{display:grid;gap:7px;color:#475569;font-size:13px;font-weight:800}
 input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#18212f;padding:10px 11px;outline:none}
 input:focus,select:focus,textarea:focus{border-color:#147d64;box-shadow:0 0 0 3px rgba(20,125,100,.16)}
 button,.button{border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#18212f;min-height:40px;padding:9px 13px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;font-weight:800}
+button:disabled{opacity:.58;cursor:not-allowed}
 .primary{background:#147d64;border-color:#147d64;color:#fff}
 .danger{background:#fff7f7;border-color:#fecaca;color:#a12626}
 .muted-button{background:#f8fafc}
@@ -78,7 +79,7 @@ td input{min-width:140px}
     <a class="button muted-button" href="/admin.html">工单后台</a>
     <div class="token-box">
       <input id="adminToken" type="password" placeholder="ADMIN_TOKEN，可选">
-      <button class="muted-button" onclick="saveToken()">保存密钥</button>
+      <button class="muted-button" type="button" onclick="saveToken()">保存密钥</button>
     </div>
   </div>
 </header>
@@ -100,7 +101,7 @@ td input{min-width:140px}
       <label>客户 / 标签<input name="label" placeholder="客户名、节点、用途"></label>
       <label>到期时间<input name="expires_at" type="date"></label>
       <label>备注<input name="note" placeholder="套餐、联系方式、订单号"></label>
-      <button class="primary" type="submit">添加</button>
+      <button class="primary" id="createButton" type="submit">添加</button>
     </form>
   </section>
 
@@ -115,7 +116,7 @@ td input{min-width:140px}
           <option value="disabled">停用</option>
           <option value="expired">已到期</option>
         </select>
-        <button class="primary" onclick="loadIPs()">搜索</button>
+        <button class="primary" type="button" onclick="loadIPs()">搜索</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -188,16 +189,22 @@ async function loadIPs(){
 document.getElementById("createForm").addEventListener("submit", async (event)=>{
   event.preventDefault();
   const form = new FormData(event.currentTarget);
+  const button = document.getElementById("createButton");
+  button.disabled = true;
   try{
     await requestJSON("/api/admin/ips", {
       method:"POST",
       body:JSON.stringify(Object.fromEntries(form.entries()))
     });
     event.currentTarget.reset();
+    document.getElementById("search").value = "";
+    document.getElementById("status").value = "";
+    await loadIPs();
     showNotice("IP 已添加", "success");
-    loadIPs();
   }catch(err){
     showNotice(err.message, "error");
+  }finally{
+    button.disabled = false;
   }
 });
 
@@ -240,13 +247,13 @@ function renderTable(ips){
         '<td>' +
           '<div class="actions">' +
             '<label class="check"><input id="enabled-' + item.id + '" type="checkbox" ' + (enabled ? "checked" : "") + '>启用</label>' +
-            '<button class="small primary" onclick="updateIP(' + item.id + ')">保存</button>' +
-            '<button class="small muted-button" onclick="renewIP(' + item.id + ',1)">续 1 月</button>' +
-            '<button class="small muted-button" onclick="renewIP(' + item.id + ',3)">续 1 季</button>' +
-            '<button class="small muted-button" onclick="renewIP(' + item.id + ',6)">续半年</button>' +
-            '<button class="small muted-button" onclick="renewIP(' + item.id + ',12)">续 1 年</button>' +
-            '<button class="small muted-button" onclick="toggleIP(' + item.id + ')">' + (enabled ? "停用" : "启用") + '</button>' +
-            '<button class="small danger" onclick="deleteIP(' + item.id + ')">删除</button>' +
+            '<button class="small primary" type="button" onclick="updateIP(' + item.id + ')">保存</button>' +
+            '<button class="small muted-button" type="button" onclick="renewIP(' + item.id + ',1)">续 1 月</button>' +
+            '<button class="small muted-button" type="button" onclick="renewIP(' + item.id + ',3)">续 1 季</button>' +
+            '<button class="small muted-button" type="button" onclick="renewIP(' + item.id + ',6)">续半年</button>' +
+            '<button class="small muted-button" type="button" onclick="renewIP(' + item.id + ',12)">续 1 年</button>' +
+            '<button class="small muted-button" type="button" onclick="toggleIP(' + item.id + ')">' + (enabled ? "停用" : "启用") + '</button>' +
+            '<button class="small danger" type="button" onclick="deleteIP(' + item.id + ')">删除</button>' +
           '</div>' +
         '</td>' +
       '</tr>';
@@ -267,8 +274,8 @@ async function updateIP(id){
         enabled:document.getElementById("enabled-" + id).checked
       })
     });
+    await loadIPs();
     showNotice("IP 已更新", "success");
-    loadIPs();
   }catch(err){
     showNotice(err.message, "error");
   }
@@ -291,8 +298,8 @@ async function deleteIP(id){
 async function mutateIP(payload, message){
   try{
     await requestJSON("/api/admin/ip", {method:"POST", body:JSON.stringify(payload)});
+    await loadIPs();
     showNotice(message, "success");
-    loadIPs();
   }catch(err){
     showNotice(err.message, "error");
   }
