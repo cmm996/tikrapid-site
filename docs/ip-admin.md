@@ -20,6 +20,8 @@ ADMIN_TOKEN=换成一串强随机字符
 
 ## API
 
+后台支持给每条 IP / CIDR 设置 `expires_at` 到期时间，格式为 `YYYY-MM-DD`。不填写表示长期有效。到期后的记录会在后台显示为“已到期”，并且 `/api/ip/check` 不会继续放行。
+
 管理接口：
 
 ```http

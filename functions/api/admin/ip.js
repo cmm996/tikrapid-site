@@ -1,4 +1,4 @@
-import { ensureIpTable, json, normalizeRule, requireAdmin } from "../../_ip-utils.js";
+import { ensureIpTable, json, normalizeExpiryDate, normalizeRule, requireAdmin } from "../../_ip-utils.js";
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -35,6 +35,7 @@ export async function onRequestPost(context) {
       const address = normalizeRule(data.address);
       const label = String(data.label || "").trim();
       const note = String(data.note || "").trim();
+      const expiresAt = normalizeExpiryDate(data.expires_at);
       const enabled = data.enabled ? 1 : 0;
 
       const existing = await env.DB.prepare(`
@@ -53,9 +54,9 @@ export async function onRequestPost(context) {
 
       await env.DB.prepare(`
         UPDATE ip_rules
-        SET address = ?, label = ?, note = ?, enabled = ?, updated_at = datetime('now')
+        SET address = ?, label = ?, note = ?, expires_at = ?, enabled = ?, updated_at = datetime('now')
         WHERE id = ?
-      `).bind(address, label, note, enabled, id).run();
+      `).bind(address, label, note, expiresAt, enabled, id).run();
       return json({ success: true });
     }
 

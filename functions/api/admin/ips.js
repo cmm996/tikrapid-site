@@ -1,4 +1,4 @@
-import { ensureIpTable, json, normalizeRule, requireAdmin } from "../../_ip-utils.js";
+import { ensureIpTable, json, normalizeExpiryDate, normalizeRule, requireAdmin } from "../../_ip-utils.js";
 
 export async function onRequestGet(context) {
   const { request, env } = context;
@@ -12,7 +12,7 @@ export async function onRequestGet(context) {
   const status = url.searchParams.get("status") || "";
 
   let sql = `
-    SELECT id, address, label, note, enabled, created_at, updated_at
+    SELECT id, address, label, note, expires_at, enabled, created_at, updated_at
     FROM ip_rules
   `;
   const where = [];
@@ -25,6 +25,7 @@ export async function onRequestGet(context) {
 
   if (status === "enabled") where.push(`enabled = 1`);
   if (status === "disabled") where.push(`enabled = 0`);
+  if (status === "expired") where.push(`expires_at != '' AND date(expires_at) < date('now')`);
 
   if (where.length) sql += ` WHERE ${where.join(" AND ")}`;
   sql += ` ORDER BY enabled DESC, id DESC LIMIT 500`;
@@ -45,6 +46,7 @@ export async function onRequestPost(context) {
     const address = normalizeRule(data.address);
     const label = String(data.label || "").trim();
     const note = String(data.note || "").trim();
+    const expiresAt = normalizeExpiryDate(data.expires_at);
 
     const existing = await env.DB.prepare(`
       SELECT id
@@ -61,9 +63,9 @@ export async function onRequestPost(context) {
     }
 
     await env.DB.prepare(`
-      INSERT INTO ip_rules (address, label, note, enabled, created_at, updated_at)
-      VALUES (?, ?, ?, 1, datetime('now'), datetime('now'))
-    `).bind(address, label, note).run();
+      INSERT INTO ip_rules (address, label, note, expires_at, enabled, created_at, updated_at)
+      VALUES (?, ?, ?, ?, 1, datetime('now'), datetime('now'))
+    `).bind(address, label, note, expiresAt).run();
 
     return json({ success: true });
   } catch (err) {

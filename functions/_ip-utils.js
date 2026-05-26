@@ -56,11 +56,40 @@ export async function ensureIpTable(env) {
       address TEXT NOT NULL UNIQUE,
       label TEXT NOT NULL DEFAULT '',
       note TEXT NOT NULL DEFAULT '',
+      expires_at TEXT NOT NULL DEFAULT '',
       enabled INTEGER NOT NULL DEFAULT 1,
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     )
   `).run();
+
+  await addColumnIfMissing(env, "expires_at", "TEXT NOT NULL DEFAULT ''");
+}
+
+async function addColumnIfMissing(env, name, definition) {
+  try {
+    await env.DB.prepare(`ALTER TABLE ip_rules ADD COLUMN ${name} ${definition}`).run();
+  } catch (err) {
+    if (!/duplicate column|already exists/i.test(err.message || "")) {
+      throw err;
+    }
+  }
+}
+
+export function normalizeExpiryDate(value) {
+  const input = String(value || "").trim();
+  if (!input) return "";
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+    throw new Error("到期时间格式不正确");
+  }
+
+  const date = new Date(`${input}T00:00:00Z`);
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== input) {
+    throw new Error("到期时间不是有效日期");
+  }
+
+  return input;
 }
 
 export function normalizeRule(value) {

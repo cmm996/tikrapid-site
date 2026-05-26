@@ -10,9 +10,10 @@ export async function onRequestGet(context) {
   if (!ip) return json({ error: "missing ip" }, 400);
 
   const result = await env.DB.prepare(`
-    SELECT id, address, label, note
+    SELECT id, address, label, note, expires_at
     FROM ip_rules
     WHERE enabled = 1
+      AND (expires_at = '' OR expires_at IS NULL OR date(expires_at) >= date('now'))
     ORDER BY id DESC
   `).all();
 
