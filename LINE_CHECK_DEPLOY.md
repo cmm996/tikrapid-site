@@ -2,7 +2,7 @@
 
 本仓库已加入 Cloudflare Pages 原生版线路检测：
 
-- `/check`：客户自助检测页面
+- `/check`：客户自助检测页面，Cloudflare Pages 会自动映射到 `check.html`
 - `/api/ip`：出口 IP、国家、城市、ASN、运营商
 - `/api/ping`：HTTP 延迟测试
 - `/static/test.bin`：下载测速文件，由 Pages Function 动态生成
