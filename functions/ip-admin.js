@@ -51,6 +51,10 @@ td input{min-width:140px}
 .pill.off{background:#eef2f6;color:#52606d}
 .pill.expired{background:#fff1f2;color:#a12626}
 .pill.soon{background:#fffbeb;color:#a16207}
+.expires-cell{display:grid;gap:6px}
+.days-left{color:#64748b;font-size:12px;font-weight:800}
+.days-left.expired{color:#a12626}
+.days-left.soon{color:#a16207}
 .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .check{display:inline-flex;align-items:center;gap:6px}
 .check input{width:auto}
@@ -121,7 +125,7 @@ td input{min-width:140px}
             <th>状态</th>
             <th>IP / CIDR</th>
             <th>客户 / 标签</th>
-            <th>到期时间</th>
+            <th>到期时间 / 剩余</th>
             <th>备注</th>
             <th>更新时间</th>
             <th>操作</th>
@@ -230,13 +234,17 @@ function renderTable(ips){
         '<td>' + status + '</td>' +
         '<td><input id="address-' + item.id + '" value="' + escapeHtml(item.address) + '"></td>' +
         '<td><input id="label-' + item.id + '" value="' + escapeHtml(item.label || "") + '"></td>' +
-        '<td><input id="expires-' + item.id + '" type="date" value="' + escapeHtml(item.expires_at || "") + '"></td>' +
+        '<td><div class="expires-cell"><input id="expires-' + item.id + '" type="date" value="' + escapeHtml(item.expires_at || "") + '">' + daysLeftHTML(item.expires_at) + '</div></td>' +
         '<td><input id="note-' + item.id + '" value="' + escapeHtml(item.note || "") + '"></td>' +
         '<td>' + escapeHtml(item.updated_at || "-") + '</td>' +
         '<td>' +
           '<div class="actions">' +
             '<label class="check"><input id="enabled-' + item.id + '" type="checkbox" ' + (enabled ? "checked" : "") + '>启用</label>' +
             '<button class="small primary" onclick="updateIP(' + item.id + ')">保存</button>' +
+            '<button class="small muted-button" onclick="renewIP(' + item.id + ',1)">续 1 月</button>' +
+            '<button class="small muted-button" onclick="renewIP(' + item.id + ',3)">续 1 季</button>' +
+            '<button class="small muted-button" onclick="renewIP(' + item.id + ',6)">续半年</button>' +
+            '<button class="small muted-button" onclick="renewIP(' + item.id + ',12)">续 1 年</button>' +
             '<button class="small muted-button" onclick="toggleIP(' + item.id + ')">' + (enabled ? "停用" : "启用") + '</button>' +
             '<button class="small danger" onclick="deleteIP(' + item.id + ')">删除</button>' +
           '</div>' +
@@ -270,6 +278,11 @@ async function toggleIP(id){
   await mutateIP({id, action:"toggle"}, "状态已切换");
 }
 
+async function renewIP(id, months){
+  const label = months === 1 ? "1 个月" : months === 3 ? "1 个季度" : months === 6 ? "半年" : "1 年";
+  await mutateIP({id, action:"renew", months}, "已续费 " + label);
+}
+
 async function deleteIP(id){
   if(!confirm("确认删除这条 IP 记录？")) return;
   await mutateIP({id, action:"delete"}, "IP 已删除");
@@ -294,6 +307,17 @@ function isExpiringSoon(value){
   const today = new Date(todayISO() + "T00:00:00");
   const expires = new Date(value + "T00:00:00");
   return expires >= today && (expires - today) / 86400000 <= 7;
+}
+
+function daysLeftHTML(value){
+  if(!value) return '<span class="days-left">长期有效</span>';
+  const today = new Date(todayISO() + "T00:00:00");
+  const expires = new Date(value + "T00:00:00");
+  const days = Math.ceil((expires - today) / 86400000);
+  if(days < 0) return '<span class="days-left expired">已到期 ' + Math.abs(days) + ' 天</span>';
+  if(days === 0) return '<span class="days-left soon">今天到期</span>';
+  if(days <= 7) return '<span class="days-left soon">剩余 ' + days + ' 天</span>';
+  return '<span class="days-left">剩余 ' + days + ' 天</span>';
 }
 
 function todayISO(){

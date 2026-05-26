@@ -31,6 +31,34 @@ export async function onRequestPost(context) {
       return json({ success: true });
     }
 
+    if (action === "renew") {
+      const months = Number(data.months);
+      if (![1, 3, 6, 12].includes(months)) {
+        return json({ error: "续费时长不正确" }, 400);
+      }
+
+      const record = await env.DB.prepare(`
+        SELECT expires_at
+        FROM ip_rules
+        WHERE id = ?
+        LIMIT 1
+      `).bind(id).first();
+
+      if (!record) {
+        return json({ error: "record not found" }, 404);
+      }
+
+      const expiresAt = addMonthsFromBase(record.expires_at, months);
+
+      await env.DB.prepare(`
+        UPDATE ip_rules
+        SET expires_at = ?, enabled = 1, updated_at = datetime('now')
+        WHERE id = ?
+      `).bind(expiresAt, id).run();
+
+      return json({ success: true, expires_at: expiresAt });
+    }
+
     if (action === "update") {
       const address = normalizeRule(data.address);
       const label = String(data.label || "").trim();
@@ -71,4 +99,16 @@ export async function onRequestPost(context) {
     }
     return json({ error: message }, 400);
   }
+}
+
+function addMonthsFromBase(expiresAt, months) {
+  const today = todayISO();
+  const base = expiresAt && expiresAt >= today ? expiresAt : today;
+  const date = new Date(`${base}T00:00:00Z`);
+  date.setUTCMonth(date.getUTCMonth() + months);
+  return date.toISOString().slice(0, 10);
+}
+
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
 }
