@@ -93,15 +93,15 @@ export function normalizeExpiryDate(value) {
 }
 
 export function normalizeRule(value) {
-  const input = String(value || "").trim();
-  if (!input) throw new Error("IP or CIDR is required");
+  const input = normalizeIPInput(value);
+  if (!input) throw new Error("请填写 IP 或 CIDR");
 
   const [ipText, prefixText] = input.split("/");
   const version = ipText.includes(":") ? 6 : 4;
   const ipValue = parseIP(ipText);
 
   if (!ipValue || ipValue.version !== version) {
-    throw new Error("Invalid IP address");
+    throw new Error("IP 格式不正确，请填写纯 IP、IP:端口 或 CIDR");
   }
 
   if (prefixText === undefined) {
@@ -109,17 +109,42 @@ export function normalizeRule(value) {
   }
 
   if (!/^\d+$/.test(prefixText)) {
-    throw new Error("Invalid CIDR prefix");
+    throw new Error("CIDR 前缀不正确");
   }
 
   const maxPrefix = version === 4 ? 32 : 128;
   const prefix = Number(prefixText);
   if (prefix < 0 || prefix > maxPrefix) {
-    throw new Error("Invalid CIDR prefix");
+    throw new Error("CIDR 前缀不正确");
   }
 
   const network = maskIP(ipValue.value, prefix, maxPrefix);
   return `${canonicalIP({ version, value: network })}/${prefix}`;
+}
+
+function normalizeIPInput(value) {
+  let input = String(value || "").trim();
+  if (!input) return "";
+
+  input = input.replace(/[，。]/g, (char) => (char === "，" ? "," : "."));
+  input = input.split(",")[0].trim();
+
+  if (/^https?:\/\//i.test(input)) {
+    const url = new URL(input);
+    input = url.hostname;
+  }
+
+  const cidrMatch = input.match(/^(.+)\/(\d+)$/);
+  const suffix = cidrMatch ? `/${cidrMatch[2]}` : "";
+  input = cidrMatch ? cidrMatch[1] : input;
+
+  if (/^\[[^\]]+\](?::\d+)?$/.test(input)) {
+    input = input.slice(1, input.indexOf("]"));
+  } else if (/^\d{1,3}(?:\.\d{1,3}){3}:\d+$/.test(input)) {
+    input = input.slice(0, input.lastIndexOf(":"));
+  }
+
+  return `${input}${suffix}`.trim();
 }
 
 export function clientIP(request) {
