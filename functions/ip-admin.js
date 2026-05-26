@@ -188,7 +188,8 @@ async function loadIPs(){
 
 document.getElementById("createForm").addEventListener("submit", async (event)=>{
   event.preventDefault();
-  const form = new FormData(event.currentTarget);
+  const formEl = event.currentTarget;
+  const form = new FormData(formEl);
   const button = document.getElementById("createButton");
   button.disabled = true;
   try{
@@ -196,7 +197,7 @@ document.getElementById("createForm").addEventListener("submit", async (event)=>
       method:"POST",
       body:JSON.stringify(Object.fromEntries(form.entries()))
     });
-    event.currentTarget.reset();
+    formEl.reset();
     document.getElementById("search").value = "";
     document.getElementById("status").value = "";
     await loadIPs();
