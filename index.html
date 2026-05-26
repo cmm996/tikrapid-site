@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="/favicon.png">
-  <title>tikrapid · 跨境网络基础设施</title>
-  <meta name="description" content="tikrapid 提供原生住宅 IP、跨境专线、全球跨境业务网络，适用于 TK 直播、社媒矩阵、跨境电商、AI 工具和企业级工作室。" />
-  <meta name="keywords" content="跨境专线, 原生住宅IP, TK直播专线, 指纹浏览器IP, 软路由方案, TikTok直播网络" />
+  <title>tikrapid · 静态住宅 IP 与跨境业务专线</title>
+  <meta name="description" content="tikrapid 提供按地区交付的静态住宅 IP、跨境专线、TK 直播网络、指纹浏览器代理与工作室软路由方案。" />
+  <meta name="keywords" content="静态住宅IP, 跨境专线, TK直播专线, 指纹浏览器代理, 软路由方案, TikTok直播网络" />
   <meta name="theme-color" content="#07111f" />
 
   <style>
     :root {
-      --bg: #07111f;
+      --bg: #07130f;
       --card: rgba(15, 23, 42, .78);
       --border: rgba(148, 163, 184, .16);
       --border-strong: rgba(96, 165, 250, .36);
       --text: #f8fafc;
       --muted: #94a3b8;
       --soft: #cbd5e1;
-      --blue: #60a5fa;
-      --blue2: #2563eb;
-      --purple: #8b5cf6;
+      --blue: #38bdf8;
+      --blue2: #0f766e;
+      --purple: #f59e0b;
       --green: #22c55e;
       --red: #ef4444;
       --shadow: 0 24px 80px rgba(0,0,0,.36);
@@ -33,9 +33,10 @@
     body {
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, .24), transparent 34%),
-        radial-gradient(circle at top right, rgba(139, 92, 246, .2), transparent 32%),
-        linear-gradient(180deg, #050816 0%, var(--bg) 42%, #060b16 100%);
+        linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.04) 1px, transparent 1px),
+        linear-gradient(180deg, #06100d 0%, var(--bg) 46%, #080b10 100%);
+      background-size: 44px 44px, 44px 44px, auto;
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       line-height: 1.65;
@@ -72,7 +73,7 @@
       align-items: center;
       gap: 12px;
       font-weight: 850;
-      letter-spacing: -.03em;
+      letter-spacing: 0;
       font-size: 1.35rem;
     }
 
@@ -167,14 +168,14 @@
     }
 
     .hero h1 {
-      font-size: clamp(2.6rem, 6vw, 5.2rem);
-      line-height: .98;
-      letter-spacing: -.075em;
+      font-size: clamp(2.55rem, 5.2vw, 4.55rem);
+      line-height: 1.04;
+      letter-spacing: 0;
       margin-bottom: 24px;
     }
 
     .grad {
-      background: linear-gradient(90deg, #ffffff, #bfdbfe 42%, #c4b5fd);
+      background: linear-gradient(90deg, #ffffff, #c7f9e9 46%, #fde68a);
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -205,7 +206,7 @@
       overflow: hidden;
       padding: 24px;
       isolation: isolate;
-      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.56));
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(12,32,28,.62));
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
@@ -216,8 +217,7 @@
       position: absolute;
       inset: -40px;
       background:
-        radial-gradient(circle at 50% 42%, rgba(96, 165, 250, .26), transparent 30%),
-        radial-gradient(circle at 62% 58%, rgba(139, 92, 246, .2), transparent 26%);
+        linear-gradient(135deg, rgba(45, 212, 191, .18), rgba(245, 158, 11, .14));
       z-index: -1;
       animation: pulseGlow 5s ease-in-out infinite;
     }
@@ -295,7 +295,7 @@
 
     .stat { padding: 24px; border-right: 1px solid var(--border); }
     .stat:last-child { border-right: 0; }
-    .stat strong { display: block; font-size: 2rem; line-height: 1; letter-spacing: -.04em; }
+    .stat strong { display: block; font-size: 2rem; line-height: 1; letter-spacing: 0; }
     .stat span { color: var(--muted); font-size: .92rem; }
 
     section { margin: 86px 0; }
@@ -308,7 +308,7 @@
 
     .section-title {
       font-size: clamp(2rem, 4vw, 3.2rem);
-      letter-spacing: -.055em;
+      letter-spacing: 0;
       line-height: 1.06;
       margin-bottom: 14px;
     }
@@ -359,7 +359,7 @@
 
     .price {
       font-size: 2.35rem;
-      letter-spacing: -.05em;
+      letter-spacing: 0;
       font-weight: 900;
       margin: 14px 0 16px;
     }
@@ -432,7 +432,7 @@
 
     .enterprise-box h2 {
       font-size: clamp(1.8rem, 4vw, 3rem);
-      letter-spacing: -.055em;
+      letter-spacing: 0;
       line-height: 1.08;
       margin-bottom: 12px;
     }
@@ -623,7 +623,7 @@
       .navbar { height: 68px; }
       .nav-cta .btn-secondary { display: none; }
       .hero { padding: 52px 0 36px; }
-      .hero h1 { letter-spacing: -.055em; }
+      .hero h1 { letter-spacing: 0; }
       .network-card { min-height: 390px; padding: 16px; }
       .status-panel { left: 16px; right: 16px; bottom: 16px; }
       .status-mini { font-size: .86rem; padding: 12px; }
@@ -648,13 +648,13 @@
       </a>
 
       <nav class="nav-links">
-         <a href="#scenarios">场景</a>
-  <a href="/pricing.html">套餐</a>
-  <a href="/.html">教程</a>
-  <a href="/ticket.html">工单</a>
-  <a href="#coverage">全球覆盖</a>
-  <a href="#enterprise">企业方案</a>
-  <a href="#contact">联系</a>
+        <a href="#scenarios">场景</a>
+        <a href="/pricing.html">套餐</a>
+        <a href="/docs.html">教程</a>
+        <a href="/ticket.html">工单</a>
+        <a href="#coverage">全球覆盖</a>
+        <a href="#enterprise">企业方案</a>
+        <a href="#contact">联系</a>
       </nav>
 
       <div class="nav-cta">
@@ -668,10 +668,10 @@
     <section class="hero container">
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">🌍 覆盖全球大部分地区 · 部分地区支持运营商 IP 定制</div>
-          <h1><span class="grad">让 TK / 跨境业务</span><br>真正稳定跑起来</h1>
+          <div class="eyebrow">按地区交付静态住宅 IP · 支持工作室长期部署</div>
+          <h1><span class="grad">静态住宅 IP</span><br>按地区稳定交付</h1>
           <p class="hero-desc">
-            tikrapid 提供原生住宅 IP、内网专线与软路由企业方案，专为 TK 直播、社媒矩阵、跨境电商、AI 工具和工作室长期业务部署设计。
+            tikrapid 面向 TK 直播、短视频矩阵、跨境电商和海外社媒团队，提供静态住宅 IP、IX 内网专线、Socks5 出口接入和软路由方案，让每个客户都能拥有清楚、稳定、可续费的网络环境。
           </p>
 
           <div class="hero-actions">
@@ -681,10 +681,10 @@
           </div>
 
           <div class="trust-row">
-            <span class="trust-pill">🛡️ 24 小时无理由退款</span>
-            <span class="trust-pill">⚡ 晚高峰优化</span>
-            <span class="trust-pill">🧩 支持软路由 / 指纹浏览器</span>
-            <span class="trust-pill">💬 7×24 技术响应</span>
+            <span class="trust-pill">静态住宅 IP</span>
+            <span class="trust-pill">地区固定出口</span>
+            <span class="trust-pill">支持软路由 / 指纹浏览器</span>
+            <span class="trust-pill">7×24 技术响应</span>
           </div>
         </div>
 
@@ -700,50 +700,50 @@
           <span class="line l3"></span>
 
           <div class="status-panel">
-            <div class="status-mini"><b>🇺🇸 美国住宅 IP</b><span class="online">在线 · 60ms</span></div>
-            <div class="status-mini"><b>🇯🇵 日本低延迟专线</b><span class="online">在线 · 18ms</span></div>
-            <div class="status-mini"><b>🇲🇾 马来西亚直播线路</b><span class="online">在线 · 62ms</span></div>
+            <div class="status-mini"><b>美国静态住宅出口</b><span class="online">可交付</span></div>
+            <div class="status-mini"><b>日本低延迟专线</b><span class="online">适合短视频</span></div>
+            <div class="status-mini"><b>马来西亚直播线路</b><span class="online">支持定制</span></div>
           </div>
         </div>
       </div>
     </section>
 
     <div class="container stats-bar reveal">
-      <div class="stat"><strong>80+</strong><span>国家与地区覆盖</span></div>
-      <div class="stat"><strong>99.9%</strong><span>目标服务在线率</span></div>
-      <div class="stat"><strong>3000+</strong><span>跨境用户与工作室</span></div>
-      <div class="stat"><strong>7×24</strong><span>技术支持响应</span></div>
+      <div class="stat"><strong>80+</strong><span>国家与地区可选</span></div>
+      <div class="stat"><strong>1 对 1</strong><span>按业务匹配线路</span></div>
+      <div class="stat"><strong>固定</strong><span>客户地区与出口环境</span></div>
+      <div class="stat"><strong>7×24</strong><span>工单与微信支持</span></div>
     </div>
 
     <section id="scenarios" class="container reveal">
       <div class="section-head">
-        <h2 class="section-title">按业务场景选择方案</h2>
-        <p class="section-desc">不同业务对 IP、带宽、延迟和设备管理要求不同。先选场景，再选方案。</p>
+        <h2 class="section-title">按客户需求匹配出口</h2>
+        <p class="section-desc">不同业务对地区、IP 类型、UDP、带宽和设备管理要求不同。先确认场景，再交付对应线路。</p>
       </div>
 
       <div class="grid-4">
-        <a class="feature-card" href="#pricing"><h3>🎥 TK 直播</h3><p>低延迟、高码率、减少掉帧卡顿，适合直播带货与达人号长期运营。</p></a>
-        <a class="feature-card" href="#pricing"><h3>📱 社媒矩阵</h3><p>原生住宅 IP、多账号环境隔离，适合养号、发帖、私域建联。</p></a>
-        <a class="feature-card" href="#pricing"><h3>🛒 跨境电商</h3><p>适合店铺管理、广告投放、ERP、海外平台访问和团队协作。</p></a>
-        <a class="feature-card" href="#enterprise"><h3>🏢 工作室部署</h3><p>软路由统一出口，多设备即插即用，支持企业级专线与定制 IP。</p></a>
+        <a class="feature-card" href="#pricing"><h3>TK 直播</h3><p>重点看带宽、抖动、UDP 支持与地区一致性，适合直播带货和达人号长期运营。</p></a>
+        <a class="feature-card" href="#pricing"><h3>短视频矩阵</h3><p>固定国家出口，多账号分开管理，适合上传、养号、私域建联和团队运营。</p></a>
+        <a class="feature-card" href="#pricing"><h3>跨境电商</h3><p>适合店铺管理、广告投放、ERP、海外平台访问和多人协作环境。</p></a>
+        <a class="feature-card" href="#enterprise"><h3>工作室部署</h3><p>软路由统一出口，多设备即插即用，支持企业级专线、客户分组和定制 IP。</p></a>
       </div>
     </section>
 
     <section id="pricing" class="container reveal">
       <div class="section-head">
-        <h2 class="section-title">选择适合你的业务方案</h2>
-        <p class="section-desc">所有方案均基于原生住宅 IP 与 IX 内网专线能力，可按地区与运营商资源定制。</p>
+        <h2 class="section-title">选择适合客户的方案</h2>
+        <p class="section-desc">价格按地区、IP 类型、带宽和是否独享确定。下方是常见起步方案，具体以客服确认资源为准。</p>
       </div>
 
       <div class="grid-3">
         <div class="pricing-card">
           <span class="tag">STARTER</span>
           <h3>社媒运营</h3>
-          <p class="section-desc">适合个人运营、AI 工具、账号浏览与轻量业务。</p>
+          <p class="section-desc">适合个人运营、AI 工具、账号浏览与轻量跨境业务。</p>
           <div class="price">¥98 <span>/月起</span></div>
           <ul class="list">
-            <li>原生住宅 IP</li>
-            <li>支持亚洲、欧美主流地区</li>
+            <li>静态住宅 IP 或高质量住宅出口</li>
+            <li>支持亚洲、欧美主流地区咨询</li>
             <li>适合 TK 养号、社媒浏览、AI 工具</li>
             <li>支持手机 / 电脑客户端</li>
             <li>基础售后支持</li>
@@ -757,9 +757,9 @@
           <p class="section-desc">适合短视频团队、批量上传、达人建联和矩阵账号。</p>
           <div class="price">¥128 <span>/月起</span></div>
           <ul class="list">
-            <li>高纯净度原生住宅 IP</li>
+            <li>高纯净度静态住宅 IP</li>
             <li>IX 内网专线，晚高峰优化</li>
-            <li>支持美国、英国、日本、韩国等地区</li>
+            <li>支持按客户指定地区匹配出口</li>
             <li>支持指纹浏览器本地端口转发</li>
             <li>优先售后响应</li>
           </ul>
@@ -772,8 +772,8 @@
           <p class="section-desc">适合 TK 直播、跨境直播带货、高画质推流。</p>
           <div class="price">¥458 <span>/月起</span></div>
           <ul class="list">
-            <li>独享原生住宅 IP</li>
-            <li>直播推流专线优化</li>
+            <li>独享静态住宅 IP 优先</li>
+            <li>直播推流、UDP 和带宽质量重点确认</li>
             <li>支持软路由预配置</li>
             <li>部分地区可定制运营商 IP</li>
             <li>1 对 1 技术协助</li>
@@ -785,31 +785,31 @@
 
     <section id="coverage" class="container reveal">
       <div class="section-head">
-        <h2 class="section-title">全球地区覆盖与运营商定制</h2>
-        <p class="section-desc">支持全球大部分跨境业务地区，部分国家可按业务需求定制运营商、独享 IP 与工作室出口方案。</p>
+        <h2 class="section-title">全球地区与运营商资源</h2>
+        <p class="section-desc">支持全球大部分跨境业务地区。部分国家可按客户需求匹配运营商、静态住宅 IP、独享出口与工作室方案。</p>
       </div>
 
       <div class="grid-3">
-        <div class="coverage-card"><h3>🇺🇸 北美地区</h3><p>美国 / 加拿大等主流业务地区。部分区域可根据需求匹配当地 ISP 资源。</p></div>
-        <div class="coverage-card"><h3>🇯🇵 亚洲地区</h3><p>日本 / 韩国 / 新加坡 / 马来西亚 / 泰国等。适合直播、社媒与电商场景。</p></div>
-        <div class="coverage-card"><h3>🇪🇺 欧洲地区</h3><p>英国 / 德国 / 法国 / 荷兰等。支持跨境账号、广告与团队办公环境。</p></div>
+        <div class="coverage-card"><h3>北美地区</h3><p>美国 / 加拿大等主流业务地区。可按州、城市或 ISP 资源情况沟通匹配。</p></div>
+        <div class="coverage-card"><h3>亚洲地区</h3><p>日本 / 韩国 / 新加坡 / 马来西亚 / 泰国等。适合直播、社媒与电商场景。</p></div>
+        <div class="coverage-card"><h3>欧洲地区</h3><p>英国 / 德国 / 法国 / 荷兰等。支持跨境账号、广告与团队办公环境。</p></div>
       </div>
 
-      <div class="coverage-note">💡 可定制方向：指定国家 / 指定运营商 / 独享 IP / 软路由整机 / 多设备团队方案</div>
+      <div class="coverage-note">可定制方向：指定国家 / 指定运营商 / 独享 IP / 软路由整机 / 多设备团队方案</div>
     </section>
 
     <section id="status" class="container reveal">
       <div class="section-head">
-        <h2 class="section-title">网络状态中心</h2>
-        <p class="section-desc">节点状态持续监控，帮助用户快速了解当前线路运行情况。</p>
+        <h2 class="section-title">交付前重点确认</h2>
+        <p class="section-desc">线路不是只看能不能打开网页。直播、短视频和电商场景，会重点确认地区、协议、UDP、带宽和售后处理方式。</p>
       </div>
 
       <div class="status-table">
-        <div class="status-row head"><div>地区节点</div><div>状态</div><div>延迟</div><div>当前负载</div></div>
-        <div class="status-row"><div>🇺🇸 美国 · Residential</div><div class="online">正常</div><div>32ms</div><div class="load"><i style="width:42%"></i></div></div>
-        <div class="status-row"><div>🇯🇵 日本 · Low Latency</div><div class="online">正常</div><div>18ms</div><div class="load"><i style="width:36%"></i></div></div>
-        <div class="status-row"><div>🇬🇧 英国 · Business</div><div class="online">正常</div><div>87ms</div><div class="load"><i style="width:58%"></i></div></div>
-        <div class="status-row"><div>🇲🇾 马来西亚 · Live</div><div class="online">正常</div><div>45ms</div><div class="load"><i style="width:49%"></i></div></div>
+        <div class="status-row head"><div>检查项</div><div>适用场景</div><div>重点</div><div>交付方式</div></div>
+        <div class="status-row"><div>静态住宅 IP</div><div>社媒 / 电商</div><div class="online">地区固定</div><div class="load"><i style="width:76%"></i></div></div>
+        <div class="status-row"><div>UDP / 直播质量</div><div>TK 直播</div><div class="online">先测再交付</div><div class="load"><i style="width:64%"></i></div></div>
+        <div class="status-row"><div>指纹浏览器代理</div><div>矩阵运营</div><div class="online">端口清晰</div><div class="load"><i style="width:70%"></i></div></div>
+        <div class="status-row"><div>软路由统一出口</div><div>工作室</div><div class="online">多设备接入</div><div class="load"><i style="width:82%"></i></div></div>
       </div>
     </section>
 
@@ -821,23 +821,23 @@
 
       <div class="compare">
         <div class="compare-card bad">
-          <h3>普通机场 / 机房 IP</h3>
+          <h3>普通机房节点</h3>
           <ul class="compare-list">
             <li>数据中心 IP，容易被平台识别</li>
             <li>多人共用，一人污染全员受影响</li>
             <li>晚高峰拥堵，直播容易卡顿</li>
-            <li>售后弱，故障靠群里喊</li>
+            <li>售后弱，排查缺少清晰记录</li>
             <li>不适合长期业务沉淀</li>
           </ul>
         </div>
 
         <div class="compare-card good">
-          <h3>tikrapid 跨境专线</h3>
+          <h3>tikrapid 业务线路</h3>
           <ul class="compare-list">
-            <li>原生住宅 / ISP 网络身份</li>
-            <li>支持独享 IP 与运营商定制</li>
-            <li>IX 内网专线，适合直播推流</li>
-            <li>7×24 技术响应与备用方案</li>
+            <li>静态住宅 / ISP 网络身份</li>
+            <li>支持独享 IP 与运营商资源定制</li>
+            <li>IX 内网专线，适合高质量业务连接</li>
+            <li>工单记录、续费时间和 IP 管理更清楚</li>
             <li>适合工作室与企业长期部署</li>
           </ul>
         </div>
@@ -849,7 +849,7 @@
         <div>
           <span class="enterprise-tag">ENTERPRISE SOLUTION</span>
           <h2>工作室 / 企业级跨境网络方案</h2>
-          <p>支持多账号矩阵、软路由统一管理、多国家出口、独享 IP、运营商定制、团队设备接入和长期业务稳定部署。适合直播工作室、跨境电商团队、MCN、广告投放团队。</p>
+          <p>支持多账号矩阵、软路由统一管理、多国家出口、独享静态 IP、运营商定制、团队设备接入和长期业务稳定部署。适合直播工作室、跨境电商团队、MCN、广告投放团队。</p>
         </div>
         <a class="btn btn-primary" href="#contact">联系商务</a>
       </div>
@@ -857,23 +857,23 @@
 
     <section id="case" class="container reveal">
       <div class="section-head">
-        <h2 class="section-title">真实案例：TK 直播客户反馈</h2>
-        <p class="section-desc">真实业务场景反馈，展示专线在直播稳定性、账号运营和团队部署中的实际价值。</p>
+        <h2 class="section-title">典型场景：TK 直播客户</h2>
+        <p class="section-desc">直播客户最怕的是地区不稳、晚高峰卡顿和排查无从下手。方案需要先确认出口质量，再交付给客户长期使用。</p>
       </div>
 
       <div class="case-card">
         <div class="case-header">
           <div>
-            <h3>张先生 · 马来西亚 TK 直播卖家</h3>
-            <span>软路由方案 · 马来西亚直播专线</span>
+            <h3>马来西亚 TK 直播间</h3>
+            <span>软路由方案 · 静态住宅出口 · 直播前测试</span>
           </div>
-          <div class="case-result">观看提升 40%</div>
+          <div class="case-result">目标：稳定推流</div>
         </div>
 
         <div class="case-grid">
-          <div><h4>痛点</h4><p>之前使用其他线路，晚高峰推流经常卡顿掉帧，导致直播间被限流。</p></div>
-          <div><h4>解决方案</h4><p>切换马来西亚原生住宅 IP + IX 专线，采用软路由插电即用方案。</p></div>
-          <div><h4>结果</h4><p>连续 3 个月直播零卡顿，场均观看提升约 40%，无需自己折腾配置。</p></div>
+          <div><h4>痛点</h4><p>普通节点可以浏览网页，但直播推流容易受 UDP、带宽和晚高峰影响。</p></div>
+          <div><h4>方案</h4><p>按目标地区匹配静态住宅出口，结合 IX 专线与软路由统一接入。</p></div>
+          <div><h4>交付</h4><p>先用测试线路验证，再生成客户订阅和二维码，避免影响正在使用的正式客户。</p></div>
         </div>
       </div>
     </section>
@@ -881,14 +881,14 @@
     <section id="support-system" class="container reveal">
       <div class="section-head">
         <h2 class="section-title">透明可控的服务支持</h2>
-        <p class="section-desc">统一查看服务状态、节点信息与工单进度，让跨境网络服务更加透明可控。</p>
+        <p class="section-desc">客户 IP、到期时间、续费记录、工单问题集中管理，减少人工忘记和重复沟通。</p>
       </div>
 
       <div class="ticket-grid">
-        <div class="ticket-card"><b>📊 服务状态</b><span>节点状态、延迟情况、线路负载清晰展示</span></div>
-        <div class="ticket-card"><b>🌍 地区方案</b><span>按业务选择国家、线路与运营商资源</span></div>
-        <div class="ticket-card"><b>🎫 工单支持</b><span>线路异常、换 IP、配置协助均可提交</span></div>
-        <div class="ticket-card"><b>🤝 商务定制</b><span>支持工作室、团队与企业级部署需求</span></div>
+        <div class="ticket-card"><b>IP 管理</b><span>客户 IP、到期时间、剩余天数集中记录</span></div>
+        <div class="ticket-card"><b>地区方案</b><span>按业务选择国家、线路与运营商资源</span></div>
+        <div class="ticket-card"><b>工单支持</b><span>线路异常、换 IP、配置协助均可提交</span></div>
+        <div class="ticket-card"><b>商务定制</b><span>支持工作室、团队与企业级部署需求</span></div>
       </div>
     </section>
 
@@ -900,7 +900,7 @@
         </div>
 
         <ul class="list" style="max-width:860px;margin:0 auto">
-          <li><strong>72 小时无理由退款：</strong>购买后 24 小时内，如线路质量未达预期，可申请全额退款。</li>
+          <li><strong>24 小时无理由退款：</strong>购买后 24 小时内，如线路质量未达预期，可申请全额退款。</li>
           <li><strong>服务数据可查：</strong>支持查看线路状态、节点情况与工单处理进度。</li>
           <li><strong>客户案例说话：</strong>直播、矩阵、工作室客户均可按场景提供方案建议。</li>
           <li><strong>合规使用边界：</strong>服务仅限合法跨境业务、学术研究、企业办公和海外社媒运营。</li>
@@ -916,8 +916,9 @@
 
       <div class="faq">
         <details open><summary>是否支持全球地区？</summary><p>支持全球大部分主流跨境业务地区，部分国家和地区可根据需求定制运营商 IP、独享 IP 或软路由方案。</p></details>
-        <details><summary>适合指纹浏览器吗？</summary><p>适合。可通过桌面工具生成本地 SOCKS5 端口，再在 ADS 等指纹浏览器内填写 127.0.0.1 与对应端口。</p></details>
-        <details><summary>为什么取消免费测试？</summary><p>高质量原生住宅 IP 与专线资源有真实成本。我们用 24 小时无理由退款代替低质量测试，保障真实购买用户的资源体验。</p></details>
+        <details><summary>适合指纹浏览器吗？</summary><p>适合。可通过桌面工具生成本地 SOCKS5 端口，再在 AdsPower 等指纹浏览器内填写 127.0.0.1 与对应端口。</p></details>
+        <details><summary>直播卡顿一般是什么原因？</summary><p>直播比普通浏览更依赖 UDP、带宽、抖动和 DNS 地区一致性。我们会优先建议客户先用测试线路验证，再迁移到正式线路。</p></details>
+        <details><summary>为什么取消免费测试？</summary><p>高质量静态住宅 IP 与专线资源有真实成本。我们用 24 小时无理由退款代替低质量测试，保障真实购买用户的资源体验。</p></details>
         <details><summary>可以部署在软路由上吗？</summary><p>可以。适合工作室、直播间、办公室统一出口，员工设备无需单独配置，插网即可进入专线环境。</p></details>
       </div>
     </section>
@@ -925,7 +926,7 @@
     <section id="contact" class="container reveal">
       <div class="contact-box">
         <h2 class="section-title">立即咨询 / 获取方案</h2>
-        <p class="section-desc">扫码添加客服，备注“专线咨询”。如需定制地区、运营商 IP 或工作室方案，请说明业务场景。</p>
+        <p class="section-desc">扫码添加客服，备注“专线咨询”。请说明目标地区、业务场景、设备数量、是否直播和是否需要独享 IP。</p>
         <img class="qr" src="wechat_qr.png" alt="微信二维码" />
         <p style="color:var(--muted);font-size:.92rem">客服在线时间：7×24 小时</p>
 
@@ -936,16 +937,16 @@
         </div>
 
         <div style="margin-top:22px">
-  <a class="btn btn-primary" href="/pricing.html">查看套餐</a>
-  <a class="btn btn-secondary" href="/.html">使用教程</a>
-  <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
-</div>
+          <a class="btn btn-primary" href="/pricing.html">查看套餐</a>
+          <a class="btn btn-secondary" href="/docs.html">使用教程</a>
+          <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+        </div>
+      </div>
     </section>
-  </main>
 <section class="section">
   <div class="container">
 
-    <div class="section-title">
+    <div class="section-head">
       <span>网络环境检测</span>
       <h2>使用前先检测当前 IP</h2>
 
@@ -1002,6 +1003,7 @@
 
   </div>
 </section>
+  </main>
   <footer>
     <div class="container footer-grid">
       <div>
