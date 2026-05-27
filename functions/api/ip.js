@@ -7,6 +7,7 @@ export async function onRequestGet({ request }) {
 
   return json({
     ip,
+    country_code: cf.country || "",
     country: countryName(cf.country),
     city: cf.city || "未知",
     asn,

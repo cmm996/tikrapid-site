@@ -13,13 +13,15 @@ export async function onRequestPost({ request, env }) {
 
   const result = await env.DB.prepare(`
     INSERT INTO check_results (
-      ip, country, city, asn, isp, webrtc_status, webrtc_ips,
-      avg_latency_ms, min_latency_ms, max_latency_ms, jitter_ms,
-      download_mbps, upload_mbps, recommended_bitrate, score, rating, user_agent
+      ip, country_code, country, city, asn, isp, webrtc_status, webrtc_ips,
+      avg_latency_ms, min_latency_ms, max_latency_ms, jitter_ms, packet_loss_percent,
+      download_mbps, upload_mbps, recommended_bitrate, score, rating,
+      browser_timezone, browser_languages, user_agent
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).bind(
     textValue(data.ip, 80),
+    textValue(data.country_code, 10).toUpperCase(),
     textValue(data.country, 100),
     textValue(data.city, 100),
     textValue(data.asn, 40),
@@ -30,11 +32,14 @@ export async function onRequestPost({ request, env }) {
     numberValue(data.min_latency_ms),
     numberValue(data.max_latency_ms),
     numberValue(data.jitter_ms),
+    numberValue(data.packet_loss_percent),
     numberValue(data.download_mbps),
     numberValue(data.upload_mbps),
     textValue(data.recommended_bitrate, 60),
     score,
     textValue(data.rating, 40),
+    textValue(data.browser_timezone, 100),
+    textValue(data.browser_languages, 300),
     userAgent
   ).run();
 

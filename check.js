@@ -1,5 +1,6 @@
 const state = {
   ip: "",
+  country_code: "",
   country: "",
   city: "",
   asn: "",
@@ -10,11 +11,14 @@ const state = {
   min_latency_ms: 0,
   max_latency_ms: 0,
   jitter_ms: 0,
+  packet_loss_percent: 0,
   download_mbps: 0,
   upload_mbps: 0,
   recommended_bitrate: "",
   score: 0,
   rating: "",
+  browser_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
+  browser_languages: (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean).join(" / "),
   user_agent: navigator.userAgent
 };
 
@@ -107,25 +111,39 @@ async function runWebRtcTest() {
 async function runLatencyTest() {
   setProgress(42, "正在测试 HTTP 延迟，连续请求 10 次...");
   const samples = [];
+  let failures = 0;
 
   for (let i = 0; i < 10; i += 1) {
     const started = performance.now();
-    await fetch(`/api/ping?t=${Date.now()}-${i}`, { cache: "no-store" });
-    samples.push(performance.now() - started);
+    try {
+      const resp = await fetch(`/api/ping?t=${Date.now()}-${i}`, { cache: "no-store" });
+      if (!resp.ok) throw new Error(`ping ${resp.status}`);
+      samples.push(performance.now() - started);
+    } catch (error) {
+      failures += 1;
+    }
     setProgress(42 + (i + 1) * 2, `正在测试 HTTP 延迟：${i + 1}/10`);
     await sleep(120);
   }
 
-  const sum = samples.reduce((a, b) => a + b, 0);
-  const diffs = samples.slice(1).map((value, index) => Math.abs(value - samples[index]));
-  state.avg_latency_ms = sum / samples.length;
-  state.min_latency_ms = Math.min(...samples);
-  state.max_latency_ms = Math.max(...samples);
-  state.jitter_ms = diffs.length ? diffs.reduce((a, b) => a + b, 0) / diffs.length : 0;
+  state.packet_loss_percent = (failures / 10) * 100;
+  if (samples.length) {
+    const sum = samples.reduce((a, b) => a + b, 0);
+    const diffs = samples.slice(1).map((value, index) => Math.abs(value - samples[index]));
+    state.avg_latency_ms = sum / samples.length;
+    state.min_latency_ms = Math.min(...samples);
+    state.max_latency_ms = Math.max(...samples);
+    state.jitter_ms = diffs.length ? diffs.reduce((a, b) => a + b, 0) / diffs.length : 0;
+  } else {
+    state.avg_latency_ms = 0;
+    state.min_latency_ms = 0;
+    state.max_latency_ms = 0;
+    state.jitter_ms = 0;
+  }
 
-  $("avgLatency").textContent = ms(state.avg_latency_ms);
-  $("latencyRange").textContent = `${ms(state.min_latency_ms)} / ${ms(state.max_latency_ms)}`;
-  $("jitter").textContent = ms(state.jitter_ms);
+  $("avgLatency").textContent = samples.length ? ms(state.avg_latency_ms) : "请求失败";
+  $("latencyRange").textContent = samples.length ? `${ms(state.min_latency_ms)} / ${ms(state.max_latency_ms)}` : "--";
+  $("jitter").textContent = samples.length ? ms(state.jitter_ms) : "--";
 }
 
 async function runDownloadTest() {
@@ -160,6 +178,7 @@ async function runUploadTest() {
 function calculateScore() {
   let score = 100;
   if (state.webrtc_ips.length) score -= 20;
+  if (state.packet_loss_percent > 0) score -= Math.min(18, state.packet_loss_percent * 4);
   if (state.avg_latency_ms > 80) score -= Math.min(25, (state.avg_latency_ms - 80) / 8);
   if (state.jitter_ms > 15) score -= Math.min(20, (state.jitter_ms - 15) / 3);
   if (state.download_mbps < 20) score -= Math.min(20, (20 - state.download_mbps) * 0.8);
