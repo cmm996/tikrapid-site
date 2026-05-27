@@ -1,4 +1,5 @@
 import { ensureCheckTable, escapeHtml } from "../_check-utils.js";
+import { loadDiagnosisReport, renderDiagnosisReportHtml } from "../_diagnosis-utils.js";
 
 const STATUS = {
   recommend: { label: "✅ 推荐使用", className: "status-good" },
@@ -8,9 +9,18 @@ const STATUS = {
 };
 
 export async function onRequestGet({ params, env }) {
+  const rawId = String(params.id || "").trim();
+  if (!/^\d+$/.test(rawId)) {
+    const diagnosis = await loadDiagnosisReport(env, rawId);
+    if (!diagnosis) {
+      return html(notFound(`没有找到 ${rawId} 诊断报告`), 404);
+    }
+    return html(renderDiagnosisReportHtml(diagnosis));
+  }
+
   await ensureCheckTable(env);
 
-  const id = Number(params.id);
+  const id = Number(rawId);
   if (!Number.isInteger(id) || id <= 0) {
     return html(notFound("报告编号不正确"), 400);
   }

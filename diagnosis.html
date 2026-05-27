@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TikRapid 跨境业务出海诊断</title>
+  <meta name="description" content="免费生成跨境业务出海诊断报告，评估目标市场、业务模式、内容打法、网络环境、私域承接和 30 天执行计划。">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link href="/diagnosis.css" rel="stylesheet">
+</head>
+<body>
+  <main class="dx-shell">
+    <section class="dx-cover">
+      <div>
+        <p class="dx-kicker">免费获客诊断工具</p>
+        <h1>TikRapid 跨境业务出海诊断报告生成器</h1>
+        <p class="dx-muted">填写 3 分钟，生成一份包含出海适配评分、目标市场推荐、业务模式判断、网络环境建议和 30 天计划的专业报告。</p>
+      </div>
+      <div class="dx-score dx-score-static">
+        <span>8</span>
+        <strong>模块报告</strong>
+        <small>市场 / 内容 / 网络 / 私域 / 执行</small>
+      </div>
+    </section>
+
+    <form id="diagnosisForm" class="dx-form">
+      <section class="dx-panel">
+        <h2>基础信息</h2>
+        <div class="dx-form-grid">
+          <label>称呼 / 公司名<input name="name" placeholder="例如：刘老师 / 某某工厂"></label>
+          <label>联系方式<input name="contact" placeholder="微信 / WhatsApp / 手机" required></label>
+          <label>你目前是什么类型？
+            <select name="business_type" required>
+              <option value="">请选择</option>
+              <option>工厂 / 源头厂家</option>
+              <option>外贸公司</option>
+              <option>跨境电商卖家</option>
+              <option>直播团队 / MCN</option>
+              <option>传统行业老板</option>
+              <option>服务商 / 代运营</option>
+              <option>个人创业者</option>
+              <option>其他</option>
+            </select>
+          </label>
+          <label>目标市场
+            <select name="target_market" required>
+              <option value="">请选择</option>
+              <option>美国</option>
+              <option>马来西亚</option>
+              <option>台湾</option>
+              <option>日本</option>
+              <option>东南亚</option>
+              <option>欧洲</option>
+              <option>中东</option>
+              <option>暂时不确定</option>
+            </select>
+          </label>
+        </div>
+        <label>你的产品 / 服务是什么？
+          <textarea name="product_description" required placeholder="比如：中医养生课程、茶叶、服装、户外灯具、直播带货、TikTok 代运营、独立站产品等。"></textarea>
+        </label>
+      </section>
+
+      <section class="dx-panel">
+        <h2>你主要想做什么？</h2>
+        <div class="dx-options">
+          <label><input type="checkbox" name="business_goal" value="TikTok 短视频获客">TikTok 短视频获客</label>
+          <label><input type="checkbox" name="business_goal" value="TikTok 直播带货">TikTok 直播带货</label>
+          <label><input type="checkbox" name="business_goal" value="TikTok Shop">TikTok Shop</label>
+          <label><input type="checkbox" name="business_goal" value="独立站">独立站</label>
+          <label><input type="checkbox" name="business_goal" value="老板个人 IP">老板个人 IP</label>
+          <label><input type="checkbox" name="business_goal" value="海外社媒矩阵">海外社媒矩阵</label>
+          <label><input type="checkbox" name="business_goal" value="跨境电商店铺运营">跨境电商店铺运营</label>
+          <label><input type="checkbox" name="business_goal" value="AI 跨境电商">AI 跨境电商</label>
+          <label><input type="checkbox" name="business_goal" value="外贸询盘获客">外贸询盘获客</label>
+          <label><input type="checkbox" name="business_goal" value="团队/工作室网络部署">团队/工作室网络部署</label>
+        </div>
+      </section>
+
+      <section class="dx-panel">
+        <h2>当前阶段与问题</h2>
+        <div class="dx-form-grid">
+          <label>当前阶段
+            <select name="current_stage" required>
+              <option>还没开始，只是在了解</option>
+              <option>已经有产品/服务</option>
+              <option>已经有国内账号</option>
+              <option>已经有海外账号，但没效果</option>
+              <option>已经在出海，但遇到网络/账号/转化问题</option>
+              <option>已经有团队，想规模化</option>
+            </select>
+          </label>
+          <label>预算区间
+            <select name="budget_range" required>
+              <option>1000 元以内/月</option>
+              <option>1000～3000 元/月</option>
+              <option>3000～10000 元/月</option>
+              <option>1 万～3 万/月</option>
+              <option>3 万以上/月</option>
+              <option>暂时不确定</option>
+            </select>
+          </label>
+          <label>团队情况
+            <select name="team_size" required>
+              <option>只有我一个人</option>
+              <option>1～2 个运营</option>
+              <option>3～5 人小团队</option>
+              <option>5 人以上团队</option>
+              <option>有直播间/工作室</option>
+            </select>
+          </label>
+          <label>是否需要直播？
+            <select name="need_live" required>
+              <option>不需要</option>
+              <option>未来可能需要</option>
+              <option>已经在直播</option>
+              <option>直播是核心业务</option>
+            </select>
+          </label>
+          <label>当前网络 / 账号环境
+            <select name="network_status" required>
+              <option>还没有准备</option>
+              <option>有普通代理，但不确定是否稳定</option>
+              <option>已有稳定线路</option>
+              <option>直播线路不稳定</option>
+              <option>已有工作室网络环境</option>
+            </select>
+          </label>
+          <label>语言 / 本地化能力
+            <select name="language_capability" required>
+              <option>不会英文，主要做中文内容</option>
+              <option>能基础英文沟通</option>
+              <option>有英文/本地化内容能力</option>
+              <option>有海外团队或本地人员</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="dx-panel">
+        <h2>当前最大问题</h2>
+        <div class="dx-options">
+          <label><input type="checkbox" name="main_pain_points" value="不知道选哪个国家">不知道选哪个国家</label>
+          <label><input type="checkbox" name="main_pain_points" value="不知道怎么起号">不知道怎么起号</label>
+          <label><input type="checkbox" name="main_pain_points" value="不知道内容怎么做">不知道内容怎么做</label>
+          <label><input type="checkbox" name="main_pain_points" value="网络/IP/线路不稳定">网络/IP/线路不稳定</label>
+          <label><input type="checkbox" name="main_pain_points" value="直播卡顿/没人进">直播卡顿/没人进</label>
+          <label><input type="checkbox" name="main_pain_points" value="短视频播放低">短视频播放低</label>
+          <label><input type="checkbox" name="main_pain_points" value="不会英文/本地化">不会英文/本地化</label>
+          <label><input type="checkbox" name="main_pain_points" value="没有官网/私域承接">没有官网/私域承接</label>
+          <label><input type="checkbox" name="main_pain_points" value="不会转化">不会转化</label>
+          <label><input type="checkbox" name="main_pain_points" value="没有团队执行">没有团队执行</label>
+          <label><input type="checkbox" name="main_pain_points" value="账号容易异常/封禁">账号容易异常/封禁</label>
+          <label><input type="checkbox" name="main_pain_points" value="成本太高">成本太高</label>
+        </div>
+      </section>
+
+      <section class="dx-panel">
+        <h2>素材与承接</h2>
+        <p class="dx-muted">这些会影响内容获客能力和转化承接评分。</p>
+        <h3>是否有现成素材？</h3>
+        <div class="dx-options">
+          <label><input type="checkbox" name="has_material" value="有产品图">有产品图</label>
+          <label><input type="checkbox" name="has_material" value="有视频素材">有视频素材</label>
+          <label><input type="checkbox" name="has_material" value="有老板本人可出镜">有老板本人可出镜</label>
+          <label><input type="checkbox" name="has_material" value="只有产品，没有内容">只有产品，没有内容</label>
+          <label><input type="checkbox" name="has_material" value="什么都没有">什么都没有</label>
+        </div>
+
+        <h3>目前有哪些承接工具？</h3>
+        <div class="dx-options">
+          <label><input type="checkbox" name="conversion_tools" value="官网落地页">官网落地页</label>
+          <label><input type="checkbox" name="conversion_tools" value="WhatsApp / LINE">WhatsApp / LINE</label>
+          <label><input type="checkbox" name="conversion_tools" value="Email 表单">Email 表单</label>
+          <label><input type="checkbox" name="conversion_tools" value="微信私域">微信私域</label>
+          <label><input type="checkbox" name="conversion_tools" value="免费资料 / 表单">免费资料 / 表单</label>
+          <label><input type="checkbox" name="conversion_tools" value="暂时没有">暂时没有</label>
+        </div>
+      </section>
+
+      <button class="dx-submit" type="submit">生成出海诊断报告</button>
+      <div id="diagnosisNotice" class="dx-notice"></div>
+    </form>
+  </main>
+  <script src="/diagnosis.js"></script>
+</body>
+</html>
