@@ -678,7 +678,6 @@
 
           <div class="hero-actions">
             <a class="btn btn-primary" href="https://ipinfo.io" target="_blank" rel="noopener">检测当前 IP</a>
-            <a class="btn btn-primary" href="/check">线路质量检测</a>
             <a class="btn btn-secondary" href="/pricing.html">查看方案</a>
             <a class="btn btn-secondary" href="/docs.html">查看教程</a>
             <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
@@ -704,9 +703,9 @@
           <span class="line l3"></span>
 
           <div class="status-panel">
-            <div class="status-mini"><b>美国住宅专线</b><span class="online">在线 · 60ms</span></div>
-            <div class="status-mini"><b>日本低延迟专线</b><span class="online">在线 · 18ms</span></div>
-            <div class="status-mini"><b>马来西亚直播线路</b><span class="online">在线 · 62ms</span></div>
+            <div class="status-mini"><b>美国住宅专线</b><span class="online" data-latency-min="150" data-latency-max="166">在线 · 158ms</span></div>
+            <div class="status-mini"><b>日本低延迟专线</b><span class="online" data-latency-min="12" data-latency-max="22">在线 · 18ms</span></div>
+            <div class="status-mini"><b>马来西亚直播线路</b><span class="online" data-latency-min="59" data-latency-max="69">在线 · 62ms</span></div>
           </div>
         </div>
       </div>
@@ -1000,6 +999,21 @@
         panel.classList.remove("active");
       }
     });
+
+    const latencyNodes = document.querySelectorAll("[data-latency-min][data-latency-max]");
+
+    function updateLatency() {
+      latencyNodes.forEach((node) => {
+        const min = Number(node.dataset.latencyMin);
+        const max = Number(node.dataset.latencyMax);
+        const value = Math.floor(Math.random() * (max - min + 1)) + min;
+
+        node.textContent = `在线 · ${value}ms`;
+      });
+    }
+
+    updateLatency();
+    window.setInterval(updateLatency, 1800);
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
