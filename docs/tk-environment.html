@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>TK 使用环境注意事项 - tikrapid</title>
+  <meta name="description" content="tikrapid TK 使用环境注意事项，适合短视频运营、直播前准备、跨境电商后台、AI 工具和团队多设备使用。" />
+  <meta name="theme-color" content="#07111f" />
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    :root{--bg:#07111f;--card:rgba(15,23,42,.78);--border:rgba(148,163,184,.16);--border-strong:rgba(96,165,250,.36);--text:#f8fafc;--muted:#94a3b8;--soft:#cbd5e1;--blue:#60a5fa;--blue2:#2563eb;--purple:#8b5cf6;--green:#22c55e;--red:#ef4444;--yellow:#facc15;--shadow:0 24px 80px rgba(0,0,0,.36);--radius:24px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{min-height:100vh;background:radial-gradient(circle at top left,rgba(59,130,246,.24),transparent 34%),radial-gradient(circle at top right,rgba(139,92,246,.2),transparent 32%),linear-gradient(180deg,#050816 0%,var(--bg) 45%,#060b16 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{width:min(1080px,calc(100% - 40px));margin:0 auto}
+    .nav-wrap{position:sticky;top:0;z-index:50;background:rgba(5,8,22,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(148,163,184,.12)}
+    .navbar{height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:850;letter-spacing:-.03em;font-size:1.35rem}
+    .brand-mark{width:38px;height:38px;border-radius:14px;background:radial-gradient(circle at 30% 25%,#fff,transparent 18%),linear-gradient(135deg,var(--blue),var(--purple));position:relative;box-shadow:0 0 32px rgba(96,165,250,.42)}
+    .brand-mark::after{content:"";position:absolute;inset:9px;border:1px solid rgba(255,255,255,.58);border-radius:50%}
+    .nav-links{display:flex;align-items:center;gap:22px;color:var(--muted);font-size:.94rem;font-weight:650}
+    .nav-links a:hover{color:var(--text)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:850;font-size:.94rem;transition:.22s ease;cursor:pointer;border:1px solid transparent}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,var(--blue2),var(--purple));color:white;box-shadow:0 16px 40px rgba(37,99,235,.28)}
+    .btn-secondary{border-color:var(--border);background:rgba(15,23,42,.58);color:var(--soft)}
+    .hero{padding:72px 0 42px;text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid rgba(96,165,250,.25);background:rgba(59,130,246,.1);color:#bfdbfe;font-weight:850;font-size:.9rem;margin-bottom:22px}
+    h1{font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:1;letter-spacing:-.07em;margin-bottom:22px}
+    .grad{background:linear-gradient(90deg,#fff,#bfdbfe 42%,#c4b5fd);-webkit-background-clip:text;color:transparent}
+    .hero-desc{max-width:780px;color:var(--soft);font-size:clamp(1.02rem,2vw,1.18rem);margin:0 auto 28px}
+    .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .layout{display:grid;grid-template-columns:270px 1fr;gap:24px;align-items:start;margin:48px auto 86px}
+    .toc{position:sticky;top:96px;border:1px solid var(--border);background:rgba(15,23,42,.68);border-radius:22px;padding:18px}
+    .toc b{display:block;margin-bottom:10px;color:white}
+    .toc a{display:block;color:var(--muted);padding:9px 0;font-size:.94rem;border-bottom:1px solid rgba(148,163,184,.08)}
+    .toc a:hover{color:#bfdbfe}
+    .content{display:grid;gap:22px}
+    .card{border-radius:var(--radius);padding:28px;background:linear-gradient(180deg,rgba(15,23,42,.82),rgba(15,23,42,.52));border:1px solid var(--border);box-shadow:0 20px 70px rgba(0,0,0,.18)}
+    .card h2{font-size:1.75rem;letter-spacing:-.035em;margin-bottom:12px}
+    .card p{color:var(--soft);margin:10px 0}
+    .note{padding:16px 18px;border-radius:18px;border:1px solid rgba(96,165,250,.22);background:rgba(59,130,246,.1);color:#bfdbfe;margin:16px 0}
+    .warning{padding:16px 18px;border-radius:18px;border:1px solid rgba(250,204,21,.24);background:rgba(250,204,21,.08);color:#fde68a;margin:16px 0}
+    .list{counter-reset:item;display:grid;gap:12px;margin-top:16px}
+    .list li{counter-increment:item;list-style:none;display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:start;padding:14px;border-radius:16px;border:1px solid var(--border);background:rgba(2,6,23,.28);color:var(--soft)}
+    .list li::before{content:counter(item);width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:rgba(37,99,235,.22);border:1px solid rgba(96,165,250,.25);color:#bfdbfe;font-weight:950;line-height:1}
+    .plain-list{display:grid;gap:10px;margin-top:14px}
+    .plain-list li{list-style:none;color:var(--soft);padding:12px 14px;border-radius:14px;background:rgba(2,6,23,.28);border:1px solid var(--border)}
+    .plain-list li::before{content:"• ";color:var(--blue);font-weight:900}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .box{border:1px solid var(--border);background:rgba(2,6,23,.3);border-radius:18px;padding:18px}
+    .box h3{font-size:1.08rem;margin-bottom:10px;color:#e0f2fe}
+    .box ul{display:grid;gap:8px;list-style:none;color:var(--soft)}
+    .box.can li::before{content:"✓ ";color:var(--green);font-weight:900}
+    .box.no li::before{content:"× ";color:var(--red);font-weight:900}
+    .confirm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
+    .confirm-grid div{padding:14px 16px;border-radius:16px;border:1px solid var(--border);background:rgba(2,6,23,.3);color:var(--soft)}
+    .cta-box{text-align:center;border-radius:30px;border:1px solid var(--border-strong);background:radial-gradient(circle at top,rgba(96,165,250,.18),transparent 42%),rgba(15,23,42,.72);padding:34px;box-shadow:var(--shadow)}
+    .qr{width:168px;height:168px;object-fit:cover;margin:22px auto 12px;border-radius:22px;border:1px solid var(--border);background:rgba(255,255,255,.05)}
+    footer{padding:34px 0 96px;border-top:1px solid var(--border);color:var(--muted);font-size:.9rem}
+    .footer-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:start}
+    .disclaimer{background:rgba(15,23,42,.58);border:1px solid var(--border);border-radius:20px;padding:20px}
+    .floating-contact{position:fixed;right:24px;bottom:24px;z-index:999}
+    .floating-btn{width:64px;height:64px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--blue2),var(--purple));color:#fff;font-size:28px;cursor:pointer;box-shadow:0 20px 50px rgba(37,99,235,.35);transition:.25s}
+    .floating-btn:hover{transform:translateY(-4px) scale(1.05)}
+    .floating-panel{position:absolute;right:0;bottom:80px;width:230px;background:rgba(15,23,42,.96);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:18px;display:none;backdrop-filter:blur(18px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+    .floating-panel img{width:140px;height:140px;object-fit:contain;border-radius:12px;background:#fff;padding:6px;margin:0 auto 12px}
+    .floating-panel p{color:var(--soft);font-size:.92rem;text-align:center}
+    .floating-panel.active{display:block}
+    .mobile-fixed-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:80;display:none;grid-template-columns:1fr 1fr;gap:10px;padding:10px;border-radius:22px;background:rgba(2,6,23,.84);border:1px solid var(--border);backdrop-filter:blur(16px)}
+    .mobile-fixed-bar a{min-height:44px;display:grid;place-items:center;border-radius:16px;background:rgba(30,41,59,.7);color:var(--soft);font-weight:900}
+    .mobile-fixed-bar a.active{background:linear-gradient(135deg,var(--blue2),var(--purple));color:white}
+    @media(max-width:980px){.nav-links{display:none}.layout{grid-template-columns:1fr}.toc{position:relative;top:0}.footer-grid,.split{grid-template-columns:1fr}.confirm-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){.container{width:min(100% - 28px,1080px)}.navbar{height:68px}.hero{padding:54px 0 34px}h1{letter-spacing:-.055em}.card{padding:22px}.floating-contact{display:none}.mobile-fixed-bar{display:grid}footer{padding-bottom:110px}}
+  </style>
+</head>
+
+<body>
+  <header class="nav-wrap">
+    <div class="container navbar">
+      <a class="brand" href="/">
+        <span class="brand-mark"></span>
+        <span>tikrapid</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/">首页</a>
+        <a href="/pricing.html">套餐</a>
+        <a href="/docs.html">教程中心</a>
+        <a href="/check">线路检测</a>
+        <a href="/ticket.html">提交工单</a>
+      </nav>
+
+      <div>
+        <a class="btn btn-secondary" href="/docs.html">返回教程</a>
+        <a class="btn btn-primary" href="#support">微信咨询</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="eyebrow">知识库 · TK 短视频 / 直播 / 店铺后台 / AI 工具</div>
+      <h1><span class="grad">TK 使用环境</span><br>注意事项</h1>
+      <p class="hero-desc">
+        适用于 TK 短视频运营、直播前环境准备、跨境电商后台、团队多设备使用。本文用于帮助你稳定、规范地使用网络环境，降低因设备、网络、登录习惯不一致带来的异常风险。
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/check">先做线路检测</a>
+        <a class="btn btn-secondary" href="#account">查看注意事项</a>
+        <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+      </div>
+    </section>
+
+    <div class="container layout">
+      <aside class="toc">
+        <b>本页目录</b>
+        <a href="#scope">适用范围</a>
+        <a href="#account">一、账号与设备</a>
+        <a href="#network">二、网络环境</a>
+        <a href="#live">三、直播使用</a>
+        <a href="#router">四、路由器/软路由</a>
+        <a href="#team">五、多账号/团队</a>
+        <a href="#issues">六、异常处理</a>
+        <a href="#avoid">七、不建议方式</a>
+        <a href="#boundary">八、服务边界</a>
+        <a href="#confirm">九、交付前确认</a>
+      </aside>
+
+      <div class="content">
+        <section id="scope" class="card">
+          <h2>适用范围</h2>
+          <p>本说明适用于 TK 短视频运营、直播前环境准备、跨境电商后台、AI 工具访问和团队多设备使用场景。</p>
+          <div class="warning">本服务仅提供网络环境配置、检测与优化建议，不承诺流量、成交、账号权重或平台结果。</div>
+        </section>
+
+        <section id="account" class="card">
+          <h2>一、账号与设备使用建议</h2>
+          <ol class="list">
+            <li>建议一个账号长期固定在一台主要设备上使用。</li>
+            <li>不建议多个账号频繁共用同一台手机来回切换。</li>
+            <li>不建议一个账号短时间内在多台设备、多个地区反复登录。</li>
+            <li>不建议多人同时操作同一个账号。</li>
+            <li>手机系统语言、时区、使用地区尽量保持一致。</li>
+            <li>账号绑定的手机号、邮箱要长期可用，避免后续无法验证。</li>
+            <li>建议开启账号安全设置，例如邮箱/手机号验证、两步验证、可信设备管理。</li>
+            <li>不要购买来历不明的成品号，不要使用多人转手、信息不完整的账号。</li>
+          </ol>
+        </section>
+
+        <section id="network" class="card">
+          <h2>二、网络环境使用建议</h2>
+          <ol class="list">
+            <li>一个账号尽量长期使用固定地区的网络环境。</li>
+            <li>不建议今天美国、明天马来、后天台湾频繁切换地区。</li>
+            <li>不建议直播过程中随意切换线路或更换网络环境。</li>
+            <li>如果需要更换线路，建议先停播，再检测，再切换。</li>
+            <li>多台设备同时使用时，建议提前说明设备数量和使用场景。</li>
+            <li>短视频、直播、后台访问、AI 工具，对网络要求不同，不能用同一个标准判断。</li>
+            <li>直播场景重点看上行稳定性、丢包、抖动和晚高峰表现，不只是看网速。</li>
+            <li>如果是团队或多设备使用，建议使用路由器/软路由统一管理，方便后期排查。</li>
+          </ol>
+        </section>
+
+        <section id="live" class="card">
+          <h2>三、直播使用注意事项</h2>
+          <ol class="list">
+            <li>开播前建议提前做网络检测，不要临时开播才测试。</li>
+            <li>直播前建议测试 10-30 分钟，观察是否卡顿、掉线、音画不同步。</li>
+            <li>多台手机同时直播，要提前说明是否同时开播、每天播多久。</li>
+            <li>5 台以上设备同时直播，不建议按普通节点使用，建议按直播间方案配置。</li>
+            <li>如果多台设备共用一个网络环境，成本较低，但账号环境会更集中。</li>
+            <li>如果长期多台同时直播，建议使用分流或固定带宽方案。</li>
+            <li>直播过程中如果出现卡顿，需要区分是网络问题、设备问题、平台问题还是内容互动问题。</li>
+            <li>网络环境只能降低推流异常风险，不代表一定有流量或成交。</li>
+          </ol>
+        </section>
+
+        <section id="router" class="card">
+          <h2>四、路由器/软路由使用注意事项</h2>
+          <ol class="list">
+            <li>路由器方案适合多设备统一接入，不需要每台手机单独配置。</li>
+            <li>收到设备后，先按教程接线、开机、连接指定 WiFi。</li>
+            <li>不要随意恢复出厂设置，不要私自修改后台配置。</li>
+            <li>不要随意更改节点、端口、协议或系统设置。</li>
+            <li>如果需要更换线路，请先联系我们确认。</li>
+            <li>路由器断电、宽带故障、本地 WiFi 信号差，也可能影响使用效果。</li>
+            <li>如果出现问题，请先提供：设备灯光状态、手机连接截图、当前业务场景、问题发生时间。</li>
+            <li>远程排查时，请保持设备在线，不要反复重启和乱改配置。</li>
+          </ol>
+        </section>
+
+        <section id="team" class="card">
+          <h2>五、多账号/团队使用建议</h2>
+          <ol class="list">
+            <li>团队使用前要先规划账号数量、设备数量、目标地区和业务场景。</li>
+            <li>不建议所有账号长期混用同一个设备和同一个使用习惯。</li>
+            <li>不建议多人随意登录同一个账号。</li>
+            <li>每个账号最好有固定负责人、固定设备、固定网络环境。</li>
+            <li>工作室场景建议建立设备表：账号、设备、地区、线路、负责人、用途。</li>
+            <li>如果后期需要扩容设备，要提前说明，不建议直接把设备数量加上去就用。</li>
+            <li>多设备直播建议优先考虑分流方案，方便后期判断哪台设备或哪条线路出问题。</li>
+            <li>不要使用自动批量评论、批量私信、批量关注等高风险操作。</li>
+          </ol>
+        </section>
+
+        <section id="issues" class="card">
+          <h2>六、常见异常处理</h2>
+          <p>如果出现以下情况，请先不要频繁操作账号：</p>
+          <ul class="plain-list">
+            <li>登录需要验证</li>
+            <li>视频播放异常</li>
+            <li>直播卡顿或掉线</li>
+            <li>后台访问不稳定</li>
+            <li>账号提示安全验证</li>
+            <li>某台设备能用，另一台设备不能用</li>
+            <li>同一时间多台设备都出现异常</li>
+          </ul>
+
+          <p>提交工单时，建议一次性提供以下信息：</p>
+          <ul class="plain-list">
+            <li>当前设备数量</li>
+            <li>使用场景：短视频 / 直播 / 后台 / AI 工具</li>
+            <li>目标地区</li>
+            <li>是否正在直播</li>
+            <li>问题发生时间</li>
+            <li>手机网络截图</li>
+            <li>路由器/客户端状态截图</li>
+            <li>是否近期更换过设备、账号或线路</li>
+          </ul>
+
+          <div class="note">我们会根据情况判断是线路问题、设备问题、本地网络问题，还是账号/平台侧问题。</div>
+        </section>
+
+        <section id="avoid" class="card">
+          <h2>七、不建议的使用方式</h2>
+          <ol class="list">
+            <li>一个账号频繁切换多个国家环境。</li>
+            <li>一个账号多人同时登录。</li>
+            <li>多个账号频繁共用同一台手机。</li>
+            <li>直播过程中临时切换线路。</li>
+            <li>使用来历不明的成品号。</li>
+            <li>大量批量注册、批量私信、批量评论。</li>
+            <li>使用网络环境进行违规引流、违规营销或违反平台规则的操作。</li>
+            <li>把普通轻量环境用于高强度直播。</li>
+            <li>把测试版方案当作长期稳定直播方案使用。</li>
+            <li>出现异常后不沟通，自己反复重启、切换、改配置。</li>
+          </ol>
+        </section>
+
+        <section id="boundary" class="card">
+          <h2>八、服务边界说明</h2>
+          <p>我们提供的是网络环境配置、检测、诊断和优化建议。</p>
+
+          <div class="split">
+            <div class="box can">
+              <h3>我们可以协助</h3>
+              <ul>
+                <li>检测当前网络环境</li>
+                <li>判断是否适合短视频、直播、后台或多设备使用</li>
+                <li>排查延迟、丢包、抖动、连通性问题</li>
+                <li>根据业务场景调整或更换线路资源</li>
+                <li>提供路由器/软路由使用指导</li>
+              </ul>
+            </div>
+
+            <div class="box no">
+              <h3>我们不承诺</h3>
+              <ul>
+                <li>不承诺账号一定不异常</li>
+                <li>不承诺视频一定高播放</li>
+                <li>不承诺直播间一定进人</li>
+                <li>不承诺成交、爆单或收益结果</li>
+                <li>不支持违规用途</li>
+                <li>不支持无理由频繁更换线路</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="warning">直播、短视频和店铺效果，除了网络环境，还与账号基础、内容质量、商品、时段、互动、平台规则等因素有关。</div>
+        </section>
+
+        <section id="confirm" class="card">
+          <h2>九、交付前确认</h2>
+          <p>正式使用前，请先确认以下信息，避免用普通轻量环境承载高强度直播业务。</p>
+
+          <div class="confirm-grid">
+            <div>目标地区</div>
+            <div>使用场景：短视频 / 直播 / 店铺后台 / AI 工具 / 多设备团队</div>
+            <div>设备数量</div>
+            <div>是否同时直播</div>
+            <div>每天预计使用时长</div>
+            <div>是否使用路由器/软路由</div>
+            <div>是否需要固定带宽或分流</div>
+            <div>是否需要直播前测试</div>
+          </div>
+
+          <div class="note">确认清楚后，再匹配对应方案。不同场景价格和稳定性要求不同，不能用同一个标准判断所有业务。</div>
+        </section>
+
+        <section id="support" class="cta-box">
+          <h2>需要协助判断使用环境？</h2>
+          <p style="color:var(--soft);margin-top:10px">可以先做线路质量检测，再把报告链接和业务场景一起发给客服。</p>
+          <div style="margin-top:22px">
+            <a class="btn btn-primary" href="/check">线路质量检测</a>
+            <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+          </div>
+          <img class="qr" src="/wechat_qr.png" alt="微信二维码" />
+          <p style="color:var(--muted);font-size:.92rem">客服在线时间：7×24 小时</p>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <span class="brand-mark"></span>
+          <span>tikrapid</span>
+        </div>
+        <p>© 2026 tikrapid.top · 跨境网络基础设施服务</p>
+      </div>
+
+      <div class="disclaimer">
+        <strong style="color:white">合规与免责声明</strong><br>
+        本服务仅限合法跨境电商、外贸企业、学术研究机构及海外社媒运营团队用于正当跨国网络通信需求。严禁用于任何违反中国及业务所在地法律法规的活动。用户需自行承担因违规操作产生的一切责任，tikrapid 保留对违规服务终止的权利。
+      </div>
+    </div>
+  </footer>
+
+  <div class="floating-contact">
+    <div class="floating-panel" id="wechatPanel">
+      <img src="/wechatkefu.png" alt="微信二维码">
+      <p>扫码添加微信咨询</p>
+    </div>
+
+    <button class="floating-btn" onclick="toggleWechat()" aria-label="微信咨询">💬</button>
+  </div>
+
+  <div class="mobile-fixed-bar">
+    <a href="/ticket.html">提交工单</a>
+    <a class="active" href="#support">微信咨询</a>
+  </div>
+
+  <script>
+    function toggleWechat() {
+      document.getElementById("wechatPanel").classList.toggle("active");
+    }
+
+    document.addEventListener("click", function(event) {
+      const contact = document.querySelector(".floating-contact");
+      const panel = document.getElementById("wechatPanel");
+
+      if (contact && panel && !contact.contains(event.target)) {
+        panel.classList.remove("active");
+      }
+    });
+  </script>
+</body>
+</html>
