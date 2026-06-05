@@ -20,7 +20,9 @@ ADMIN_TOKEN=换成一串强随机字符
 
 ## API
 
-后台支持给每条 IP / CIDR 设置 `business_type` 业务类型、`price` 续费价格、`expires_at` 到期时间。到期时间格式为 `YYYY-MM-DD`，不填写表示长期有效。到期后的记录会在后台显示为“已到期”，并且 `/api/ip/check` 不会继续放行。
+后台支持给每条 IP / CIDR 设置 `business_type` 业务类型、`price` 续费价格、`contact` 客户联系方式、`source` IP 段来源、`expires_at` 到期时间。到期时间格式为 `YYYY-MM-DD`，不填写表示长期有效。到期后的记录会在后台显示为“已到期”，并且 `/api/ip/check` 不会继续放行。
+
+顶部“本月续费金额”会按本月到期的记录汇总 `price` 字段里的金额数字，用来快速查看本月应续费金额。
 
 后台列表会显示剩余天数，并提供快捷续费：
 

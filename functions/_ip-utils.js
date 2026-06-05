@@ -57,6 +57,8 @@ export async function ensureIpTable(env) {
       label TEXT NOT NULL DEFAULT '',
       business_type TEXT NOT NULL DEFAULT '',
       price TEXT NOT NULL DEFAULT '',
+      contact TEXT NOT NULL DEFAULT '',
+      source TEXT NOT NULL DEFAULT '',
       note TEXT NOT NULL DEFAULT '',
       expires_at TEXT NOT NULL DEFAULT '',
       enabled INTEGER NOT NULL DEFAULT 1,
@@ -68,6 +70,8 @@ export async function ensureIpTable(env) {
   await addColumnIfMissing(env, "expires_at", "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing(env, "business_type", "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing(env, "price", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "contact", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "source", "TEXT NOT NULL DEFAULT ''");
 }
 
 async function addColumnIfMissing(env, name, definition) {

@@ -64,6 +64,8 @@ export async function onRequestPost(context) {
       const label = String(data.label || "").trim();
       const businessType = String(data.business_type || "").trim();
       const price = String(data.price || "").trim();
+      const contact = String(data.contact || "").trim();
+      const source = String(data.source || "").trim();
       const note = String(data.note || "").trim();
       const expiresAt = normalizeExpiryDate(data.expires_at);
       const enabled = data.enabled ? 1 : 0;
@@ -84,9 +86,9 @@ export async function onRequestPost(context) {
 
       await env.DB.prepare(`
         UPDATE ip_rules
-        SET address = ?, label = ?, business_type = ?, price = ?, note = ?, expires_at = ?, enabled = ?, updated_at = datetime('now')
+        SET address = ?, label = ?, business_type = ?, price = ?, contact = ?, source = ?, note = ?, expires_at = ?, enabled = ?, updated_at = datetime('now')
         WHERE id = ?
-      `).bind(address, label, businessType, price, note, expiresAt, enabled, id).run();
+      `).bind(address, label, businessType, price, contact, source, note, expiresAt, enabled, id).run();
       return json({ success: true });
     }
 
