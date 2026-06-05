@@ -12,15 +12,15 @@ export async function onRequestGet(context) {
   const status = url.searchParams.get("status") || "";
 
   let sql = `
-    SELECT id, address, label, note, expires_at, enabled, created_at, updated_at
+    SELECT id, address, label, business_type, price, note, expires_at, enabled, created_at, updated_at
     FROM ip_rules
   `;
   const where = [];
   const params = [];
 
   if (q) {
-    where.push(`(address LIKE ? OR label LIKE ? OR note LIKE ?)`);
-    params.push(`%${q}%`, `%${q}%`, `%${q}%`);
+    where.push(`(address LIKE ? OR label LIKE ? OR business_type LIKE ? OR price LIKE ? OR note LIKE ?)`);
+    params.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
   }
 
   if (status === "enabled") where.push(`enabled = 1`);
@@ -45,6 +45,8 @@ export async function onRequestPost(context) {
     const data = await request.json();
     const address = normalizeRule(data.address);
     const label = String(data.label || "").trim();
+    const businessType = String(data.business_type || "").trim();
+    const price = String(data.price || "").trim();
     const note = String(data.note || "").trim();
     const expiresAt = normalizeExpiryDate(data.expires_at);
 
@@ -63,9 +65,9 @@ export async function onRequestPost(context) {
     }
 
     await env.DB.prepare(`
-      INSERT INTO ip_rules (address, label, note, expires_at, enabled, created_at, updated_at)
-      VALUES (?, ?, ?, ?, 1, datetime('now'), datetime('now'))
-    `).bind(address, label, note, expiresAt).run();
+      INSERT INTO ip_rules (address, label, business_type, price, note, expires_at, enabled, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))
+    `).bind(address, label, businessType, price, note, expiresAt).run();
 
     return json({ success: true });
   } catch (err) {

@@ -55,6 +55,8 @@ export async function ensureIpTable(env) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       address TEXT NOT NULL UNIQUE,
       label TEXT NOT NULL DEFAULT '',
+      business_type TEXT NOT NULL DEFAULT '',
+      price TEXT NOT NULL DEFAULT '',
       note TEXT NOT NULL DEFAULT '',
       expires_at TEXT NOT NULL DEFAULT '',
       enabled INTEGER NOT NULL DEFAULT 1,
@@ -64,6 +66,8 @@ export async function ensureIpTable(env) {
   `).run();
 
   await addColumnIfMissing(env, "expires_at", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "business_type", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "price", "TEXT NOT NULL DEFAULT ''");
 }
 
 async function addColumnIfMissing(env, name, definition) {

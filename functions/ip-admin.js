@@ -27,7 +27,7 @@ h2{font-size:18px}
 .stat strong{display:block;margin-top:6px;font-size:29px}
 .panel{padding:20px}
 .section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-.grid-form{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr auto;gap:12px;align-items:end}
+.grid-form{display:grid;grid-template-columns:1.2fr 1fr .8fr .8fr 1fr 1fr auto;gap:12px;align-items:end}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 label{display:grid;gap:7px;color:#475569;font-size:13px;font-weight:800}
 input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#18212f;padding:10px 11px;outline:none}
@@ -43,10 +43,10 @@ button:disabled{opacity:.58;cursor:not-allowed}
 .alert.success{background:#ecfdf5;color:#05603a;border:1px solid #b7ebd0}
 .alert.error{background:#fff1f2;color:#a12626;border:1px solid #fecdd3}
 .table-wrap{overflow-x:auto}
-table{width:100%;min-width:1080px;border-collapse:collapse}
+table{width:100%;min-width:1360px;border-collapse:collapse}
 th,td{border-top:1px solid #edf1f5;padding:10px;text-align:left;vertical-align:middle;font-size:14px}
 th{color:#64748b;font-size:12px;text-transform:uppercase}
-td input{min-width:140px}
+td input,td select{min-width:130px}
 .pill{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}
 .pill.on{background:#e8faf2;color:#067647}
 .pill.off{background:#eef2f6;color:#52606d}
@@ -99,8 +99,20 @@ td input{min-width:140px}
     <form class="grid-form" id="createForm">
       <label>IP / CIDR<input name="address" placeholder="1.2.3.4 或 1.2.3.0/24" required></label>
       <label>客户 / 标签<input name="label" placeholder="客户名、节点、用途"></label>
+      <label>业务<select name="business_type">
+        <option value="">选择业务</option>
+        <option value="AI">AI</option>
+        <option value="外贸">外贸</option>
+        <option value="短视频">短视频</option>
+        <option value="直播">直播</option>
+        <option value="跨境电商">跨境电商</option>
+        <option value="社媒运营">社媒运营</option>
+        <option value="工作室">工作室</option>
+        <option value="其他">其他</option>
+      </select></label>
       <label>到期时间<input name="expires_at" type="date"></label>
-      <label>备注<input name="note" placeholder="套餐、联系方式、订单号"></label>
+      <label>价格<input name="price" placeholder="续费价，如 128/月"></label>
+      <label>备注<input name="note" placeholder="联系方式、订单号"></label>
       <button class="primary" id="createButton" type="submit">添加</button>
     </form>
   </section>
@@ -109,7 +121,7 @@ td input{min-width:140px}
     <div class="section-head">
       <h2>客户 IP 列表</h2>
       <div class="toolbar">
-        <input id="search" placeholder="搜索 IP、客户、备注">
+        <input id="search" placeholder="搜索 IP、客户、业务、价格、备注">
         <select id="status">
           <option value="">全部状态</option>
           <option value="enabled">启用</option>
@@ -126,14 +138,16 @@ td input{min-width:140px}
             <th>状态</th>
             <th>IP / CIDR</th>
             <th>客户 / 标签</th>
+            <th>业务</th>
             <th>到期时间 / 剩余</th>
+            <th>价格</th>
             <th>备注</th>
             <th>更新时间</th>
             <th>操作</th>
           </tr>
         </thead>
         <tbody id="ipBody">
-          <tr><td colspan="7" class="empty">加载中...</td></tr>
+          <tr><td colspan="9" class="empty">加载中...</td></tr>
         </tbody>
       </table>
     </div>
@@ -223,7 +237,7 @@ function renderTable(ips){
   const body = document.getElementById("ipBody");
   body.innerHTML = "";
   if(!ips.length){
-    body.innerHTML = '<tr><td colspan="7" class="empty">还没有 IP 记录</td></tr>';
+    body.innerHTML = '<tr><td colspan="9" class="empty">还没有 IP 记录</td></tr>';
     return;
   }
 
@@ -242,7 +256,9 @@ function renderTable(ips){
         '<td>' + status + '</td>' +
         '<td><input id="address-' + item.id + '" value="' + escapeHtml(item.address) + '"></td>' +
         '<td><input id="label-' + item.id + '" value="' + escapeHtml(item.label || "") + '"></td>' +
+        '<td>' + businessSelectHTML(item.id, item.business_type || "") + '</td>' +
         '<td><div class="expires-cell"><input id="expires-' + item.id + '" type="date" value="' + escapeHtml(item.expires_at || "") + '">' + daysLeftHTML(item.expires_at) + '</div></td>' +
+        '<td><input id="price-' + item.id + '" value="' + escapeHtml(item.price || "") + '" placeholder="续费价"></td>' +
         '<td><input id="note-' + item.id + '" value="' + escapeHtml(item.note || "") + '"></td>' +
         '<td>' + escapeHtml(item.updated_at || "-") + '</td>' +
         '<td>' +
@@ -270,7 +286,9 @@ async function updateIP(id){
         action:"update",
         address:document.getElementById("address-" + id).value,
         label:document.getElementById("label-" + id).value,
+        business_type:document.getElementById("business-" + id).value,
         expires_at:document.getElementById("expires-" + id).value,
+        price:document.getElementById("price-" + id).value,
         note:document.getElementById("note-" + id).value,
         enabled:document.getElementById("enabled-" + id).checked
       })
@@ -326,6 +344,15 @@ function daysLeftHTML(value){
   if(days === 0) return '<span class="days-left soon">今天到期</span>';
   if(days <= 7) return '<span class="days-left soon">剩余 ' + days + ' 天</span>';
   return '<span class="days-left">剩余 ' + days + ' 天</span>';
+}
+
+function businessSelectHTML(id, value){
+  const options = ["", "AI", "外贸", "短视频", "直播", "跨境电商", "社媒运营", "工作室", "其他"];
+  return '<select id="business-' + id + '">' + options.map((option)=>{
+    const label = option || "选择业务";
+    const selected = option === value ? " selected" : "";
+    return '<option value="' + escapeHtml(option) + '"' + selected + '>' + escapeHtml(label) + '</option>';
+  }).join("") + '</select>';
 }
 
 function todayISO(){
