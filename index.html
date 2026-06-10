@@ -394,7 +394,7 @@
     .list li { display: flex; gap: 9px; align-items: flex-start; }
     .list li::before { content: "✓"; color: var(--green); font-weight: 900; flex: 0 0 auto; }
 
-    .coverage-note, .enterprise-box, .case-card, .policy-box, .contact-box {
+    .coverage-note, .enterprise-box, .policy-box, .contact-box {
       border-radius: 30px;
       border: 1px solid var(--border);
       background: linear-gradient(135deg, rgba(37,99,235,.14), rgba(139,92,246,.12) 45%, rgba(15,23,42,.72));
@@ -454,28 +454,6 @@
     }
 
     .enterprise-box p { max-width: 760px; color: var(--soft); }
-
-    .case-card { background: linear-gradient(180deg, rgba(15,23,42,.8), rgba(15,23,42,.56)); }
-
-    .case-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 24px; }
-    .case-header h3 { font-size: 1.55rem; margin-bottom: 6px; }
-    .case-header span { color: var(--muted); }
-
-    .case-result {
-      min-width: 148px;
-      text-align: center;
-      padding: 16px;
-      border-radius: 20px;
-      background: rgba(34,197,94,.12);
-      border: 1px solid rgba(34,197,94,.28);
-      color: #86efac;
-      font-weight: 900;
-    }
-
-    .case-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .case-grid div { background: rgba(2,6,23,.36); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
-    .case-grid h4 { color: #bfdbfe; margin-bottom: 8px; }
-    .case-grid p { color: var(--soft); }
 
     .ticket-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .ticket-card { text-align: center; }
@@ -630,7 +608,7 @@
       .hero-grid, .enterprise-box, .footer-grid { grid-template-columns: 1fr; }
       .network-card { min-height: 420px; }
       .grid-4, .grid-3, .ticket-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-bar, .case-grid, .contact-mini { grid-template-columns: repeat(2, 1fr); }
+      .stats-bar, .contact-mini { grid-template-columns: repeat(2, 1fr); }
       .compare { grid-template-columns: 1fr; }
     }
 
@@ -643,11 +621,10 @@
       .network-card { min-height: 390px; padding: 16px; }
       .status-panel { left: 16px; right: 16px; bottom: 16px; }
       .status-mini { font-size: .86rem; padding: 12px; }
-      .grid-4, .grid-3, .stats-bar, .case-grid, .ticket-grid, .contact-mini { grid-template-columns: 1fr; }
+      .grid-4, .grid-3, .stats-bar, .ticket-grid, .contact-mini { grid-template-columns: 1fr; }
       .stat { border-right: 0; border-bottom: 1px solid var(--border); }
       .stat:last-child { border-bottom: 0; }
       .status-row { grid-template-columns: 1fr; gap: 6px; }
-      .case-header { flex-direction: column; }
       .floating-contact { display: none; }
       .mobile-fixed-bar { display: grid; }
       footer { padding-bottom: 110px; }
@@ -900,29 +877,6 @@
           <p>支持多账号矩阵、软路由统一管理、多国家线路、专属网络环境、运营商资源定制、团队设备接入和长期业务稳定部署。适合直播工作室、跨境电商团队、MCN、广告投放团队。</p>
         </div>
         <a class="btn btn-primary" href="#contact">联系商务</a>
-      </div>
-    </section>
-
-    <section id="case" class="container reveal">
-      <div class="section-head">
-        <h2 class="section-title">典型场景：TK 直播客户</h2>
-        <p class="section-desc">直播客户最怕的是地区不稳、晚高峰卡顿和排查无从下手。方案需要先确认线路质量，再交付给客户长期使用。</p>
-      </div>
-
-      <div class="case-card">
-        <div class="case-header">
-          <div>
-            <h3>马来西亚 TK 直播间</h3>
-            <span>软路由方案 · 固定地区环境 · 直播前测试</span>
-          </div>
-          <div class="case-result">目标：稳定推流</div>
-        </div>
-
-        <div class="case-grid">
-          <div><h4>痛点</h4><p>普通节点可以浏览网页，但直播推流容易受带宽、抖动和晚高峰影响。</p></div>
-          <div><h4>方案</h4><p>按目标地区匹配稳定线路，并通过软路由统一接入，减少多设备重复配置。</p></div>
-          <div><h4>交付</h4><p>先用测试线路验证，再生成客户订阅和二维码，避免影响正在使用的正式客户。</p></div>
-        </div>
       </div>
     </section>
 
