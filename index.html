@@ -169,8 +169,8 @@
     }
 
     .hero h1 {
-      font-size: clamp(2.55rem, 5.2vw, 4.55rem);
-      line-height: 1.04;
+      font-size: clamp(2.35rem, 4.2vw, 3.65rem);
+      line-height: 1.08;
       letter-spacing: 0;
       margin-bottom: 24px;
     }
@@ -180,6 +180,8 @@
       -webkit-background-clip: text;
       color: transparent;
     }
+
+    .hero h1 .grad { white-space: nowrap; }
 
     .hero-desc {
       max-width: 680px;
@@ -649,7 +651,8 @@
       .navbar { height: 68px; }
       .nav-cta .btn-secondary { display: none; }
       .hero { padding: 52px 0 36px; }
-      .hero h1 { letter-spacing: 0; }
+      .hero h1 { font-size: clamp(2.25rem, 10vw, 3rem); letter-spacing: 0; }
+      .hero h1 .grad { white-space: normal; }
       .network-card { min-height: 390px; padding: 16px; }
       .status-panel { left: 16px; right: 16px; bottom: 16px; }
       .status-mini { font-size: .86rem; padding: 12px; }
