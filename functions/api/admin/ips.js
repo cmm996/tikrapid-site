@@ -10,17 +10,18 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
   const q = (url.searchParams.get("q") || "").trim();
   const status = url.searchParams.get("status") || "";
+  const sort = url.searchParams.get("sort") || "";
 
   let sql = `
-    SELECT id, address, label, business_type, price, contact, source, note, expires_at, enabled, created_at, updated_at
+    SELECT id, address, label, business_type, price, contact, source, entry_node, transit_node, landing_node, landing_country, note, expires_at, enabled, created_at, updated_at
     FROM ip_rules
   `;
   const where = [];
   const params = [];
 
   if (q) {
-    where.push(`(address LIKE ? OR label LIKE ? OR business_type LIKE ? OR price LIKE ? OR contact LIKE ? OR source LIKE ? OR note LIKE ?)`);
-    params.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
+    where.push(`(address LIKE ? OR label LIKE ? OR business_type LIKE ? OR price LIKE ? OR contact LIKE ? OR source LIKE ? OR entry_node LIKE ? OR transit_node LIKE ? OR landing_node LIKE ? OR landing_country LIKE ? OR note LIKE ?)`);
+    params.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
   }
 
   if (status === "enabled") where.push(`enabled = 1`);
@@ -28,7 +29,18 @@ export async function onRequestGet(context) {
   if (status === "expired") where.push(`expires_at != '' AND date(expires_at) < date('now')`);
 
   if (where.length) sql += ` WHERE ${where.join(" AND ")}`;
-  sql += ` ORDER BY enabled DESC, id DESC LIMIT 500`;
+  if (sort === "renewal") {
+    sql += `
+      ORDER BY
+        CASE WHEN expires_at = '' OR expires_at IS NULL THEN 1 ELSE 0 END ASC,
+        date(expires_at) ASC,
+        enabled DESC,
+        id DESC
+      LIMIT 500
+    `;
+  } else {
+    sql += ` ORDER BY enabled DESC, id DESC LIMIT 500`;
+  }
 
   const result = await env.DB.prepare(sql).bind(...params).all();
   return json({ ips: result.results || [] });
@@ -49,6 +61,10 @@ export async function onRequestPost(context) {
     const price = String(data.price || "").trim();
     const contact = String(data.contact || "").trim();
     const source = String(data.source || "").trim();
+    const entryNode = String(data.entry_node || "").trim();
+    const transitNode = String(data.transit_node || "").trim();
+    const landingNode = String(data.landing_node || "").trim();
+    const landingCountry = String(data.landing_country || "").trim();
     const note = String(data.note || "").trim();
     const expiresAt = normalizeExpiryDate(data.expires_at);
 
@@ -67,9 +83,9 @@ export async function onRequestPost(context) {
     }
 
     await env.DB.prepare(`
-      INSERT INTO ip_rules (address, label, business_type, price, contact, source, note, expires_at, enabled, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))
-    `).bind(address, label, businessType, price, contact, source, note, expiresAt).run();
+      INSERT INTO ip_rules (address, label, business_type, price, contact, source, entry_node, transit_node, landing_node, landing_country, note, expires_at, enabled, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))
+    `).bind(address, label, businessType, price, contact, source, entryNode, transitNode, landingNode, landingCountry, note, expiresAt).run();
 
     return json({ success: true });
   } catch (err) {

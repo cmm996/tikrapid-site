@@ -50,12 +50,16 @@ td input,td select{min-width:120px}
 .pill{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900}
 .pill.on{background:#e8faf2;color:#067647}
 .pill.off{background:#eef2f6;color:#52606d}
-.pill.expired{background:#fff1f2;color:#a12626}
-.pill.soon{background:#fffbeb;color:#a16207}
+.pill.expired{background:#e5e7eb;color:#4b5563}
+.pill.notice{background:#eef6ff;color:#1d4ed8}
+.pill.warning{background:#fffbeb;color:#a16207}
+.pill.urgent{background:#fff1f2;color:#a12626}
 .expires-cell{display:grid;gap:6px}
 .days-left{color:#64748b;font-size:12px;font-weight:800}
-.days-left.expired{color:#a12626}
-.days-left.soon{color:#a16207}
+.days-left.expired{color:#4b5563}
+.days-left.notice{color:#1d4ed8}
+.days-left.warning{color:#a16207}
+.days-left.urgent{color:#a12626}
 .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .check{display:inline-flex;align-items:center;gap:6px}
 .check input{width:auto}
@@ -119,6 +123,10 @@ td input,td select{min-width:120px}
       <label>价格<input name="price" placeholder="续费价，如 128/月"></label>
       <label>联系方式<input name="contact" placeholder="微信、电话、Telegram"></label>
       <label>IP 段来源<input name="source" placeholder="供应商、地区、来源"></label>
+      <label>入口节点<input name="entry_node" placeholder="腾讯云入口、入口 IP/端口"></label>
+      <label>中转节点<input name="transit_node" placeholder="中转节点、转发端口"></label>
+      <label>落地节点<input name="landing_node" placeholder="落地节点、出口资源"></label>
+      <label>落地国家<input name="landing_country" placeholder="美国、日本、马来西亚"></label>
       <label>备注<input name="note" placeholder="订单号、补充备注"></label>
       <button class="primary" id="createButton" type="submit">添加</button>
     </form>
@@ -128,12 +136,16 @@ td input,td select{min-width:120px}
     <div class="section-head">
       <h2>客户 IP 列表</h2>
       <div class="toolbar">
-        <input id="search" placeholder="搜索 IP、客户、业务、价格、联系方式、来源、备注">
+        <input id="search" placeholder="搜索 IP、客户、业务、价格、联系方式、来源、入口、中转、落地、国家、备注">
         <select id="status">
           <option value="">全部状态</option>
           <option value="enabled">启用</option>
           <option value="disabled">停用</option>
           <option value="expired">已到期</option>
+        </select>
+        <select id="sort" onchange="loadIPs()">
+          <option value="">默认排序</option>
+          <option value="renewal">续费优先</option>
         </select>
         <button class="primary" type="button" onclick="loadIPs()">搜索</button>
       </div>
@@ -191,8 +203,10 @@ async function loadIPs(){
   const url = new URL("/api/admin/ips", location.origin);
   const q = document.getElementById("search").value.trim();
   const status = document.getElementById("status").value;
+  const sort = document.getElementById("sort").value;
   if(q) url.searchParams.set("q", q);
   if(status) url.searchParams.set("status", status);
+  if(sort) url.searchParams.set("sort", sort);
 
   try{
     const data = await requestJSON(url);
@@ -251,13 +265,8 @@ function renderTable(ips){
 
   for(const item of ips){
     const enabled = Number(item.enabled) === 1;
-    const expired = isExpired(item.expires_at);
-    const soon = !expired && isExpiringSoon(item.expires_at);
-    const status = expired
-      ? '<span class="pill expired">已到期</span>'
-      : enabled
-        ? (soon ? '<span class="pill soon">快到期</span>' : '<span class="pill on">启用</span>')
-        : '<span class="pill off">停用</span>';
+    const renewal = renewalInfo(item.expires_at);
+    const status = statusHTML(enabled, renewal);
 
     body.innerHTML +=
       '<tr class="main-row">' +
@@ -285,6 +294,10 @@ function renderTable(ips){
             '<label>价格<input id="price-' + item.id + '" value="' + escapeHtml(item.price || "") + '" placeholder="续费价"></label>' +
             '<label>联系方式<input id="contact-' + item.id + '" value="' + escapeHtml(item.contact || "") + '" placeholder="微信、电话、Telegram"></label>' +
             '<label>IP 段来源<input id="source-' + item.id + '" value="' + escapeHtml(item.source || "") + '" placeholder="供应商、地区、来源"></label>' +
+            '<label>入口节点<input id="entry-' + item.id + '" value="' + escapeHtml(item.entry_node || "") + '" placeholder="入口 IP、域名、端口"></label>' +
+            '<label>中转节点<input id="transit-' + item.id + '" value="' + escapeHtml(item.transit_node || "") + '" placeholder="中转 IP、端口、备注"></label>' +
+            '<label>落地节点<input id="landing-' + item.id + '" value="' + escapeHtml(item.landing_node || "") + '" placeholder="出口节点、资源编号"></label>' +
+            '<label>落地国家<input id="country-' + item.id + '" value="' + escapeHtml(item.landing_country || "") + '" placeholder="美国、日本、马来西亚"></label>' +
             '<label>备注<input id="note-' + item.id + '" value="' + escapeHtml(item.note || "") + '" placeholder="订单号、补充备注"></label>' +
             '<div class="readonly-field">更新时间<span>' + escapeHtml(item.updated_at || "-") + '</span></div>' +
           '</div>' +
@@ -307,6 +320,10 @@ async function updateIP(id){
         price:document.getElementById("price-" + id).value,
         contact:document.getElementById("contact-" + id).value,
         source:document.getElementById("source-" + id).value,
+        entry_node:document.getElementById("entry-" + id).value,
+        transit_node:document.getElementById("transit-" + id).value,
+        landing_node:document.getElementById("landing-" + id).value,
+        landing_country:document.getElementById("country-" + id).value,
         note:document.getElementById("note-" + id).value,
         enabled:document.getElementById("enabled-" + id).checked
       })
@@ -343,14 +360,28 @@ async function mutateIP(payload, message){
 }
 
 function isExpired(value){
-  return Boolean(value) && value < todayISO();
+  return renewalInfo(value).level === "expired";
 }
 
-function isExpiringSoon(value){
-  if(!value) return false;
+function statusHTML(enabled, renewal){
+  if(renewal.level === "expired") return '<span class="pill expired">已过期 / 自动停用</span>';
+  if(!enabled) return '<span class="pill off">停用</span>';
+  if(renewal.level === "urgent") return '<span class="pill urgent">续费红色提醒</span>';
+  if(renewal.level === "warning") return '<span class="pill warning">续费黄色提醒</span>';
+  if(renewal.level === "notice") return '<span class="pill notice">普通提醒</span>';
+  return '<span class="pill on">启用</span>';
+}
+
+function renewalInfo(value){
+  if(!value) return {level:"long", days:null};
   const today = new Date(todayISO() + "T00:00:00");
   const expires = new Date(value + "T00:00:00");
-  return expires >= today && (expires - today) / 86400000 <= 7;
+  const days = Math.ceil((expires - today) / 86400000);
+  if(days < 0) return {level:"expired", days};
+  if(days <= 3) return {level:"urgent", days};
+  if(days <= 7) return {level:"warning", days};
+  if(days <= 15) return {level:"notice", days};
+  return {level:"normal", days};
 }
 
 function isCurrentMonth(value){
@@ -367,14 +398,14 @@ function formatMoney(value){
 }
 
 function daysLeftHTML(value){
-  if(!value) return '<span class="days-left">长期有效</span>';
-  const today = new Date(todayISO() + "T00:00:00");
-  const expires = new Date(value + "T00:00:00");
-  const days = Math.ceil((expires - today) / 86400000);
-  if(days < 0) return '<span class="days-left expired">已到期 ' + Math.abs(days) + ' 天</span>';
-  if(days === 0) return '<span class="days-left soon">今天到期</span>';
-  if(days <= 7) return '<span class="days-left soon">剩余 ' + days + ' 天</span>';
-  return '<span class="days-left">剩余 ' + days + ' 天</span>';
+  const renewal = renewalInfo(value);
+  if(renewal.level === "long") return '<span class="days-left">长期有效</span>';
+  if(renewal.level === "expired") return '<span class="days-left expired">已过期 ' + Math.abs(renewal.days) + ' 天 · 自动停用提示</span>';
+  if(renewal.days === 0) return '<span class="days-left urgent">今天到期 · 红色提醒</span>';
+  if(renewal.level === "urgent") return '<span class="days-left urgent">剩余 ' + renewal.days + ' 天 · 红色提醒</span>';
+  if(renewal.level === "warning") return '<span class="days-left warning">剩余 ' + renewal.days + ' 天 · 黄色提醒</span>';
+  if(renewal.level === "notice") return '<span class="days-left notice">剩余 ' + renewal.days + ' 天 · 普通提醒</span>';
+  return '<span class="days-left">剩余 ' + renewal.days + ' 天</span>';
 }
 
 function businessSelectHTML(id, value){
