@@ -235,6 +235,9 @@ async function saveResult() {
 }
 
 function setupUnlockTools() {
+  const unlockPaste = $("unlockPaste");
+  const saveUnlockReportBtn = $("saveUnlockReportBtn");
+
   document.querySelectorAll(".copy-command").forEach((button) => {
     button.addEventListener("click", async () => {
       const command = button.dataset.command || "";
@@ -246,6 +249,8 @@ function setupUnlockTools() {
       }, 1400);
     });
   });
+
+  if (!unlockPaste || !saveUnlockReportBtn) return;
 
   $("unlockPaste").addEventListener("input", () => {
     parseUnlockResult($("unlockPaste").value);

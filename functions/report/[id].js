@@ -217,11 +217,7 @@ function getUnlockResult(row) {
 
 function unlockSection(unlock) {
   if (!unlock.raw) {
-    return `<section class="panel mb-4">
-      <h2 class="h4 mb-2">深度解锁检测</h2>
-      <p class="unlock-scope mb-2">TikTok / ChatGPT / Netflix / YouTube / IP风险 / 黑名单</p>
-      <p class="text-soft mb-0">该项需要结合线路用途和出口环境人工判断。客户尚未粘贴本地检测结果，生成报告后可提交客服免费诊断。</p>
-    </section>`;
+    return "";
   }
 
   if (unlock.type === "json") {
