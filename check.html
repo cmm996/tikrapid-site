@@ -112,6 +112,49 @@
       </div>
     </section>
 
+    <section class="panel mt-4 unlock-panel" id="unlockPanel">
+      <div class="section-line">
+        <div>
+          <p class="eyebrow mb-2">本地完整检测</p>
+          <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
+          <p class="text-soft mb-0">完整解锁检测需要客户在本地终端运行命令，网页不会在服务器代跑，也不会要求游客输入代理账号交给服务器测试。</p>
+        </div>
+        <a class="btn btn-outline-light" href="/ticket.html?type=线路报告人工判断">提交报告给客服</a>
+      </div>
+
+      <div class="command-grid mt-3">
+        <div class="command-card">
+          <span>当前全局代理检测</span>
+          <code>bash &lt;(curl -Ls https://IP.Check.Place) -j -p</code>
+          <button class="btn btn-primary copy-command" type="button" data-command="bash <(curl -Ls https://IP.Check.Place) -j -p">一键复制命令</button>
+        </div>
+        <div class="command-card">
+          <span>SOCKS5 代理检测</span>
+          <code>bash &lt;(curl -Ls https://IP.Check.Place) -x socks5://用户名:密码@服务器:端口 -j -p</code>
+          <button class="btn btn-primary copy-command" type="button" data-command="bash <(curl -Ls https://IP.Check.Place) -x socks5://用户名:密码@服务器:端口 -j -p">一键复制命令</button>
+        </div>
+        <div class="command-card">
+          <span>交互版检测</span>
+          <code>bash &lt;(curl -Ls https://Check.Place) -I</code>
+          <button class="btn btn-primary copy-command" type="button" data-command="bash <(curl -Ls https://Check.Place) -I">一键复制命令</button>
+        </div>
+      </div>
+
+      <div class="unlock-input mt-3">
+        <label for="unlockPaste" class="form-label">粘贴检测结果</label>
+        <textarea id="unlockPaste" rows="8" placeholder="把本地命令输出粘贴到这里。JSON 会自动解析；非 JSON 会作为纯文本报告保存。"></textarea>
+      </div>
+
+      <div id="unlockPreview" class="unlock-preview mt-3">
+        <div class="text-soft">等待粘贴检测结果...</div>
+      </div>
+
+      <div class="unlock-actions mt-3">
+        <button id="saveUnlockReportBtn" class="btn btn-primary" type="button">生成分享报告</button>
+        <a class="btn btn-outline-light" href="/ticket.html?type=线路解锁报告人工判断">需要人工判断线路？提交报告给客服</a>
+      </div>
+    </section>
+
     <section class="panel mt-4">
       <h2 class="h5 mb-3">检测结果怎么用</h2>
       <div class="row g-3">

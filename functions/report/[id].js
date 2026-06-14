@@ -43,6 +43,7 @@ export async function onRequestGet({ params, env }) {
   }
 
   const assessment = buildAssessment(row, webrtcIps);
+  const unlock = getUnlockResult(row);
 
   return html(`<!doctype html>
 <html lang="zh-CN">
@@ -125,6 +126,8 @@ export async function onRequestGet({ params, env }) {
       </div>
     </section>
 
+    ${unlockSection(unlock)}
+
     <section class="panel mb-4">
       <h2 class="h4 mb-2">账号运营风险提示</h2>
       <p class="text-soft">跨境平台通常不会只根据 IP 国家判断账号环境，还会综合识别 DNS、WebRTC、设备语言、系统时区、账号行为、登录习惯和网络稳定性。若环境长期不一致，可能导致账号标签混乱、注册失败、限流、直播推流不稳定等问题。</p>
@@ -193,6 +196,61 @@ function buildAssessment(row, webrtcIps) {
     risks: buildRisks(row, webrtcIps, region, ipQuality, live),
     suggestions: buildSuggestions(row, region, ipQuality, live),
   };
+}
+
+function getUnlockResult(row) {
+  const type = String(row.unlock_result_type || "").trim();
+  const raw = String(row.unlock_result_raw || "").trim();
+  let summary = {};
+  try {
+    summary = JSON.parse(row.unlock_summary || "{}");
+  } catch {
+    summary = {};
+  }
+
+  if (!type || !raw) {
+    return { type: "", raw: "", summary: {} };
+  }
+
+  return { type, raw, summary };
+}
+
+function unlockSection(unlock) {
+  if (!unlock.raw) {
+    return `<section class="panel mb-4">
+      <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
+      <p class="text-soft mb-0">客户尚未粘贴本地完整解锁检测结果。本模块不会由服务器代跑代理检测，如需完整判断，请在客户本地执行命令后粘贴结果生成报告。</p>
+    </section>`;
+  }
+
+  if (unlock.type === "json") {
+    const rows = [
+      ["IP", unlock.summary.ip || "未识别"],
+      ["国家/地区", unlock.summary.country || "未识别"],
+      ["ASN", unlock.summary.asn || "未识别"],
+      ["组织", unlock.summary.organization || "未识别"],
+      ["IP 类型", unlock.summary.ip_type || "未识别"],
+      ["风险等级", unlock.summary.risk_level || "未识别"],
+      ["TikTok", unlock.summary.tiktok || "未识别"],
+      ["Netflix", unlock.summary.netflix || "未识别"],
+      ["YouTube", unlock.summary.youtube || "未识别"],
+      ["ChatGPT", unlock.summary.chatgpt || "未识别"],
+      ["黑名单数量", unlock.summary.blacklist_count || "未识别"],
+      ["25端口状态", unlock.summary.port_25 || "未识别"],
+    ];
+
+    return `<section class="panel mb-4">
+      <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
+      <p class="text-soft">以下结果来自客户本地命令输出粘贴，网页和服务器没有代跑代理检测。</p>
+      ${table(["检测项", "结果"], rows)}
+    </section>`;
+  }
+
+  return `<section class="panel mb-4">
+    <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
+    <p class="text-soft">客户粘贴的是非 JSON 输出，已作为纯文本报告保存。以下内容来自客户本地命令输出，服务器没有代跑代理检测。</p>
+    <pre class="unlock-text-preview">${escapeHtml(unlock.raw.slice(0, 12000))}</pre>
+  </section>`;
 }
 
 function assessScenarios(row, region, ipQuality, live, webrtcIps) {

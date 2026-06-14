@@ -17,6 +17,10 @@ const state = {
   recommended_bitrate: "",
   score: 0,
   rating: "",
+  unlock_result_type: "",
+  unlock_result_raw: "",
+  unlock_result_json: "",
+  unlock_summary: {},
   browser_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
   browser_languages: (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]).filter(Boolean).join(" / "),
   user_agent: navigator.userAgent
@@ -24,6 +28,20 @@ const state = {
 
 const $ = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const UNLOCK_FIELDS = [
+  ["ip", "IP"],
+  ["country", "国家/地区"],
+  ["asn", "ASN"],
+  ["organization", "组织"],
+  ["ip_type", "IP 类型"],
+  ["risk_level", "风险等级"],
+  ["tiktok", "TikTok"],
+  ["netflix", "Netflix"],
+  ["youtube", "YouTube"],
+  ["chatgpt", "ChatGPT"],
+  ["blacklist_count", "黑名单数量"],
+  ["port_25", "25端口状态"]
+];
 
 function setProgress(value, text) {
   const pct = Math.max(0, Math.min(100, Math.round(value)));
@@ -216,6 +234,221 @@ async function saveResult() {
   }
 }
 
+function setupUnlockTools() {
+  document.querySelectorAll(".copy-command").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const command = button.dataset.command || "";
+      await navigator.clipboard.writeText(command);
+      const oldText = button.textContent;
+      button.textContent = "已复制";
+      setTimeout(() => {
+        button.textContent = oldText;
+      }, 1400);
+    });
+  });
+
+  $("unlockPaste").addEventListener("input", () => {
+    parseUnlockResult($("unlockPaste").value);
+  });
+
+  $("saveUnlockReportBtn").addEventListener("click", async () => {
+    parseUnlockResult($("unlockPaste").value);
+    if (!state.unlock_result_raw) {
+      renderUnlockEmpty("请先粘贴本地解锁检测结果。");
+      return;
+    }
+    $("saveUnlockReportBtn").disabled = true;
+    $("saveUnlockReportBtn").textContent = "正在生成...";
+    try {
+      await saveResult();
+      $("statusText").textContent = "解锁检测结果已保存，可以复制分享报告链接。";
+    } finally {
+      $("saveUnlockReportBtn").disabled = false;
+      $("saveUnlockReportBtn").textContent = "生成分享报告";
+    }
+  });
+}
+
+function parseUnlockResult(rawValue) {
+  const raw = String(rawValue || "").trim();
+  state.unlock_result_raw = raw;
+
+  if (!raw) {
+    state.unlock_result_type = "";
+    state.unlock_result_json = "";
+    state.unlock_summary = {};
+    renderUnlockEmpty("等待粘贴检测结果...");
+    return;
+  }
+
+  const parsed = tryParseJson(raw);
+  if (parsed.ok) {
+    const summary = summarizeUnlockJson(parsed.value);
+    state.unlock_result_type = "json";
+    state.unlock_result_json = JSON.stringify(parsed.value);
+    state.unlock_summary = summary;
+    renderUnlockSummary(summary);
+    return;
+  }
+
+  state.unlock_result_type = "text";
+  state.unlock_result_json = "";
+  state.unlock_summary = {};
+  renderUnlockText(raw);
+}
+
+function tryParseJson(raw) {
+  try {
+    return { ok: true, value: JSON.parse(raw) };
+  } catch {
+    const start = raw.indexOf("{");
+    const end = raw.lastIndexOf("}");
+    if (start >= 0 && end > start) {
+      try {
+        return { ok: true, value: JSON.parse(raw.slice(start, end + 1)) };
+      } catch {
+        return { ok: false };
+      }
+    }
+    return { ok: false };
+  }
+}
+
+function summarizeUnlockJson(data) {
+  const flat = flattenObject(data);
+  const text = JSON.stringify(data).toLowerCase();
+  return {
+    ip: pick(flat, ["ip", "query", "address", "client_ip", "public_ip"]) || matchText(text, /\b(?:\d{1,3}\.){3}\d{1,3}\b/),
+    country: pick(flat, ["country", "country_name", "region", "location.country", "ip.country"]),
+    asn: pick(flat, ["asn", "as", "autonomous_system", "ip.asn"]),
+    organization: pick(flat, ["org", "organization", "isp", "as_org", "asn_org", "company.name"]),
+    ip_type: pick(flat, ["ip_type", "type", "usage_type", "proxy.type", "risk.type"]) || inferIpType(text),
+    risk_level: pick(flat, ["risk", "risk_level", "threat.level", "fraud_score", "score"]) || inferRisk(text),
+    tiktok: pickService(flat, text, ["tiktok", "tik_tok", "douyin"]),
+    netflix: pickService(flat, text, ["netflix"]),
+    youtube: pickService(flat, text, ["youtube", "google.youtube"]),
+    chatgpt: pickService(flat, text, ["chatgpt", "openai", "chat_gpt"]),
+    blacklist_count: pick(flat, ["blacklist", "blacklists", "blacklist_count", "security.blacklist_count"]) || inferBlacklist(text),
+    port_25: pick(flat, ["port_25", "port25", "smtp", "smtp_port", "ports.25"]) || inferPort25(text)
+  };
+}
+
+function flattenObject(value, prefix = "", output = {}) {
+  if (value === null || value === undefined) return output;
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => flattenObject(item, `${prefix}${prefix ? "." : ""}${index}`, output));
+    return output;
+  }
+  if (typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      const next = `${prefix}${prefix ? "." : ""}${key}`;
+      flattenObject(item, next, output);
+    }
+    return output;
+  }
+  output[prefix.toLowerCase()] = String(value);
+  return output;
+}
+
+function pick(flat, keys) {
+  for (const key of keys) {
+    const lower = key.toLowerCase();
+    if (flat[lower]) return flat[lower];
+  }
+  for (const [key, value] of Object.entries(flat)) {
+    if (keys.some((target) => key.endsWith(`.${target.toLowerCase()}`) || key.includes(target.toLowerCase()))) {
+      return value;
+    }
+  }
+  return "";
+}
+
+function pickService(flat, text, keys) {
+  const direct = pick(flat, keys);
+  if (direct) return normalizeUnlockValue(direct);
+  const hit = keys.find((key) => text.includes(key.toLowerCase()));
+  if (!hit) return "";
+  const pattern = new RegExp(`${hit.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^a-z0-9]{0,12}(yes|no|unlock|unlocked|blocked|available|fail|failed|支持|解锁|不可|失败)`, "i");
+  return normalizeUnlockValue(matchText(text, pattern));
+}
+
+function normalizeUnlockValue(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  if (/^(true|yes|ok|unlock|unlocked|available|支持|解锁)$/i.test(text)) return "支持 / 可解锁";
+  if (/^(false|no|blocked|fail|failed|不可|失败)$/i.test(text)) return "不支持 / 未解锁";
+  return text;
+}
+
+function matchText(text, regex) {
+  const match = text.match(regex);
+  return match ? match[1] || match[0] : "";
+}
+
+function inferIpType(text) {
+  if (/residential|住宅|家宽/.test(text)) return "住宅 / 家宽";
+  if (/datacenter|hosting|机房|数据中心|cloud/.test(text)) return "机房 / 数据中心";
+  if (/mobile|cellular|移动/.test(text)) return "移动网络";
+  return "";
+}
+
+function inferRisk(text) {
+  if (/high risk|高风险|danger|risky/.test(text)) return "高";
+  if (/medium risk|中风险|warning/.test(text)) return "中";
+  if (/low risk|低风险|clean/.test(text)) return "低";
+  return "";
+}
+
+function inferBlacklist(text) {
+  const match = text.match(/blacklist[^0-9]{0,20}(\d+)/i) || text.match(/黑名单[^0-9]{0,20}(\d+)/);
+  return match ? match[1] : "";
+}
+
+function inferPort25(text) {
+  if (/25[^a-z0-9]{0,12}(open|开放|通)/i.test(text)) return "开放";
+  if (/25[^a-z0-9]{0,12}(closed|blocked|关闭|阻断|封锁)/i.test(text)) return "关闭 / 阻断";
+  return "";
+}
+
+function renderUnlockSummary(summary) {
+  const rows = UNLOCK_FIELDS.map(([key, label]) => `
+    <div class="unlock-result-row">
+      <span>${label}</span>
+      <strong>${escapeHtml(summary[key] || "未识别")}</strong>
+    </div>
+  `).join("");
+  $("unlockPreview").innerHTML = `
+    <div class="unlock-preview-head">
+      <strong>已识别 JSON 检测结果</strong>
+      <span>请确认结果无误后生成分享报告</span>
+    </div>
+    <div class="unlock-result-grid">${rows}</div>
+  `;
+}
+
+function renderUnlockText(raw) {
+  $("unlockPreview").innerHTML = `
+    <div class="unlock-preview-head">
+      <strong>已作为纯文本报告保存</strong>
+      <span>没有识别到标准 JSON，会在报告中展示原始文本。</span>
+    </div>
+    <pre class="unlock-text-preview">${escapeHtml(raw.slice(0, 3000))}</pre>
+  `;
+}
+
+function renderUnlockEmpty(message) {
+  $("unlockPreview").innerHTML = `<div class="text-soft">${escapeHtml(message)}</div>`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 async function runAll() {
   $("rerunBtn").disabled = true;
   $("reportLink").classList.add("disabled");
@@ -240,4 +473,5 @@ async function runAll() {
 }
 
 $("rerunBtn").addEventListener("click", runAll);
+setupUnlockTools();
 window.addEventListener("load", runAll);

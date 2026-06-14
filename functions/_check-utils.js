@@ -27,6 +27,10 @@ export async function ensureCheckTable(env) {
       rating TEXT NOT NULL DEFAULT '',
       browser_timezone TEXT NOT NULL DEFAULT '',
       browser_languages TEXT NOT NULL DEFAULT '',
+      unlock_result_type TEXT NOT NULL DEFAULT '',
+      unlock_result_raw TEXT NOT NULL DEFAULT '',
+      unlock_result_json TEXT NOT NULL DEFAULT '',
+      unlock_summary TEXT NOT NULL DEFAULT '{}',
       user_agent TEXT NOT NULL DEFAULT ''
     )
   `).run();
@@ -35,6 +39,10 @@ export async function ensureCheckTable(env) {
   await addColumnIfMissing(env, "packet_loss_percent", "REAL NOT NULL DEFAULT 0");
   await addColumnIfMissing(env, "browser_timezone", "TEXT NOT NULL DEFAULT ''");
   await addColumnIfMissing(env, "browser_languages", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "unlock_result_type", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "unlock_result_raw", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "unlock_result_json", "TEXT NOT NULL DEFAULT ''");
+  await addColumnIfMissing(env, "unlock_summary", "TEXT NOT NULL DEFAULT '{}'");
 }
 
 async function addColumnIfMissing(env, name, definition) {
