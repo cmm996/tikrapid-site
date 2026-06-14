@@ -218,8 +218,9 @@ function getUnlockResult(row) {
 function unlockSection(unlock) {
   if (!unlock.raw) {
     return `<section class="panel mb-4">
-      <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
-      <p class="text-soft mb-0">客户尚未粘贴本地完整解锁检测结果。本模块不会由服务器代跑代理检测，如需完整判断，请在客户本地执行命令后粘贴结果生成报告。</p>
+      <h2 class="h4 mb-2">深度解锁检测</h2>
+      <p class="unlock-scope mb-2">TikTok / ChatGPT / Netflix / YouTube / IP风险 / 黑名单</p>
+      <p class="text-soft mb-0">该项需要结合线路用途和出口环境人工判断。客户尚未粘贴本地检测结果，生成报告后可提交客服免费诊断。</p>
     </section>`;
   }
 
@@ -240,15 +241,17 @@ function unlockSection(unlock) {
     ];
 
     return `<section class="panel mb-4">
-      <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
-      <p class="text-soft">以下结果来自客户本地命令输出粘贴，网页和服务器没有代跑代理检测。</p>
+      <h2 class="h4 mb-2">深度解锁检测</h2>
+      <p class="unlock-scope mb-2">TikTok / ChatGPT / Netflix / YouTube / IP风险 / 黑名单</p>
+      <p class="text-soft">以下结果来自客户本地命令输出粘贴。该项需要结合线路用途和出口环境人工判断，生成报告后可提交客服免费诊断。</p>
       ${table(["检测项", "结果"], rows)}
     </section>`;
   }
 
   return `<section class="panel mb-4">
-    <h2 class="h4 mb-2">流媒体 / AI 解锁检测</h2>
-    <p class="text-soft">客户粘贴的是非 JSON 输出，已作为纯文本报告保存。以下内容来自客户本地命令输出，服务器没有代跑代理检测。</p>
+    <h2 class="h4 mb-2">深度解锁检测</h2>
+    <p class="unlock-scope mb-2">TikTok / ChatGPT / Netflix / YouTube / IP风险 / 黑名单</p>
+    <p class="text-soft">客户粘贴的是非 JSON 输出，已作为纯文本报告保存。该项需要结合线路用途和出口环境人工判断，生成报告后可提交客服免费诊断。</p>
     <pre class="unlock-text-preview">${escapeHtml(unlock.raw.slice(0, 12000))}</pre>
   </section>`;
 }
