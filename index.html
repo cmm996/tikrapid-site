@@ -8,6 +8,15 @@
   <meta name="description" content="tikrapid 提供跨境网络专线、TK 直播网络、跨境电商网络、海外社媒运营与工作室网络部署方案。" />
   <meta name="keywords" content="跨境网络专线, 跨境专线, TK直播专线, 跨境电商网络, 海外社媒网络, 软路由方案, TikTok直播网络" />
   <meta name="theme-color" content="#07111f" />
+  <script>
+    (() => {
+      try {
+        if (localStorage.getItem("tikrapid-theme") === "day") {
+          document.documentElement.classList.add("theme-day");
+        }
+      } catch (error) {}
+    })();
+  </script>
 
   <style>
     :root {
@@ -109,6 +118,38 @@
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .58);
+      color: var(--soft);
+      font-weight: 850;
+      font-size: .92rem;
+      cursor: pointer;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease, color .22s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+      color: var(--text);
+      background: rgba(30, 41, 59, .78);
+    }
+
+    .theme-toggle-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 66% 34%, rgba(15,23,42,.9) 0 5px, transparent 5.4px), #bfdbfe;
+      box-shadow: 0 0 18px rgba(96,165,250,.36);
+    }
 
     .btn {
       display: inline-flex;
@@ -322,7 +363,7 @@
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 
-    .pricing-card, .coverage-card, .compare-card, .ticket-card {
+    .pricing-card, .coverage-card, .compare-card, .ticket-card, .affiliate-card {
       border-radius: var(--radius);
       padding: 24px;
       background: linear-gradient(180deg, rgba(15,23,42,.74), rgba(15,23,42,.48));
@@ -572,7 +613,7 @@
     .list li { display: flex; gap: 9px; align-items: flex-start; }
     .list li::before { content: "✓"; color: var(--green); font-weight: 900; flex: 0 0 auto; }
 
-    .coverage-note, .enterprise-box, .policy-box, .contact-box {
+    .coverage-note, .enterprise-box, .policy-box, .contact-box, .affiliate-box {
       border-radius: 30px;
       border: 1px solid var(--border);
       background: linear-gradient(135deg, rgba(37,99,235,.14), rgba(139,92,246,.12) 45%, rgba(15,23,42,.72));
@@ -581,6 +622,122 @@
     }
 
     .coverage-note { margin-top: 18px; text-align: center; color: #bfdbfe; font-weight: 850; }
+
+    .affiliate-box {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .affiliate-box::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 26px;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(96,165,250,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96,165,250,.06) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(120deg, rgba(0,0,0,.9), transparent 70%);
+      opacity: .48;
+    }
+
+    .affiliate-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .affiliate-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .affiliate-card h3 {
+      font-size: 1.22rem;
+      margin-bottom: 10px;
+    }
+
+    .affiliate-card p {
+      color: var(--muted);
+      font-size: .96rem;
+    }
+
+    .affiliate-flow {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+      counter-reset: affiliate;
+    }
+
+    .affiliate-flow li {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      color: var(--soft);
+      line-height: 1.7;
+    }
+
+    .affiliate-flow li::before {
+      counter-increment: affiliate;
+      content: counter(affiliate);
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(96,165,250,.14);
+      border: 1px solid rgba(96,165,250,.24);
+      color: #bfdbfe;
+      font-weight: 950;
+    }
+
+    .affiliate-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .affiliate-kpis div {
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,.16);
+      background: rgba(2,6,23,.24);
+      padding: 16px;
+    }
+
+    .affiliate-kpis b {
+      display: block;
+      color: white;
+      font-size: 1.08rem;
+      margin-bottom: 4px;
+    }
+
+    .affiliate-kpis span {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .affiliate-note {
+      margin-top: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(34,197,94,.24);
+      background: rgba(34,197,94,.08);
+      color: #bbf7d0;
+      font-weight: 850;
+      padding: 14px 16px;
+    }
+
+    .affiliate-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 24px;
+    }
 
     .status-table {
       overflow: hidden;
@@ -775,6 +932,186 @@
 
     .mobile-fixed-bar a.active { background: linear-gradient(135deg, var(--blue2), var(--purple)); color: white; }
 
+    html.theme-day {
+      --bg: #eef6ff;
+      --card: rgba(255,255,255,.8);
+      --border: rgba(37,99,235,.16);
+      --border-strong: rgba(37,99,235,.34);
+      --text: #0f172a;
+      --muted: #64748b;
+      --soft: #334155;
+      --shadow: 0 22px 58px rgba(30,64,175,.12);
+    }
+
+    html.theme-day body {
+      background:
+        radial-gradient(circle at top left, rgba(96,165,250,.24), transparent 34%),
+        linear-gradient(rgba(37,99,235,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,.045) 1px, transparent 1px),
+        linear-gradient(180deg, #f8fbff 0%, #eef6ff 48%, #eaf2ff 100%);
+      background-size: 44px 44px, 44px 44px, auto;
+    }
+
+    html.theme-day .nav-wrap {
+      background: rgba(255,255,255,.82);
+      border-bottom-color: rgba(37,99,235,.14);
+      box-shadow: 0 12px 34px rgba(30,64,175,.08);
+    }
+
+    html.theme-day .theme-toggle,
+    html.theme-day .btn-secondary {
+      background: rgba(255,255,255,.72);
+      color: var(--soft);
+      border-color: rgba(37,99,235,.18);
+    }
+
+    html.theme-day .theme-toggle:hover,
+    html.theme-day .btn-secondary:hover {
+      background: rgba(239,246,255,.92);
+      color: var(--text);
+      border-color: rgba(37,99,235,.34);
+    }
+
+    html.theme-day .theme-toggle-icon {
+      background: radial-gradient(circle, #fbbf24 0 38%, transparent 40%), conic-gradient(from 0deg, transparent 0 10%, #f59e0b 10% 16%, transparent 16% 25%, #f59e0b 25% 31%, transparent 31% 40%, #f59e0b 40% 46%, transparent 46% 55%, #f59e0b 55% 61%, transparent 61% 70%, #f59e0b 70% 76%, transparent 76% 85%, #f59e0b 85% 91%, transparent 91%);
+      box-shadow: 0 0 20px rgba(245,158,11,.28);
+    }
+
+    html.theme-day .eyebrow,
+    html.theme-day .trust-pill,
+    html.theme-day .tag,
+    html.theme-day .persona-number {
+      background: rgba(37,99,235,.08);
+      border-color: rgba(37,99,235,.18);
+      color: #1d4ed8;
+    }
+
+    html.theme-day .grad {
+      background: linear-gradient(90deg, #0f172a, #1d4ed8 58%, #0284c7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    html.theme-day .network-card,
+    html.theme-day .persona-card,
+    html.theme-day .pricing-card,
+    html.theme-day .coverage-card,
+    html.theme-day .compare-card,
+    html.theme-day .ticket-card,
+    html.theme-day .affiliate-card,
+    html.theme-day details,
+    html.theme-day .disclaimer,
+    html.theme-day .footer-qrcode {
+      background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(239,246,255,.66));
+      border-color: rgba(37,99,235,.16);
+      box-shadow: var(--shadow);
+    }
+
+    html.theme-day .network-card::before {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(96,165,250,.24), transparent 30%),
+        radial-gradient(circle at 62% 58%, rgba(37,99,235,.16), transparent 26%);
+    }
+
+    html.theme-day .world-map {
+      opacity: .72;
+      background-image:
+        linear-gradient(rgba(37,99,235,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,.07) 1px, transparent 1px);
+    }
+
+    html.theme-day .status-mini,
+    html.theme-day .mobile-fixed-bar a,
+    html.theme-day .contact-mini div {
+      background: rgba(255,255,255,.74);
+      border-color: rgba(37,99,235,.14);
+      color: var(--soft);
+    }
+
+    html.theme-day .status-mini b,
+    html.theme-day summary,
+    html.theme-day .footer-qrcode h3,
+    html.theme-day .disclaimer strong {
+      color: var(--text) !important;
+    }
+
+    html.theme-day .persona-card:hover,
+    html.theme-day .coverage-card:hover,
+    html.theme-day .compare-card:hover {
+      background: rgba(255,255,255,.9);
+      border-color: rgba(37,99,235,.28);
+    }
+
+    html.theme-day .persona-block b,
+    html.theme-day .enterprise-tag,
+    html.theme-day .coverage-note {
+      color: #1d4ed8;
+    }
+
+    html.theme-day .coverage-note,
+    html.theme-day .enterprise-box,
+    html.theme-day .policy-box,
+    html.theme-day .contact-box,
+    html.theme-day .affiliate-box {
+      background:
+        radial-gradient(circle at top, rgba(96,165,250,.16), transparent 42%),
+        linear-gradient(135deg, rgba(255,255,255,.88), rgba(239,246,255,.72));
+      border-color: rgba(37,99,235,.18);
+      box-shadow: var(--shadow);
+    }
+
+    html.theme-day .coverage-light,
+    html.theme-day .testimonials-light {
+      background:
+        radial-gradient(circle at 18% 20%, rgba(96,165,250,.22), transparent 32%),
+        radial-gradient(circle at 78% 70%, rgba(37,99,235,.1), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,.74), rgba(239,246,255,.42));
+      border-color: rgba(37,99,235,.14);
+    }
+
+    html.theme-day .coverage-light::before {
+      opacity: .34;
+      background-image: radial-gradient(circle, rgba(37,99,235,.14) 0 1.7px, transparent 1.9px);
+    }
+
+    html.theme-day .country-card,
+    html.theme-day .testimonial-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(239,246,255,.68));
+      border-color: rgba(37,99,235,.16);
+      color: var(--soft);
+      box-shadow: 0 18px 42px rgba(30,64,175,.1);
+    }
+
+    html.theme-day .testimonial-card:nth-child(2),
+    html.theme-day .testimonial-card:nth-child(3),
+    html.theme-day .testimonial-card:nth-child(4) {
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(239,246,255,.72));
+    }
+
+    html.theme-day .coverage-light .section-title,
+    html.theme-day .testimonials-light .section-title,
+    html.theme-day .testimonial-name {
+      color: var(--text);
+    }
+
+    html.theme-day .coverage-light .section-desc,
+    html.theme-day .testimonials-light .section-desc,
+    html.theme-day .testimonial-role {
+      color: var(--muted);
+    }
+
+    html.theme-day .quote-mark {
+      color: rgba(37,99,235,.2);
+      border-bottom-color: rgba(37,99,235,.18);
+    }
+
+    html.theme-day .floating-panel,
+    html.theme-day .mobile-fixed-bar {
+      background: rgba(255,255,255,.9);
+      border-color: rgba(37,99,235,.16);
+      box-shadow: 0 22px 54px rgba(30,64,175,.16);
+    }
+
     .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -785,8 +1122,8 @@
       .nav-links { display: none; }
       .hero-grid, .enterprise-box, .footer-grid { grid-template-columns: 1fr; }
       .network-card { min-height: 420px; }
-      .grid-4, .grid-3, .persona-grid, .ticket-grid, .coverage-grid, .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-bar, .contact-mini { grid-template-columns: repeat(2, 1fr); }
+      .grid-4, .grid-3, .persona-grid, .ticket-grid, .coverage-grid, .testimonial-grid, .affiliate-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-bar, .contact-mini, .affiliate-kpis { grid-template-columns: repeat(2, 1fr); }
       .compare { grid-template-columns: 1fr; }
     }
 
@@ -802,7 +1139,7 @@
       .status-mini { font-size: .86rem; padding: 12px; }
       .coverage-light, .testimonials-light { padding: 56px 20px 60px; }
       .coverage-light::before { inset: 80px 0 40px 18%; }
-      .grid-4, .grid-3, .persona-grid, .stats-bar, .ticket-grid, .contact-mini, .coverage-grid, .testimonial-grid { grid-template-columns: 1fr; }
+      .grid-4, .grid-3, .persona-grid, .stats-bar, .ticket-grid, .contact-mini, .coverage-grid, .testimonial-grid, .affiliate-grid, .affiliate-kpis { grid-template-columns: 1fr; }
       .stat { border-right: 0; border-bottom: 1px solid var(--border); }
       .stat:last-child { border-bottom: 0; }
       .status-row { grid-template-columns: 1fr; gap: 6px; }
@@ -826,11 +1163,16 @@
         <a href="/pricing.html">套餐</a>
         <a href="/docs.html">教程</a>
         <a href="/ticket.html">工单</a>
+        <a href="#affiliate">邀请合作</a>
         <a href="#enterprise">企业方案</a>
         <a href="#contact">联系</a>
       </nav>
 
       <div class="nav-cta">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="切换白天或夜间模式">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+          <span data-theme-label>白天模式</span>
+        </button>
         <a class="btn btn-secondary" href="https://panel.tikrapid.top/client/login" target="_blank" rel="noopener">客户登录</a>
         <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
         <a class="btn btn-primary" href="#contact">微信咨询</a>
@@ -857,6 +1199,7 @@
             <a class="btn btn-secondary" href="/pricing.html">查看方案</a>
             <a class="btn btn-secondary" href="/docs.html">查看教程</a>
             <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+            <a class="btn btn-secondary" href="#affiliate">邀请合作</a>
           </div>
 
           <div class="trust-row">
@@ -1081,6 +1424,48 @@
       </div>
     </section>
 
+    <section id="affiliate" class="container reveal">
+      <div class="affiliate-box">
+        <div class="affiliate-content">
+          <div class="section-head" style="margin-bottom:24px">
+            <h2 class="section-title">邀请合作 / AFF 伙伴计划</h2>
+            <p class="section-desc">把 TikRapid 推荐给真正有跨境办公、社媒运营、短视频矩阵、直播专线或软路由需求的朋友，成交后可获得合作奖励。</p>
+          </div>
+
+          <div class="affiliate-grid">
+            <article class="affiliate-card">
+              <span class="tag">适合谁加入</span>
+              <h3>老客户、跨境服务商、工作室代理和设备交付伙伴</h3>
+              <p>如果你身边有外贸老板、跨境电商卖家、直播团队、社媒运营团队，或者你本来就在做软路由、设备交付、账号环境服务，就可以申请成为 TikRapid 邀请伙伴。</p>
+              <div class="affiliate-kpis">
+                <div><b>人工确认</b><span>先登记推荐关系</span></div>
+                <div><b>按单结算</b><span>成交后核对奖励</span></div>
+                <div><b>长期合作</b><span>可跟进续费客户</span></div>
+              </div>
+            </article>
+
+            <article class="affiliate-card">
+              <span class="tag">合作流程</span>
+              <h3>三步完成邀请</h3>
+              <ol class="affiliate-flow">
+                <li>联系 TikRapid 申请合作身份，确认你的邀请备注、结算方式和适合推荐的客户类型。</li>
+                <li>把官网、套餐页或客服二维码发给客户，客户咨询时备注你的名称或邀请码。</li>
+                <li>客户完成开通并通过基础合规确认后，订单进入人工核对，按约定周期结算合作奖励。</li>
+              </ol>
+            </article>
+          </div>
+
+          <p class="affiliate-note">邀请合作只面向合法合规的跨境业务场景，禁止虚假宣传、垃圾推广和诱导违规用途。客户使用服务即确认遵守 TikRapid 合规条款。</p>
+
+          <div class="affiliate-actions">
+            <a class="btn btn-primary" href="#contact">申请邀请合作</a>
+            <a class="btn btn-secondary" href="/aff.html">查看 AFF 规则</a>
+            <a class="btn btn-secondary" href="/pricing.html">查看套餐</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="compare" class="container reveal">
       <div class="section-head">
         <h2 class="section-title">为什么不是普通线路？</h2>
@@ -1216,6 +1601,31 @@
   </div>
 
   <script>
+    const root = document.documentElement;
+    const themeToggle = document.querySelector("[data-theme-toggle]");
+    const themeLabel = document.querySelector("[data-theme-label]");
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+    function applyTheme(theme, persist = true) {
+      const isDay = theme === "day";
+      root.classList.toggle("theme-day", isDay);
+      if (themeToggle) themeToggle.setAttribute("aria-pressed", String(isDay));
+      if (themeLabel) themeLabel.textContent = isDay ? "夜间模式" : "白天模式";
+      if (themeMeta) themeMeta.setAttribute("content", isDay ? "#eef6ff" : "#07111f");
+
+      if (persist) {
+        try { localStorage.setItem("tikrapid-theme", isDay ? "day" : "night"); } catch (error) {}
+      }
+    }
+
+    applyTheme(root.classList.contains("theme-day") ? "day" : "night", false);
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        applyTheme(root.classList.contains("theme-day") ? "night" : "day");
+      });
+    }
+
     function toggleWechat() {
       document.getElementById("wechatPanel").classList.toggle("active");
     }
