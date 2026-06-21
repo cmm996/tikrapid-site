@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>邀请合作 / AFF 伙伴计划 - TikRapid</title>
+  <meta name="description" content="TikRapid 邀请合作与 AFF 伙伴计划，适合跨境服务商、软路由交付伙伴、老客户和工作室代理。" />
+  <link rel="icon" href="/favicon.png" />
+  <style>
+    :root {
+      --bg: #07111f;
+      --card: rgba(15, 23, 42, .74);
+      --border: rgba(148, 163, 184, .18);
+      --border-strong: rgba(96, 165, 250, .38);
+      --text: #e5f2ff;
+      --muted: #93a4b8;
+      --soft: #cbd5e1;
+      --blue: #2563eb;
+      --blue2: #38bdf8;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --radius: 26px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(96,165,250,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96,165,250,.03) 1px, transparent 1px),
+        linear-gradient(180deg, #07111f 0%, #0b1627 52%, #07111f 100%);
+      background-size: 42px 42px, 42px 42px, auto;
+      line-height: 1.72;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(100% - 40px, 1120px);
+      margin: 0 auto;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 17, 31, .86);
+      backdrop-filter: blur(18px);
+    }
+
+    .navbar {
+      height: 74px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 950;
+      letter-spacing: .01em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 16px 36px rgba(37,99,235,.28);
+    }
+
+    .brand-mark::after {
+      content: "TR";
+      font-size: .82rem;
+      font-weight: 950;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: .94rem;
+      font-weight: 850;
+    }
+
+    .nav-links a:hover { color: white; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 920;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(135deg, var(--blue), var(--blue2)); color: white; }
+    .btn-secondary { background: rgba(15,23,42,.72); color: var(--soft); border-color: var(--border); }
+
+    .hero {
+      padding: 76px 0 46px;
+      display: grid;
+      gap: 28px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(96,165,250,.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(96,165,250,.22);
+      font-size: .86rem;
+      font-weight: 950;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      max-width: 860px;
+      font-size: clamp(2.35rem, 6vw, 5rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+      margin-bottom: 18px;
+    }
+
+    .grad {
+      background: linear-gradient(90deg, #fff, #93c5fd 50%, #a7f3d0);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-desc {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    section { margin: 70px 0; }
+
+    .section-head {
+      max-width: 780px;
+      margin-bottom: 26px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+
+    .section-desc { color: var(--muted); }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card, .panel {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(15,23,42,.78), rgba(15,23,42,.52));
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      padding: 24px;
+    }
+
+    .card h3 {
+      font-size: 1.18rem;
+      margin-bottom: 10px;
+    }
+
+    .card p, .card li { color: var(--muted); font-size: .96rem; }
+
+    .tag {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      padding: 6px 10px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(96,165,250,.22);
+      background: rgba(96,165,250,.1);
+      color: #bfdbfe;
+      font-size: .78rem;
+      font-weight: 950;
+    }
+
+    .list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .list li {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+    }
+
+    .list li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 950;
+      flex: 0 0 auto;
+    }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .steps li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      color: var(--soft);
+    }
+
+    .steps li::before {
+      content: counter(step);
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      border: 1px solid rgba(96,165,250,.24);
+      background: rgba(96,165,250,.12);
+      color: #bfdbfe;
+      font-weight: 950;
+    }
+
+    .panel {
+      padding: 30px;
+      background:
+        linear-gradient(135deg, rgba(37,99,235,.14), rgba(34,197,94,.09) 46%, rgba(15,23,42,.7));
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .summary-row div {
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,.18);
+      background: rgba(2,6,23,.24);
+      padding: 16px;
+    }
+
+    .summary-row b {
+      display: block;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .summary-row span { color: var(--muted); font-size: .9rem; }
+
+    .warning {
+      border-color: rgba(245,158,11,.28);
+      background: rgba(245,158,11,.08);
+    }
+
+    .danger {
+      border-color: rgba(239,68,68,.25);
+      background: rgba(239,68,68,.08);
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1fr 170px;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .qr {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.96);
+      padding: 12px;
+    }
+
+    footer {
+      margin-top: 72px;
+      padding: 32px 0 44px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .grid-3, .grid-2, .summary-row, .contact-panel { grid-template-columns: 1fr; }
+      .qr { width: 168px; }
+    }
+
+    @media (max-width: 560px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .navbar { height: 68px; }
+      .hero { padding-top: 50px; }
+      .hero-actions .btn { width: 100%; }
+      .card, .panel { padding: 20px; }
+      .steps li { grid-template-columns: 34px 1fr; }
+      .steps li::before { width: 34px; height: 34px; border-radius: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav-wrap">
+    <div class="container navbar">
+      <a class="brand" href="/">
+        <span class="brand-mark"></span>
+        <span>tikrapid</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">首页</a>
+        <a href="/pricing.html">套餐</a>
+        <a href="/docs.html">教程</a>
+        <a href="/ticket.html">工单</a>
+        <a href="https://panel.tikrapid.top/client/login" target="_blank" rel="noopener">客户登录</a>
+      </nav>
+      <a class="btn btn-primary" href="/#contact">申请合作</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div>
+        <div class="eyebrow">TikRapid 邀请合作 / AFF 伙伴计划</div>
+        <h1><span class="grad">把合适的跨境客户</span><br>介绍给 TikRapid</h1>
+        <p class="hero-desc">
+          如果你身边有外贸老板、跨境电商卖家、社媒运营团队、直播工作室或软路由客户，可以通过 TikRapid 邀请合作机制登记推荐关系。我们负责方案沟通、线路测试、交付售后和订单核对，你负责把真实需求带过来。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/#contact">联系申请合作</a>
+          <a class="btn btn-secondary" href="/pricing.html">查看当前套餐</a>
+          <a class="btn btn-secondary" href="/docs.html">查看客户教程</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-head">
+        <h2 class="section-title">谁适合做邀请伙伴？</h2>
+        <p class="section-desc">我们更希望合作伙伴懂真实业务，而不是只会转发链接。客户越匹配，后续售后越轻松，合作关系也更长久。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <span class="tag">老客户转介绍</span>
+          <h3>你自己已经在用 TikRapid</h3>
+          <p>适合把稳定使用体验推荐给同行、朋友、合作方。客户咨询时备注你的名称，成交后进入人工核对。</p>
+        </article>
+        <article class="card">
+          <span class="tag">跨境服务商</span>
+          <h3>你服务外贸、电商、社媒客户</h3>
+          <p>适合账号环境、指纹浏览器、独立站、广告投放、短视频矩阵等服务商，把网络环境作为配套方案。</p>
+        </article>
+        <article class="card">
+          <span class="tag">设备交付伙伴</span>
+          <h3>你会交付软路由和团队设备</h3>
+          <p>适合路由器、手机矩阵、直播间设备交付场景，TikRapid 提供线路方案、检测和后续售后协同。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="grid-2">
+        <article class="panel">
+          <div class="section-head">
+            <h2 class="section-title">合作怎么走？</h2>
+            <p class="section-desc">当前阶段先采用人工登记，确保每个推荐关系都能查清楚。后续客户后台会逐步接入邀请码、订单记录和自动统计。</p>
+          </div>
+          <ol class="steps">
+            <li><span>联系 TikRapid 客服申请 AFF 身份，确认你的合作备注、收款方式和适合推荐的客户类型。</span></li>
+            <li><span>把官网、套餐页、教程页或客服二维码发给客户，提醒客户咨询时备注你的名称或邀请码。</span></li>
+            <li><span>客户完成方案确认、合规确认和开通后，订单进入人工核对，按约定周期结算合作奖励。</span></li>
+            <li><span>客户续费、加线路、升级软路由或团队方案时，可以继续登记为你的合作订单。</span></li>
+          </ol>
+        </article>
+
+        <aside class="card">
+          <span class="tag">结算说明</span>
+          <h3>奖励比例先人工确认</h3>
+          <p>不同套餐、付款周期、是否需要设备交付、是否需要定制售后，结算方式可能不同。当前不在页面写死固定比例，避免客户误解，也方便后续按合作等级调整。</p>
+          <div class="summary-row" style="grid-template-columns:1fr 1fr">
+            <div><b>月付</b><span>按实际成交核对</span></div>
+            <div><b>季付 / 年付</b><span>可按周期确认奖励</span></div>
+            <div><b>续费</b><span>按合作约定登记</span></div>
+            <div><b>团队单</b><span>单独沟通结算方式</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-head">
+        <h2 class="section-title">推荐时可以怎么介绍？</h2>
+        <p class="section-desc">不要夸大承诺，重点讲清楚客户能解决什么问题、适合什么场景、需要配合哪些检测。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <span class="tag">跨境办公</span>
+          <h3>AI 工具、外贸开发、团队办公</h3>
+          <ul class="list">
+            <li>适合 ChatGPT、Google、海外社媒、外贸工具访问</li>
+            <li>适合老板和员工统一办公环境</li>
+            <li>先做地区和设备检测，再推荐方案</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="tag">社媒运营</span>
+          <h3>短视频矩阵、账号环境、内容测试</h3>
+          <ul class="list">
+            <li>适合固定地区网络环境和多设备使用</li>
+            <li>适合团队按国家、账号、设备分组管理</li>
+            <li>不承诺平台结果，只提供环境和技术支持</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="tag">直播团队</span>
+          <h3>软路由、直播专线、工作室部署</h3>
+          <ul class="list">
+            <li>适合手机直播、OBS 推流和多人团队场景</li>
+            <li>支持开播前检测、晚高峰观察和售后排查</li>
+            <li>复杂场景建议先测试，再扩容正式使用</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="grid-2">
+        <article class="card warning">
+          <span class="tag">当前阶段</span>
+          <h3>先人工登记，后续自动化</h3>
+          <p>现在申请 AFF 后，推荐关系、订单状态、奖励金额先由客服人工登记。后续 TikRapid 客户后台会逐步加入专属邀请码、邀请链接、订单记录、续费提醒和结算记录。</p>
+        </article>
+        <article class="card danger">
+          <span class="tag">合规要求</span>
+          <h3>这些事情不能做</h3>
+          <ul class="list">
+            <li>不能虚假承诺平台流量、账号结果或绝对风控安全</li>
+            <li>不能用垃圾推广、群发骚扰、冒充官方身份获客</li>
+            <li>不能推荐违法违规用途，客户必须遵守合规条款</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="panel contact-panel">
+        <div>
+          <span class="tag">申请入口</span>
+          <h2 class="section-title">准备开始合作？</h2>
+          <p class="section-desc">扫码联系 TikRapid 客服，说明你的客户来源、主要服务场景和预计推荐类型。客服会帮你建立合作备注，后续客户咨询时可以直接关联。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/#contact">返回官网联系</a>
+            <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
+          </div>
+        </div>
+        <div class="qr">
+          <img src="/wechat_qr.png" alt="TikRapid 微信咨询二维码" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">© TikRapid. 邀请合作仅面向合法合规的跨境业务场景，客户使用服务即确认遵守 TikRapid 合规条款。</div>
+  </footer>
+</body>
+</html>
