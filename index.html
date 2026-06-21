@@ -339,6 +339,133 @@
     .coverage-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
     .coverage-card p, .compare-card p { color: var(--muted); font-size: .95rem; }
 
+    .coverage-light {
+      width: 100%;
+      margin: 86px 0;
+      padding: 74px max(20px, calc((100vw - 1180px) / 2)) 78px;
+      background: linear-gradient(180deg, #f6f9ff 0%, #edf4ff 100%);
+      color: #1e293b;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .coverage-light::before {
+      content: "";
+      position: absolute;
+      inset: 38px 4% 28px 45%;
+      opacity: .42;
+      background-image: radial-gradient(circle, rgba(37,99,235,.16) 0 1.7px, transparent 1.9px);
+      background-size: 11px 11px;
+      border-radius: 42%;
+      transform: rotate(-7deg);
+    }
+
+    .coverage-light .section-head, .testimonials-light .section-head { position: relative; z-index: 1; }
+    .coverage-light .section-title, .testimonials-light .section-title { color: #1e293b; font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+    .coverage-light .section-desc, .testimonials-light .section-desc { color: #5f6b7a; }
+
+    .coverage-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px 24px;
+    }
+
+    .country-card {
+      min-height: 106px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 8px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px solid #dbe5f2;
+      box-shadow: 0 14px 30px rgba(15,23,42,.06);
+      color: #526071;
+      font-size: 1rem;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+
+    .country-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(37,99,235,.26);
+      box-shadow: 0 18px 38px rgba(37,99,235,.12);
+    }
+
+    .country-flag {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(15,23,42,.08);
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .testimonials-light {
+      width: 100%;
+      margin: 86px 0;
+      padding: 74px max(20px, calc((100vw - 1180px) / 2)) 84px;
+      background: #fff;
+      color: #1e293b;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+
+    .testimonial-card {
+      min-height: 322px;
+      border-radius: 8px;
+      padding: 28px;
+      background: #edf6ff;
+      color: #475569;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .testimonial-card:nth-child(2) { background: #f3efff; }
+    .testimonial-card:nth-child(3) { background: #eafffb; }
+    .testimonial-card:nth-child(4) { background: #edf7ff; }
+
+    .testimonial-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .testimonial-name { font-weight: 900; color: #1e293b; }
+    .testimonial-role { font-size: .88rem; color: #475569; }
+    .testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 950;
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      box-shadow: 0 10px 22px rgba(37,99,235,.2);
+    }
+
+    .quote-mark {
+      color: rgba(37,99,235,.18);
+      font-size: 4.8rem;
+      line-height: .6;
+      font-weight: 950;
+      border-bottom: 1px solid rgba(37,99,235,.18);
+      padding-bottom: 14px;
+    }
+
+    .testimonial-card p { font-size: .96rem; line-height: 1.75; }
+
     .persona-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 
     .persona-card {
@@ -641,7 +768,7 @@
       .nav-links { display: none; }
       .hero-grid, .enterprise-box, .footer-grid { grid-template-columns: 1fr; }
       .network-card { min-height: 420px; }
-      .grid-4, .grid-3, .persona-grid, .ticket-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-4, .grid-3, .persona-grid, .ticket-grid, .coverage-grid, .testimonial-grid { grid-template-columns: repeat(2, 1fr); }
       .stats-bar, .contact-mini { grid-template-columns: repeat(2, 1fr); }
       .compare { grid-template-columns: 1fr; }
     }
@@ -656,7 +783,9 @@
       .network-card { min-height: 390px; padding: 16px; }
       .status-panel { left: 16px; right: 16px; bottom: 16px; }
       .status-mini { font-size: .86rem; padding: 12px; }
-      .grid-4, .grid-3, .persona-grid, .stats-bar, .ticket-grid, .contact-mini { grid-template-columns: 1fr; }
+      .coverage-light, .testimonials-light { padding: 56px 20px 60px; }
+      .coverage-light::before { inset: 80px 0 40px 18%; }
+      .grid-4, .grid-3, .persona-grid, .stats-bar, .ticket-grid, .contact-mini, .coverage-grid, .testimonial-grid { grid-template-columns: 1fr; }
       .stat { border-right: 0; border-bottom: 1px solid var(--border); }
       .stat:last-child { border-bottom: 0; }
       .status-row { grid-template-columns: 1fr; gap: 6px; }
@@ -874,19 +1003,67 @@
       </div>
     </section>
 
-    <section id="coverage" class="container reveal">
+    <section id="coverage" class="coverage-light reveal">
       <div class="section-head">
-        <h2 class="section-title">全球地区与服务资源</h2>
-        <p class="section-desc">支持全球大部分跨境业务地区。部分国家可按您的业务需求匹配地区、运营商资源、专属线路与工作室方案。</p>
+        <h2 class="section-title">覆盖全球的跨境网络资源</h2>
+        <p class="section-desc">覆盖北美、欧洲、东南亚、中东等热门地区，帮助企业根据目标市场、账号地区和访问对象选择更匹配的海外网络出口。</p>
       </div>
 
-      <div class="grid-3">
-        <div class="coverage-card"><h3>北美地区</h3><p>美国 / 加拿大等主流业务地区。可按州、城市或 ISP 资源情况沟通匹配。</p></div>
-        <div class="coverage-card"><h3>亚洲地区</h3><p>日本 / 韩国 / 新加坡 / 马来西亚 / 泰国等。适合直播、社媒与电商场景。</p></div>
-        <div class="coverage-card"><h3>欧洲地区</h3><p>英国 / 德国 / 法国 / 荷兰等。支持跨境账号、广告与团队办公环境。</p></div>
+      <div class="coverage-grid">
+        <div class="country-card"><span class="country-flag">🇺🇸</span><span>美国</span></div>
+        <div class="country-card"><span class="country-flag">🇹🇭</span><span>泰国</span></div>
+        <div class="country-card"><span class="country-flag">🇲🇾</span><span>马来西亚</span></div>
+        <div class="country-card"><span class="country-flag">🇻🇳</span><span>越南</span></div>
+        <div class="country-card"><span class="country-flag">🇭🇰</span><span>中国香港</span></div>
+        <div class="country-card"><span class="country-flag">🇸🇬</span><span>新加坡</span></div>
+        <div class="country-card"><span class="country-flag">🇹🇼</span><span>中国台湾</span></div>
+        <div class="country-card"><span class="country-flag">🇯🇵</span><span>日本</span></div>
+      </div>
+    </section>
+
+    <section id="reviews" class="testimonials-light reveal">
+      <div class="section-head">
+        <h2 class="section-title">客户真实反馈</h2>
+        <p class="section-desc">来自直播、社媒、电商和团队办公客户的使用反馈，重点看稳定性、排查效率和长期使用体验。</p>
       </div>
 
-      <div class="coverage-note">可定制方向：指定国家 / 指定运营商 / 专属线路 / 软路由整机 / 多设备团队方案</div>
+      <div class="testimonial-grid">
+        <article class="testimonial-card">
+          <div class="testimonial-head">
+            <div><div class="testimonial-name">李先生</div><div class="testimonial-role">珠宝直播客户</div></div>
+            <div class="testimonial-avatar">李</div>
+          </div>
+          <div class="quote-mark">“</div>
+          <p>之前直播经常晚高峰卡顿，换成 TikRapid 后开播前会先做线路检测，推流稳定性明显更好。出现问题时能按时间和设备排查，不用反复猜原因。</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-head">
+            <div><div class="testimonial-name">刘女士</div><div class="testimonial-role">TK 娱乐主播</div></div>
+            <div class="testimonial-avatar">刘</div>
+          </div>
+          <div class="quote-mark">“</div>
+          <p>我们更看重地区稳定和售后响应。现在账号、设备和线路都有记录，换线路前会先确认使用场景，对直播团队来说省了很多沟通成本。</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-head">
+            <div><div class="testimonial-name">林先生</div><div class="testimonial-role">美妆品牌全球运营</div></div>
+            <div class="testimonial-avatar">林</div>
+          </div>
+          <div class="quote-mark">“</div>
+          <p>团队要同时用店铺后台、海外社媒和 AI 工具，最怕员工各自乱配。TikRapid 帮我们把办公环境和教程整理清楚，培训新人方便很多。</p>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-head">
+            <div><div class="testimonial-name">安先生</div><div class="testimonial-role">跨境电商团队</div></div>
+            <div class="testimonial-avatar">安</div>
+          </div>
+          <div class="quote-mark">“</div>
+          <p>以前遇到后台打不开、账号地区不一致，很难判断是网络还是设备问题。现在可以先检测，再提交工单，售后处理路径更清楚。</p>
+        </article>
+      </div>
     </section>
 
     <section id="compare" class="container reveal">
