@@ -343,26 +343,31 @@
       width: 100%;
       margin: 86px 0;
       padding: 74px max(20px, calc((100vw - 1180px) / 2)) 78px;
-      background: linear-gradient(180deg, #f6f9ff 0%, #edf4ff 100%);
-      color: #1e293b;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(37,99,235,.24), transparent 32%),
+        radial-gradient(circle at 78% 70%, rgba(96,165,250,.14), transparent 36%),
+        linear-gradient(180deg, rgba(15,23,42,.78), rgba(7,17,31,.22));
+      color: var(--text);
       position: relative;
       overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .coverage-light::before {
       content: "";
       position: absolute;
       inset: 38px 4% 28px 45%;
-      opacity: .42;
-      background-image: radial-gradient(circle, rgba(37,99,235,.16) 0 1.7px, transparent 1.9px);
+      opacity: .34;
+      background-image: radial-gradient(circle, rgba(96,165,250,.2) 0 1.7px, transparent 1.9px);
       background-size: 11px 11px;
       border-radius: 42%;
       transform: rotate(-7deg);
     }
 
     .coverage-light .section-head, .testimonials-light .section-head { position: relative; z-index: 1; }
-    .coverage-light .section-title, .testimonials-light .section-title { color: #1e293b; font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
-    .coverage-light .section-desc, .testimonials-light .section-desc { color: #5f6b7a; }
+    .coverage-light .section-title, .testimonials-light .section-title { color: var(--text); font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+    .coverage-light .section-desc, .testimonials-light .section-desc { color: var(--soft); }
 
     .coverage-grid {
       position: relative;
@@ -377,40 +382,51 @@
       display: grid;
       place-items: center;
       align-content: center;
-      gap: 8px;
+      gap: 10px;
       border-radius: 16px;
-      background: rgba(255,255,255,.78);
-      border: 1px solid #dbe5f2;
-      box-shadow: 0 14px 30px rgba(15,23,42,.06);
-      color: #526071;
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.54));
+      border: 1px solid rgba(148,163,184,.2);
+      box-shadow: 0 18px 42px rgba(0,0,0,.18);
+      color: var(--soft);
       font-size: 1rem;
       transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
     }
 
     .country-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(37,99,235,.26);
-      box-shadow: 0 18px 38px rgba(37,99,235,.12);
+      border-color: rgba(96,165,250,.42);
+      box-shadow: 0 22px 50px rgba(37,99,235,.18);
     }
 
     .country-flag {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 8px 18px rgba(15,23,42,.08);
-      font-size: 27px;
-      line-height: 1;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 12px 28px rgba(37,99,235,.2);
+      overflow: hidden;
+      padding: 4px;
+    }
+
+    .country-flag img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
     .testimonials-light {
       width: 100%;
       margin: 86px 0;
       padding: 74px max(20px, calc((100vw - 1180px) / 2)) 84px;
-      background: #fff;
-      color: #1e293b;
+      background:
+        radial-gradient(circle at 82% 24%, rgba(37,99,235,.2), transparent 30%),
+        linear-gradient(180deg, rgba(7,17,31,.3), rgba(15,23,42,.72));
+      color: var(--text);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
     .testimonial-grid {
@@ -423,16 +439,17 @@
       min-height: 322px;
       border-radius: 8px;
       padding: 28px;
-      background: #edf6ff;
-      color: #475569;
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.58));
+      border: 1px solid rgba(148,163,184,.18);
+      color: var(--soft);
       display: flex;
       flex-direction: column;
       gap: 18px;
     }
 
-    .testimonial-card:nth-child(2) { background: #f3efff; }
-    .testimonial-card:nth-child(3) { background: #eafffb; }
-    .testimonial-card:nth-child(4) { background: #edf7ff; }
+    .testimonial-card:nth-child(2) { background: linear-gradient(180deg, rgba(30,41,59,.84), rgba(15,23,42,.56)); }
+    .testimonial-card:nth-child(3) { background: linear-gradient(180deg, rgba(8,47,73,.72), rgba(15,23,42,.58)); }
+    .testimonial-card:nth-child(4) { background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(8,47,73,.48)); }
 
     .testimonial-head {
       display: flex;
@@ -441,8 +458,8 @@
       gap: 14px;
     }
 
-    .testimonial-name { font-weight: 900; color: #1e293b; }
-    .testimonial-role { font-size: .88rem; color: #475569; }
+    .testimonial-name { font-weight: 900; color: var(--text); }
+    .testimonial-role { font-size: .88rem; color: var(--muted); }
     .testimonial-avatar {
       width: 44px;
       height: 44px;
@@ -456,11 +473,11 @@
     }
 
     .quote-mark {
-      color: rgba(37,99,235,.18);
+      color: rgba(96,165,250,.24);
       font-size: 4.8rem;
       line-height: .6;
       font-weight: 950;
-      border-bottom: 1px solid rgba(37,99,235,.18);
+      border-bottom: 1px solid rgba(96,165,250,.22);
       padding-bottom: 14px;
     }
 
@@ -1010,14 +1027,14 @@
       </div>
 
       <div class="coverage-grid">
-        <div class="country-card"><span class="country-flag">🇺🇸</span><span>美国</span></div>
-        <div class="country-card"><span class="country-flag">🇹🇭</span><span>泰国</span></div>
-        <div class="country-card"><span class="country-flag">🇲🇾</span><span>马来西亚</span></div>
-        <div class="country-card"><span class="country-flag">🇻🇳</span><span>越南</span></div>
-        <div class="country-card"><span class="country-flag">🇭🇰</span><span>中国香港</span></div>
-        <div class="country-card"><span class="country-flag">🇸🇬</span><span>新加坡</span></div>
-        <div class="country-card"><span class="country-flag">🇹🇼</span><span>中国台湾</span></div>
-        <div class="country-card"><span class="country-flag">🇯🇵</span><span>日本</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/us.png" alt="美国旗帜"></span><span>美国</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/th.png" alt="泰国旗帜"></span><span>泰国</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/my.png" alt="马来西亚旗帜"></span><span>马来西亚</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/vn.png" alt="越南旗帜"></span><span>越南</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/hk.png" alt="中国香港旗帜"></span><span>中国香港</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/sg.png" alt="新加坡旗帜"></span><span>新加坡</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/tw.png" alt="中国台湾旗帜"></span><span>中国台湾</span></div>
+        <div class="country-card"><span class="country-flag"><img src="https://flagcdn.com/w80/jp.png" alt="日本旗帜"></span><span>日本</span></div>
       </div>
     </section>
 
