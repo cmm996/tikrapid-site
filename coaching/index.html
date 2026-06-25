@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TikRapid 出海陪跑服务</title>
+  <meta name="description" content="TikRapid 出海陪跑服务，适合外贸老板、工厂老板、二手车客户、TikTok 直播客户和海外社媒运营新手，从设备、环境、账号、内容到客户开发，低成本跑通第一套出海流程。" />
+  <meta name="theme-color" content="#07111f" />
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(15, 23, 42, .78);
+      --panel-soft: rgba(15, 23, 42, .56);
+      --border: rgba(148, 163, 184, .16);
+      --border-strong: rgba(96, 165, 250, .38);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --soft: #cbd5e1;
+      --blue: #60a5fa;
+      --blue2: #2563eb;
+      --cyan: #38bdf8;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --shadow: 0 24px 80px rgba(0,0,0,.36);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148,163,184,.04) 1px, transparent 1px),
+        linear-gradient(180deg, #050816 0%, var(--bg) 46%, #060b16 100%);
+      background-size: 44px 44px, 44px 44px, auto;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.68;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5, 8, 22, .82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(148,163,184,.12);
+    }
+
+    .navbar {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: 0;
+      font-size: 1.35rem;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background:
+        linear-gradient(135deg, rgba(96,165,250,.95), rgba(37,99,235,.95));
+      position: relative;
+      box-shadow: 0 0 32px rgba(96,165,250,.36);
+    }
+
+    .brand-mark::after {
+      content: "TR";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: .78rem;
+      font-weight: 950;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: var(--muted);
+      font-size: .94rem;
+      font-weight: 650;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 850;
+      font-size: .94rem;
+      transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue2), var(--cyan));
+      color: white;
+      box-shadow: 0 16px 40px rgba(37, 99, 235, .28);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      background: rgba(15, 23, 42, .62);
+      color: var(--soft);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      color: white;
+      background: rgba(30, 41, 59, .78);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 720px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(148,163,184,.12);
+      background:
+        linear-gradient(90deg, rgba(5,8,22,.96) 0%, rgba(5,8,22,.84) 46%, rgba(5,8,22,.46) 100%),
+        linear-gradient(135deg, rgba(37,99,235,.22), transparent 56%),
+        repeating-linear-gradient(0deg, rgba(96,165,250,.08) 0 1px, transparent 1px 36px),
+        repeating-linear-gradient(90deg, rgba(96,165,250,.07) 0 1px, transparent 1px 36px);
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+    }
+
+    .hero::before {
+      background:
+        linear-gradient(110deg, transparent 0 48%, rgba(96,165,250,.2) 48.1% 48.4%, transparent 48.5%),
+        linear-gradient(144deg, transparent 0 55%, rgba(56,189,248,.18) 55.1% 55.4%, transparent 55.5%),
+        linear-gradient(18deg, transparent 0 64%, rgba(96,165,250,.13) 64.1% 64.4%, transparent 64.5%);
+      opacity: .72;
+    }
+
+    .hero::after {
+      width: min(46vw, 560px);
+      height: 520px;
+      left: 52%;
+      top: 110px;
+      border: 1px solid rgba(96,165,250,.18);
+      background:
+        linear-gradient(180deg, rgba(15,23,42,.16), rgba(15,23,42,.02)),
+        repeating-linear-gradient(90deg, rgba(148,163,184,.08) 0 1px, transparent 1px 64px),
+        repeating-linear-gradient(0deg, rgba(148,163,184,.06) 0 1px, transparent 1px 64px);
+      border-radius: 32px;
+      transform: perspective(900px) rotateY(-16deg) rotateX(6deg);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 30px 90px rgba(0,0,0,.22);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      padding: 92px 0 76px;
+    }
+
+    .hero-content { max-width: 760px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(96,165,250,.25);
+      background: rgba(59,130,246,.1);
+      color: #bfdbfe;
+      font-weight: 850;
+      font-size: .9rem;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.55rem, 6vw, 5.3rem);
+      line-height: .98;
+      letter-spacing: 0;
+      margin-bottom: 22px;
+    }
+
+    .grad {
+      background: linear-gradient(90deg, #ffffff, #bfdbfe 46%, #60a5fa);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.28rem, 2.2vw, 1.82rem);
+      color: white;
+      font-weight: 820;
+      margin-bottom: 18px;
+    }
+
+    .hero-desc {
+      max-width: 720px;
+      color: var(--soft);
+      font-size: clamp(1.02rem, 2vw, 1.18rem);
+      margin-bottom: 28px;
+    }
+
+    .hero-desc p + p { margin-top: 12px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .hero-tags span {
+      color: var(--soft);
+      font-size: .88rem;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .54);
+      padding: 8px 12px;
+      border-radius: 999px;
+    }
+
+    .process-visual {
+      position: absolute;
+      z-index: 2;
+      right: max(40px, calc((100vw - 1180px) / 2));
+      top: 180px;
+      width: min(38vw, 440px);
+      display: grid;
+      gap: 14px;
+    }
+
+    .visual-step {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid rgba(148,163,184,.16);
+      background: rgba(2, 6, 23, .48);
+      backdrop-filter: blur(14px);
+      border-radius: 18px;
+    }
+
+    .visual-step b {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(96,165,250,.14);
+      color: #bfdbfe;
+      border: 1px solid rgba(96,165,250,.24);
+    }
+
+    .visual-step strong { display: block; line-height: 1.2; }
+    .visual-step span { color: var(--muted); font-size: .84rem; }
+    .visual-step em { color: #86efac; font-style: normal; font-size: .82rem; font-weight: 900; }
+
+    section { margin: 86px 0; }
+    section[id] { scroll-margin-top: 96px; }
+
+    .section-head {
+      max-width: 790px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.15rem);
+      letter-spacing: 0;
+      line-height: 1.06;
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+
+    .card {
+      border-radius: var(--radius);
+      padding: 24px;
+      background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(15,23,42,.54));
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 40px rgba(0,0,0,.16);
+    }
+
+    .card h3 {
+      font-size: 1.24rem;
+      line-height: 1.28;
+      margin-bottom: 10px;
+    }
+
+    .card p { color: var(--muted); }
+
+    .number {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      background: rgba(96,165,250,.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(96,165,250,.22);
+      font-size: .84rem;
+      font-weight: 950;
+    }
+
+    .intro-panel {
+      padding: 34px;
+      border: 1px solid var(--border-strong);
+      border-radius: 30px;
+      background:
+        linear-gradient(180deg, rgba(30,41,59,.68), rgba(15,23,42,.58)),
+        linear-gradient(135deg, rgba(37,99,235,.18), transparent 52%);
+      box-shadow: var(--shadow);
+    }
+
+    .intro-panel p {
+      color: var(--soft);
+      font-size: 1.06rem;
+    }
+
+    .module-card ul,
+    .plan-card ul,
+    .boundary-card ul,
+    .flow-card ul {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      color: var(--soft);
+    }
+
+    .module-card li,
+    .plan-card li,
+    .boundary-card li,
+    .flow-card li { position: relative; padding-left: 18px; }
+
+    .module-card li::before,
+    .plan-card li::before,
+    .boundary-card.include li::before,
+    .flow-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .boundary-card.exclude li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .plan-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 560px;
+    }
+
+    .plan-card.featured {
+      border-color: rgba(96,165,250,.44);
+      transform: translateY(-8px);
+      box-shadow: 0 26px 90px rgba(37,99,235,.18);
+    }
+
+    .plan-topline {
+      color: #bfdbfe;
+      font-size: .86rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      display: flex;
+      align-items: end;
+      gap: 8px;
+      margin: 18px 0 12px;
+    }
+
+    .price strong { font-size: 2.8rem; line-height: 1; }
+    .price span { color: var(--muted); padding-bottom: 4px; }
+
+    .plan-fit {
+      margin: 16px 0 22px;
+      padding: 14px;
+      border: 1px solid rgba(148,163,184,.12);
+      background: rgba(2,6,23,.28);
+      border-radius: 18px;
+      color: var(--soft);
+      font-size: .94rem;
+    }
+
+    .plan-card .btn { margin-top: auto; }
+
+    .cycle-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: -14px;
+      margin-bottom: 28px;
+    }
+
+    .cycle-row span {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .58);
+      color: var(--soft);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .88rem;
+      font-weight: 850;
+    }
+
+    .boundary-note {
+      margin-top: 18px;
+      border: 1px solid rgba(245,158,11,.28);
+      background: rgba(245,158,11,.08);
+      border-radius: 20px;
+      padding: 18px;
+      color: #fde68a;
+    }
+
+    .why-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .why-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 20px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, .54);
+    }
+
+    .why-item b {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(96,165,250,.22);
+      background: rgba(96,165,250,.12);
+      color: #bfdbfe;
+    }
+
+    .why-item h3 { margin-bottom: 4px; }
+    .why-item p { color: var(--muted); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+
+    .flow-card {
+      min-height: 250px;
+    }
+
+    .flow-card h3 { font-size: 1.05rem; }
+
+    .cta-box {
+      border-radius: 30px;
+      border: 1px solid var(--border-strong);
+      background:
+        linear-gradient(180deg, rgba(30,41,59,.68), rgba(15,23,42,.58)),
+        linear-gradient(135deg, rgba(37,99,235,.18), transparent 52%);
+      padding: 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .question-list {
+      display: grid;
+      gap: 10px;
+      margin: 22px 0 26px;
+      counter-reset: q;
+    }
+
+    .question-list li {
+      list-style: none;
+      color: var(--soft);
+      border: 1px solid rgba(148,163,184,.12);
+      background: rgba(2,6,23,.28);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+
+    .question-list li::before {
+      counter-increment: q;
+      content: counter(q) ". ";
+      color: #bfdbfe;
+      font-weight: 950;
+    }
+
+    .compliance-box {
+      border: 1px solid rgba(96,165,250,.22);
+      background: rgba(15,23,42,.62);
+      border-radius: 26px;
+      padding: 26px;
+      color: var(--soft);
+    }
+
+    .compliance-box p + p { margin-top: 10px; }
+
+    footer {
+      margin-top: 90px;
+      padding: 34px 0 96px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .floating-contact { position: fixed; right: 24px; bottom: 24px; z-index: 999; }
+    .floating-btn {
+      width: 64px;
+      height: 64px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue2), var(--cyan));
+      color: #fff;
+      font-size: 0;
+      cursor: pointer;
+      box-shadow: 0 20px 50px rgba(37,99,235,.35);
+      transition: .25s;
+      position: relative;
+    }
+
+    .floating-btn::before,
+    .floating-btn::after {
+      content: "";
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: white;
+      border-radius: 999px;
+    }
+
+    .floating-btn::before { top: 25px; }
+    .floating-btn::after { top: 37px; }
+    .floating-btn:hover { transform: translateY(-4px) scale(1.05); }
+
+    .floating-panel {
+      position: absolute;
+      right: 0;
+      bottom: 80px;
+      width: 230px;
+      background: rgba(15,23,42,.96);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      padding: 18px;
+      display: none;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    }
+
+    .floating-panel img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+      padding: 6px;
+      margin: 0 auto 12px;
+    }
+
+    .floating-panel p { color: var(--soft); font-size: .92rem; text-align: center; }
+    .floating-panel.active { display: block; }
+
+    .mobile-fixed-bar {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 80;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 22px;
+      background: rgba(2,6,23,.84);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-fixed-bar a {
+      min-height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(30,41,59,.7);
+      color: var(--soft);
+      font-weight: 900;
+    }
+
+    .mobile-fixed-bar a.active { background: linear-gradient(135deg,var(--blue2),var(--cyan)); color: white; }
+
+    @media (max-width: 1100px) {
+      .process-visual { display: none; }
+      .hero { min-height: auto; }
+      .hero::after { display: none; }
+      .hero-content { max-width: 860px; }
+      .flow { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .plan-card.featured { transform: none; }
+    }
+
+    @media (max-width: 700px) {
+      .container { width: min(100% - 28px, 1180px); }
+      .navbar { height: 68px; }
+      .nav-cta .btn-secondary { display: none; }
+      .hero-inner { padding: 64px 0 48px; }
+      .hero-actions .btn { width: 100%; }
+      .grid-2, .grid-3, .grid-4, .flow { grid-template-columns: 1fr; }
+      .intro-panel, .cta-box { padding: 24px; }
+      .floating-contact { display: none; }
+      .mobile-fixed-bar { display: grid; }
+      footer { padding-bottom: 110px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="nav-wrap">
+    <div class="container navbar">
+      <a class="brand" href="/">
+        <span class="brand-mark"></span>
+        <span>tikrapid</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/">首页</a>
+        <a href="/pricing.html">套餐</a>
+        <a class="active" href="/coaching/">出海陪跑</a>
+        <a href="/docs.html">教程</a>
+        <a href="/aff.html">邀请合作</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a class="btn btn-secondary" href="https://panel.tikrapid.top/client/login" target="_blank" rel="noopener">客户登录</a>
+        <a class="btn btn-primary" href="/#contact">微信咨询</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <div class="eyebrow">低成本启动 · 从 0 到 1 · 陪你跑通第一套出海流程</div>
+          <h1><span class="grad">TikRapid</span><br>出海陪跑服务</h1>
+          <p class="hero-subtitle">从 0 到 1，陪你把跨境业务真正跑起来</p>
+          <div class="hero-desc">
+            <p>适合外贸老板、工厂老板、二手车客户、跨境新手、TikTok 直播客户和海外社媒运营新手。</p>
+            <p>很多客户不是只缺一条线路，而是缺一套从设备、环境、账号、内容、客户开发到执行节奏的启动方法。</p>
+            <p>TikRapid 出海陪跑服务，不做重代运营，不收高价顾问费，先用低成本帮你把第一套出海基础流程跑通。</p>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/#contact">立即咨询陪跑服务</a>
+            <a class="btn btn-secondary" href="#plans">查看三档报价</a>
+            <a class="btn btn-secondary" href="/check">检测我的出海环境</a>
+          </div>
+          <div class="hero-tags">
+            <span>不承诺播放量</span>
+            <span>不承诺询盘量</span>
+            <span>不承诺成交结果</span>
+            <span>先把启动流程跑清楚</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-visual" aria-hidden="true">
+        <div class="visual-step"><b>01</b><div><strong>环境诊断</strong><span>设备 / 网络 / 地区一致性</span></div><em>Ready</em></div>
+        <div class="visual-step"><b>02</b><div><strong>账号准备</strong><span>TikTok / Facebook / WhatsApp / 邮箱</span></div><em>Plan</em></div>
+        <div class="visual-step"><b>03</b><div><strong>内容启动</strong><span>选题 / 参考账号 / 发布节奏</span></div><em>Run</em></div>
+        <div class="visual-step"><b>04</b><div><strong>客户开发</strong><span>话术 / 表格 / 每周复盘</span></div><em>Loop</em></div>
+      </div>
+    </section>
+
+    <section id="pain" class="container">
+      <div class="section-head">
+        <h2 class="section-title">你是不是也遇到这些问题？</h2>
+        <p class="section-desc">新手真正卡住的地方，往往不是某一个工具，而是不知道先做哪一步、怎么判断对不对、每天该推进什么。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="number">01</span><h3>不知道做哪个国家</h3><p>想做海外市场，但不知道美国、东南亚、中东、欧洲哪个更适合自己的产品。</p></article>
+        <article class="card"><span class="number">02</span><h3>不知道怎么准备账号</h3><p>TikTok、Facebook、WhatsApp、LinkedIn、邮箱、独立站，不知道先做哪个。</p></article>
+        <article class="card"><span class="number">03</span><h3>不知道设备和环境怎么弄</h3><p>手机、电脑、网络环境、时区、语言、地区设置，经常一开始就乱。</p></article>
+        <article class="card"><span class="number">04</span><h3>不知道发什么内容</h3><p>有产品、有车源、有工厂，但不知道视频怎么拍、标题怎么写、内容怎么规划。</p></article>
+        <article class="card"><span class="number">05</span><h3>不知道怎么找客户</h3><p>不会用 WhatsApp、LinkedIn、Facebook、邮箱去开发海外客户。</p></article>
+        <article class="card"><span class="number">06</span><h3>不想找高价代运营</h3><p>预算有限，不想一上来花几千上万代运营，只想先低成本跑通第一步。</p></article>
+      </div>
+    </section>
+
+    <section id="service" class="container">
+      <div class="section-head">
+        <h2 class="section-title">陪跑不是代运营，而是帮你把第一套出海流程跑起来</h2>
+        <p class="section-desc">我们不替你承诺结果，也不把简单问题包装成玄学。陪跑服务主要解决的是：新手不知道怎么开始、怎么准备、怎么执行、怎么少踩坑。</p>
+      </div>
+      <div class="intro-panel">
+        <p>服务围绕基础启动、账号准备、内容方向和执行复盘四个模块展开，先让你知道“今天应该做什么，为什么这样做，做完怎么检查”。</p>
+      </div>
+      <div class="grid-4" style="margin-top:18px">
+        <article class="card module-card">
+          <span class="number">一</span>
+          <h3>基础启动指导</h3>
+          <ul>
+            <li>手机、电脑、基础设备准备建议</li>
+            <li>跨境网络环境配置与检测</li>
+            <li>时区、语言、地区一致性提醒</li>
+            <li>常用工具安装与使用路径</li>
+            <li>新手基础教程资料包</li>
+          </ul>
+        </article>
+        <article class="card module-card">
+          <span class="number">二</span>
+          <h3>账号与平台准备</h3>
+          <ul>
+            <li>TikTok / Facebook / WhatsApp / 邮箱基础准备</li>
+            <li>注册前基础设置提醒</li>
+            <li>账号启动顺序建议</li>
+            <li>不同平台适合的业务场景说明</li>
+            <li>避免一上来乱注册、乱切换、乱测试</li>
+          </ul>
+        </article>
+        <article class="card module-card">
+          <span class="number">三</span>
+          <h3>内容方向建议</h3>
+          <ul>
+            <li>目标国家初步建议</li>
+            <li>账号内容定位建议</li>
+            <li>短视频选题建议</li>
+            <li>参考账号分析方向</li>
+            <li>发布节奏建议</li>
+            <li>产品、工厂、车辆、客户问题类内容规划</li>
+          </ul>
+        </article>
+        <article class="card module-card">
+          <span class="number">四</span>
+          <h3>执行答疑与复盘</h3>
+          <ul>
+            <li>微信文字答疑</li>
+            <li>每周复盘</li>
+            <li>重点问题拆解</li>
+            <li>客户开发话术建议</li>
+            <li>执行表格与跟进表</li>
+            <li>帮客户把下一步该干什么讲清楚</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="plans" class="container">
+      <div class="section-head">
+        <h2 class="section-title">三档陪跑服务报价</h2>
+        <p class="section-desc">线路问题归线路售后，运营问题按陪跑服务计算。你可以先低成本试一个月，确认执行节奏适合再升级。</p>
+      </div>
+      <div class="cycle-row">
+        <span>月付：灵活试水</span>
+        <span>季度付：9.5 折</span>
+        <span>年付：8.8 折</span>
+      </div>
+      <div class="grid-3">
+        <article class="card plan-card">
+          <div class="plan-topline">套餐一 · 刚开始摸索的新手</div>
+          <h3>基础答疑版</h3>
+          <div class="price"><strong>299</strong><span>元 / 月</span></div>
+          <ul>
+            <li>基础教程与资料包</li>
+            <li>手机 / 电脑基础使用指导</li>
+            <li>出海环境检测指导</li>
+            <li>每日微信文字答疑限 3 个问题</li>
+            <li>简单方向建议，不做深度规划</li>
+          </ul>
+          <div class="plan-fit">适合刚买环境、刚接触跨境、基础问题比较多，但还没有正式开始执行的人。</div>
+          <a class="btn btn-secondary" href="/#contact">咨询基础答疑版</a>
+        </article>
+        <article class="card plan-card featured">
+          <div class="plan-topline">套餐二 · 准备正式执行的客户</div>
+          <h3>标准启动版</h3>
+          <div class="price"><strong>599</strong><span>元 / 月</span></div>
+          <ul>
+            <li>包含基础答疑版全部内容</li>
+            <li>目标国家与平台方向建议</li>
+            <li>内容方向建议</li>
+            <li>10 条内容选题</li>
+            <li>每周 1 次复盘，30 分钟内</li>
+          </ul>
+          <div class="plan-fit">适合准备做 TikTok、Facebook、外贸社媒、二手车出海、工厂产品出海，希望有人带着启动第一步。</div>
+          <a class="btn btn-primary" href="/#contact">咨询标准启动版</a>
+        </article>
+        <article class="card plan-card">
+          <div class="plan-topline">套餐三 · 想系统跑起来的客户</div>
+          <h3>深度陪跑版</h3>
+          <div class="price"><strong>998</strong><span>元 / 月</span></div>
+          <ul>
+            <li>包含标准启动版全部内容</li>
+            <li>30 天执行计划</li>
+            <li>账号定位与发布节奏建议</li>
+            <li>客户开发话术与跟进表</li>
+            <li>每周复盘 + 重点问题优先处理</li>
+          </ul>
+          <div class="plan-fit">适合有产品、有车源、有工厂、有团队或准备认真执行，希望系统搭建出海启动流程的人。</div>
+          <a class="btn btn-secondary" href="/#contact">咨询深度陪跑版</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="boundary" class="container">
+      <div class="section-head">
+        <h2 class="section-title">哪些内容包含？哪些内容不包含？</h2>
+        <p class="section-desc">边界讲清楚，服务才不会变成无限答疑和无限代操作。</p>
+      </div>
+      <div class="grid-2">
+        <article class="card boundary-card include">
+          <h3>包含</h3>
+          <ul>
+            <li>出海启动方向建议</li>
+            <li>设备与环境基础指导</li>
+            <li>账号准备建议</li>
+            <li>内容方向建议</li>
+            <li>基础选题建议</li>
+            <li>客户开发话术建议</li>
+            <li>每周复盘</li>
+            <li>基础问题答疑</li>
+            <li>出海环境检测指导</li>
+          </ul>
+        </article>
+        <article class="card boundary-card exclude">
+          <h3>不包含</h3>
+          <ul>
+            <li>不含线路费用</li>
+            <li>不含代运营账号</li>
+            <li>不含代发视频</li>
+            <li>不含代剪辑</li>
+            <li>不含代回复所有客户</li>
+            <li>不含广告投放费用</li>
+            <li>不含无限远程代操作</li>
+            <li>不承诺播放量、询盘量和成交结果</li>
+          </ul>
+        </article>
+      </div>
+      <div class="boundary-note">重点说明：线路环境问题可以协助配置、检测和排查。国家选择、账号运营、内容方向、客户开发、每天答疑，属于出海陪跑指导服务。</div>
+    </section>
+
+    <section id="people" class="container">
+      <div class="section-head">
+        <h2 class="section-title">适合哪些客户？</h2>
+        <p class="section-desc">只要你已经想做海外业务，但还没把第一套设备、账号、内容和客户开发流程跑起来，就适合先做陪跑诊断。</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="number">01</span><h3>外贸老板</h3><p>想用 WhatsApp、LinkedIn、Facebook、邮箱开发海外客户，但不知道怎么开始。</p></article>
+        <article class="card"><span class="number">02</span><h3>工厂老板</h3><p>有产品、有供应链，但没有海外账号、英文资料、内容方向和客户开发流程。</p></article>
+        <article class="card"><span class="number">03</span><h3>二手车客户</h3><p>有车源，想做海外社媒获客，但不知道刷什么内容、怎么拍车、怎么找客户。</p></article>
+        <article class="card"><span class="number">04</span><h3>TikTok 直播客户</h3><p>准备做直播，但不知道手机、环境、账号、内容和直播前准备怎么做。</p></article>
+        <article class="card"><span class="number">05</span><h3>跨境小白</h3><p>刚准备入行，不知道外贸、跨境电商、TikTok、独立站、AI 工具怎么选。</p></article>
+        <article class="card"><span class="number">06</span><h3>老板 IP 出海客户</h3><p>有经验、有行业资源，想通过海外社媒打造个人 IP 或品牌曝光。</p></article>
+      </div>
+    </section>
+
+    <section id="why" class="container">
+      <div class="section-head">
+        <h2 class="section-title">TikRapid 不只是卖环境，更懂新手出海会卡在哪里</h2>
+        <p class="section-desc">我们把网络环境、账号准备、内容启动和执行节奏放在一条线上看，避免客户一上来就盲目买工具、乱注册、乱切换。</p>
+      </div>
+      <div class="why-list">
+        <article class="why-item"><b>01</b><div><h3>懂跨境环境</h3><p>我们提供跨境网络环境、线路检测、软路由、静态 IP、直播环境等基础服务。</p></div></article>
+        <article class="why-item"><b>02</b><div><h3>懂出海启动流程</h3><p>很多客户不是不会花钱，而是不知道先做哪一步。我们帮客户把启动顺序理清楚。</p></div></article>
+        <article class="why-item"><b>03</b><div><h3>懂内容和平台基础</h3><p>外贸、TikTok、Facebook、WhatsApp、LinkedIn、短视频、直播，不同场景打法不同。</p></div></article>
+        <article class="why-item"><b>04</b><div><h3>不做虚假承诺</h3><p>不承诺流量、不承诺成交、不讲暴富故事，只帮客户把基础链路搭起来。</p></div></article>
+        <article class="why-item"><b>05</b><div><h3>低成本试错</h3><p>相比动辄几千上万的代运营，陪跑服务更适合刚开始试水的老板和小团队。</p></div></article>
+      </div>
+    </section>
+
+    <section id="process" class="container">
+      <div class="section-head">
+        <h2 class="section-title">陪跑怎么开始？</h2>
+        <p class="section-desc">先诊断，再计划，再执行。每一步都尽量把“要做什么”和“为什么这样做”讲清楚。</p>
+      </div>
+      <div class="flow">
+        <article class="card flow-card"><span class="number">01</span><h3>简单沟通</h3><p>告诉我们你的行业、产品、目标客户、预算和当前问题。</p></article>
+        <article class="card flow-card"><span class="number">02</span><h3>选择套餐</h3><p>根据你的情况选择 299 / 599 / 998 三档陪跑服务。</p></article>
+        <article class="card flow-card"><span class="number">03</span><h3>基础诊断</h3><p>先判断你的设备、账号、网络环境和业务方向是否准备好。</p></article>
+        <article class="card flow-card"><span class="number">04</span><h3>制定启动计划</h3><p>明确你接下来 7 天、14 天、30 天该做什么。</p></article>
+        <article class="card flow-card"><span class="number">05</span><h3>执行答疑</h3><p>按套餐提供每日答疑、内容建议、复盘和问题拆解。</p></article>
+        <article class="card flow-card"><span class="number">06</span><h3>阶段复盘</h3><p>看执行效果，再判断后续是否需要升级剪辑、线路、软路由、账号规划或深度服务。</p></article>
+      </div>
+    </section>
+
+    <section id="contact" class="container">
+      <div class="cta-box">
+        <div class="section-head" style="margin-bottom:0">
+          <h2 class="section-title">不知道自己适合哪一档？</h2>
+          <p class="section-desc">你可以先发我这 5 个信息，我帮你判断适合哪种方案。</p>
+        </div>
+        <ol class="question-list">
+          <li>你做什么产品或业务？</li>
+          <li>想做哪个平台？TikTok / Facebook / WhatsApp / LinkedIn / 外贸？</li>
+          <li>有没有账号和设备？</li>
+          <li>有没有人负责拍摄、剪辑、发布和客户回复？</li>
+          <li>你现在最大的问题是什么？</li>
+        </ol>
+        <div class="hero-actions" style="justify-content:center;margin-bottom:0">
+          <a class="btn btn-primary" href="/#contact">立即咨询 TikRapid 客服</a>
+          <a class="btn btn-secondary" href="/#contact">申请出海陪跑服务</a>
+          <a class="btn btn-secondary" href="/check">先做一次出海环境检测</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="compliance-box">
+        <h2 class="section-title" style="font-size:clamp(1.55rem,3vw,2.2rem);margin-bottom:14px">合规说明</h2>
+        <p>本服务仅用于合法合规的跨境业务学习、出海启动指导、海外社媒运营准备和客户开发流程建议。</p>
+        <p>TikRapid 不提供违法违规用途服务，不承诺平台流量、账号结果、询盘数量和成交结果。</p>
+        <p>客户应自行遵守平台规则、目标国家法律法规、产品出口要求和业务合规要求。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© TikRapid. 跨境网络环境、线路检测、出海启动陪跑与客户支持服务。</p>
+    </div>
+  </footer>
+
+  <div class="floating-contact">
+    <div class="floating-panel" id="wechatPanel">
+      <img src="/wechatkefu.png" alt="TikRapid 微信咨询二维码">
+      <p>扫码添加微信咨询<br>备注“出海陪跑”</p>
+    </div>
+    <button class="floating-btn" onclick="toggleWechat()" aria-label="微信咨询"></button>
+  </div>
+
+  <div class="mobile-fixed-bar">
+    <a class="active" href="/#contact">微信咨询</a>
+    <a href="#plans">三档报价</a>
+  </div>
+
+  <script>
+    function toggleWechat() {
+      document.getElementById("wechatPanel").classList.toggle("active");
+    }
+  </script>
+</body>
+</html>
