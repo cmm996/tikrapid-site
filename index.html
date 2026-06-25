@@ -75,7 +75,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 22px;
+      gap: 18px;
     }
 
     .brand {
@@ -85,6 +85,8 @@
       font-weight: 850;
       letter-spacing: 0;
       font-size: 1.35rem;
+      flex: 0 0 auto;
+      white-space: nowrap;
     }
 
     .brand-mark {
@@ -109,30 +111,44 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 22px;
+      gap: 16px;
       color: var(--muted);
-      font-size: .94rem;
+      font-size: .92rem;
       font-weight: 650;
+      flex: 0 1 auto;
+      min-width: 0;
+    }
+
+    .nav-links a {
+      white-space: nowrap;
+      line-height: 1;
     }
 
     .nav-links a:hover { color: var(--text); }
 
-    .nav-cta { display: flex; align-items: center; gap: 10px; }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
 
     .theme-toggle {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 44px;
-      padding: 0 16px;
+      min-height: 42px;
+      padding: 0 14px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: rgba(15, 23, 42, .58);
       color: var(--soft);
       font-weight: 850;
-      font-size: .92rem;
+      font-size: .9rem;
       cursor: pointer;
+      white-space: nowrap;
       transition: transform .22s ease, border-color .22s ease, background .22s ease, color .22s ease;
     }
 
@@ -156,14 +172,15 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      min-height: 44px;
-      padding: 0 18px;
+      min-height: 42px;
+      padding: 0 14px;
       border-radius: 999px;
       font-weight: 850;
-      font-size: .94rem;
+      font-size: .9rem;
       transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
       cursor: pointer;
       border: 1px solid transparent;
+      white-space: nowrap;
     }
 
     .btn:hover { transform: translateY(-2px); }
@@ -1161,21 +1178,18 @@
       </a>
 
       <nav class="nav-links">
-        <a href="#scenarios">场景</a>
         <a href="/pricing.html">套餐</a>
         <a href="/ready-kit/">即用套装</a>
         <a href="/coaching/">出海陪跑</a>
         <a href="/docs.html">教程</a>
-        <a href="/ticket.html">工单</a>
         <a href="#affiliate">邀请合作</a>
         <a href="#enterprise">企业方案</a>
-        <a href="#contact">联系</a>
       </nav>
 
       <div class="nav-cta">
         <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="切换白天或夜间模式">
           <span class="theme-toggle-icon" aria-hidden="true"></span>
-          <span data-theme-label>白天模式</span>
+          <span data-theme-label>白天</span>
         </button>
         <a class="btn btn-secondary" href="https://panel.tikrapid.top/client/login" target="_blank" rel="noopener">客户登录</a>
         <a class="btn btn-secondary" href="/ticket.html">提交工单</a>
@@ -1620,7 +1634,7 @@
       const isDay = theme === "day";
       root.classList.toggle("theme-day", isDay);
       if (themeToggle) themeToggle.setAttribute("aria-pressed", String(isDay));
-      if (themeLabel) themeLabel.textContent = isDay ? "夜间模式" : "白天模式";
+      if (themeLabel) themeLabel.textContent = isDay ? "夜间" : "白天";
       if (themeMeta) themeMeta.setAttribute("content", isDay ? "#eef6ff" : "#07111f");
 
       if (persist) {
